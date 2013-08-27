@@ -1,0 +1,120 @@
+{% from tornado.options import options %}
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>{% block title %}MyTask{% end %}</title>
+	    <link rel="stylesheet" href="{{ static_url("css/main.css")}}" type="text/css"/>
+        <style>
+            html {
+                background: url(/static/images/wallpapers/paper.jpg) #f5efe6;
+                -webkit-tap-highlight-color: rgba(0,0,0,0);
+            }
+        </style>
+    </head>
+    <body class="{% block bodyClass %}{% end %}">
+        <header>
+            <nav data-behavior="hover_global_nav" class="has_announcements">
+                <div class="logo">
+                    <a href="/about">MyTask</a>
+                </div>
+                <div class="global_links">
+                    <a class="topnav_root" href="/">项目</a>
+                    <a class="topnav_calendar" href="/calendar">日历</a>
+                    <a class="topnav_everything" href="/operation">回顾</a>
+                    <a class="topnav_everyone" href="/people">团队</a>
+                    <a class="topnav_me" href="/people/{{currentUser.id}}">我自己</a>
+                </div>
+                <div class="current_user">
+                    <ul>
+                        <li><a data-replace-stack="true" href="/settings">设置</a></li>
+                        <li><a data-replace-stack="true" href="/team">创建团队</a></li>
+                        <li><a data-method="delete" href="/signOut" rel="nofollow">退出</a></li>
+                    </ul>
+                </div>
+                <div class="jumpto" data-behavior="jumpto">
+                    <input type="text" id="autocomplete" data-behavior="placeholder" placeholder="搜索项目、成员或标签">
+                    <div id="autocomplete_container" ></div>
+                </div>
+            </nav>
+        </header>
+        <div class="workspace" id="workspace">
+            {% block body %} fill by every page{% end %}
+        </div>
+        <div class="footer">
+        </div>
+    <script src="{{ static_url("scripts/lib/jquery.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/jsrender.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.core.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.button.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.select.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.form.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.behavior.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.popover.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.calendar.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.datepicker.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.format.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.param.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.editor.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.editorTrigger.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.todo.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.html5fileuploader.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.imageView.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.autoAdd.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.timeago.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.autoComplete.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/myCalendar.js")}}" type="text/javascript"></script>
+
+{% block includeScript %} 
+{% end %}
+
+    <script type="text/javascript">
+        {% block script %} $(function(){}) {% end %}
+    </script>
+    <script type="text/javascript">
+$(function(){
+        function renderAutoComplete(data) {
+            var lastType
+            var $documentContainer = $('#autocomplete_container')
+            $documentContainer.empty()
+            var highlighting= data.highlighting
+            for(var i in data.documents) {
+                var result = $.parseJSON(data.documents[i])
+                if(lastType !== result.type) {
+                    var typeDisplay = '讨论'
+                    $documentContainer.append('<div class="ac-row-label">' + typeDisplay + '</div>')
+                    lastType = result.type
+                }
+                var $row = $('<div class="ac-row" id=":48" data-behavior="selected_content">' + highlighting[result.id].text + '</div>')
+                $documentContainer.append($row)
+            }
+            $documentContainer.append($('<div class="show_all" data-behavior="selected_content">'
+                + '<a data-stacker="false" href="/search?q=' + data.token + '">搜索所有的讨论，待办…</a></div>'))
+        }
+        $('#autocomplete').autoComplete({
+            url: '/autocomplete',
+            requestName: 'token',
+            minLength: 1,
+            render: renderAutoComplete
+        })
+        /*
+    var WebSocket = window.WebSocket || window.MozWebSocket;
+    if (WebSocket) {
+        try {
+            var socket = new WebSocket('ws://{{options.domain}}/updates');
+        } catch (e) {}
+    }
+
+    if (socket) {
+        socket.onmessage = function(event) {
+            console.log(event.data)
+            if($.lily.webSocketProcess) {
+                var data = $.parseJSON(event.data)
+                $.lily.webSocketProcess(data)
+            }
+        }
+    }
+    */
+}) 
+    </script>
+    </body>
+</html>

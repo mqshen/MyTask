@@ -1,0 +1,55 @@
+<html>
+	<head>
+        <title>{% block title %}MyTask{% end %}</title>
+	    <link rel="stylesheet" href="{{ static_url("css/public.css")}}" type="text/css"/>
+	    <link rel="stylesheet" href="{{ static_url("css/main.css")}}" type="text/css"/>
+    </head>
+    <body class="edit_identity identity_validation">
+        <header>
+            <nav data-behavior="hover_global_nav" class="has_announcements">
+                <div class="logo">
+                    <a href="/about">MyTask</a>
+                </div>
+                <div class="global_links">
+                    <a class="topnav_root" href="/">项目</a>
+                    <a class="topnav_calendar" href="/calendar">日历</a>
+                    <a class="topnav_everything" href="/operation">回顾</a>
+                    <a class="topnav_everyone" href="/people">团队</a>
+                    <a class="topnav_me" href="/people/{{currentUser.id}}">我自己</a>
+                </div>
+                <div class="current_user">
+                    <ul>
+                        <li><a data-replace-stack="true" href="/settings">设置</a></li>
+                        <li><a data-replace-stack="true" href="/team">创建团队</a></li>
+                        <li><a data-method="delete" href="/signOut" rel="nofollow">退出</a></li>
+                    </ul>
+                </div>
+                <div class="jumpto" data-behavior="jumpto">
+                    <input type="text" data-behavior="placeholder" placeholder="搜索项目、成员或标签">
+                    <dl></dl>
+                </div>
+            </nav>
+        </header>
+        <div class="workspace" id="workspace">
+            {% block body %} fill by every page{% end %}
+        </div>
+        <div class="footer">
+        </div>
+    <script src="{{ static_url("scripts/lib/jquery.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.core.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.button.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.select.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.form.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.behavior.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.popover.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.calendar.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.format.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.editor.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.html5fileuploader.js")}}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        {% block script %} $(function(){}) {% end %}
+    </script>
+
+    </body>
+</html>

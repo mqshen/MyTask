@@ -1,0 +1,98 @@
+<html>
+	<head>
+        <title>{% block title %}MyTask{% end %}</title>
+	    <link rel="stylesheet" href="{{ static_url("css/public.css")}}" type="text/css"/>
+	    <link rel="stylesheet" href="{{ static_url("css/join.css")}}" type="text/css"/>
+	    <link rel="stylesheet" href="{{ static_url("css/main.css")}}" type="text/css"/>
+    </head>
+    <body class="users">
+        <div class="container">
+            <div id="header">
+                <h2><a href="/">MyTask</a></h2>
+            </div>
+            <form action="/user_ordering" id="users" method="post">
+                <div class="products drag_region reorder_region clearfix" style="width: 248px;">
+                    <div class="product drag_container reorder_container">
+                        <div class="liner">
+                            <div class="header drag_target">
+                                <div class="liner">
+                                    <div class="name">
+                                        选择一个团队
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accounts drag_region reorder_region">
+                                {% for team in currentUser.teams %}
+                                <div class="account drag_container drag_target reorder_container menu_container bcx" >
+                                    <a href="/team/{{team.id}}" class="bcx">
+                                        <span class="logo basecamp trial">
+                                        </span>
+                                        <div class="name">
+                                            <div>{{team.title}}</div>
+                                            <div class="loading"></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% end %}
+                                <div class="account drag_container drag_target reorder_container menu_container bcx" >
+                                    <a href="javascript:;" class="bcx" id="addTeamBtn">
+                                        <div class="name">
+                                            <div class="add-icon">新的团队</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="dialog" style="display:none">
+            <div class="dialog-wrapper clearfix">
+                <div class="new-team">
+		            <h3>新团队名称</h3>
+		                <form class="form form-new-team" action="/team" method="post" data-remote="true">
+			                <div class="form-item">
+				                <div class="form-field">
+					                <input type="text" name="teamTitle" id="txt-team" placeholder="例如：iPhone 5 设计团队" data-toggle="remote">
+				                </div> 
+			                </div>
+			                <div class="form-item form-btns">
+                                <button data-toggle="submit" id="btn-create-team" class="btn btn-primary btn-large" data-disable-with="正在创建..." 
+                                    data-success-text="创建成功">创建团队</button>
+				                <a href="#" class="btn btn-x" id="btn-cancel-create-team">取消</a>
+			                </div>
+		                </form>
+                    </div>
+                </div>
+                <a href="javascript:;" class="link-close-dialog">Close</a>
+            </div>
+        </div>
+    <script src="{{ static_url("scripts/lib/jquery.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.core.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.button.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.select.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.form.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.behavior.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.popover.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.calendar.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.format.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.param.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.editor.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.editorTrigger.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.todo.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.html5fileuploader.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.autoAdd.js")}}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(function(){
+            $('#addTeamBtn').click(function(){
+                $('.dialog').show()
+            })
+            $('.link-close-dialog, #btn-cancel-create-team').click(function(){
+                $('.dialog').hide()
+            })
+        })
+    </script>
+    </body>
+</html>

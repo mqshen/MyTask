@@ -1,0 +1,21 @@
+{% from tornado.options import options %}
+<div class="email-preview">
+	<div class="email-top">
+        <h5>欢迎加入 <span>{{team.title}}</span> 的团队。</h5>
+		<p>简单，好用的团队协作工具。</p>
+	</div>
+	<div class="email-mid">
+        <p>{{currentUser.name}}邀请你加入 
+            <span>{{team.title}}</span> 团队。
+            <span class="with-extra-msg"><b>{{currentUser.name}}</b>还说：</span>
+        </p>
+		<div class="extra-message with-extra-msg"></div>
+		<div class="link">
+			<p>点击下面的链接，加入团队：</p>
+            <span><a href="http://{{options.domain}}/join/{{inviteUser.id}}">/join/{{inviteUser.id}}/</span>
+		</div>
+	</div>
+	<div class="email-bottom">
+        如有疑问，请直接联系<span><b>{{currentUser.name}}</b></span>：<span>{{currentUser.email}}</span>
+	</div>		
+</div>

@@ -1,0 +1,192 @@
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+{% block bodyClass %}topnav_me{% end %}
+
+{% block body%}
+{% from datetime import date %}
+<div class="container stack_container" >
+    <div class="panel sheet person overview" >
+        <title>People</title>
+        <header class="person">
+            <figure class="full_width">
+                <img class="avatar"  height="96" id="avatar_person_4061968" 
+                    src="/avatar/{{user.avatar}}" title="{{user.name}}" width="96">
+            </figure>
+            <h2>{{user.name}}</h2>
+            <h3><a href="mailto:{{user.email}}">{{user.email}}</a></h3>
+        </header>
+        <div class="sheet_body">
+            <section class="todos">
+                <header class="left todos">
+                    <h1>我的任务</h1>
+                </header>
+                <article class="today_todo todolist">
+                    <h5 class="" style="">今日任务</h5>
+                    <ul class="todos">
+                        {% for todoItem in todoItems %} 
+                        {% if (todoItem.deadline is not None and todoItem.deadline.date() <= date.today() ) %}
+                        {% set project = todoItem.project %}
+                        <li class="todo show editable_container" data-behavior="has_hover_content" 
+                            href="/project/{{project.id}}/todolist/{{todoItem.todolist_id}}/todoitem/{{todoItem.id}}">
+                            <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
+                                <div class="spacer"></div>
+                                <a class="image delete" data-confirm="Are you sure you want to delete this to-do?" data-toggle="post"
+                                    data-remote="true" href="/project/{{project.id}}/todolist/{{todoItem.todolist_id}}/todoitem/{{todoItem.id}}/trash" 
+                                    rel="nofollow">Delete</a>
+                                <a class="edit" data-remote="true" data-toggle="editorTrigger" href="javascript:;">Edit</a>
+                            </div>
+                            <div>
+                                <span class="wrapper">
+                                    <input href="/project/{{project.id}}/todolist/{{todoItem.todolist_id}}/todoitem/{{todoItem.id}}/done"
+                                        name="todo_complete" data-toggle="post" type="checkbox" value="1">
+                                    <span class="content" >
+                                        <a href="/project/{{project.id}}/todolist/{{todoItem.todolist_id}}/todoitem/{{todoItem.id}}" class="editable" data-type="textarea" name="description">
+                                            {{ todoItem.description }}
+                                        </a>
+                                    </span>
+                                    <form action="/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
+                                        data-remote="true" id="edit_todo_41824572" method="post" data-type="html">
+                                        <span style="position:relative">
+                                            <span class="pill has_balloon blank showing exclusively_expanded expanded {% if todoItem.deadline.date() < date.today() %} delay {% end %}"
+                                                data-toggle="popover" data-conent="#tpl-todo-popover"
+                                                data-hovercontent-strategy="visibility">
+                                                <a class="popover-btn" data-toggle="popover" 
+                                                    data-remote="true" href="/project/{{project.id}}/todolist/{{todoItem.todolist_id}}/todoitem/{{todoItem.id}}" 
+                                                    data-conent="#tpl-todo-popover">
+                                                    <span name="worker.name" class="echo"> 
+                                                        {{todoItem.worker.name}}
+                                                        <input type="hidden" data-toggle="remote" name="workerId" value="{{todoItem.worker.id}}">
+                                                    </span>
+                                                    <span class="separator"> · </span>
+                                                    <time name="deadlineDate" class="echo">
+                                                    {% if todoItem.deadline is None %}
+                                                        无截止日期
+                                                        <input type="hidden" data-toggle="remote" name="deadLine" value="">
+                                                    {% else %}
+                                                        {{todoItem.deadline.strftime("%Y-%m-%d")}}
+                                                        <input type="hidden" data-toggle="remote" name="deadLine" 
+                                                            value="{{todoItem.deadline.strftime("%Y-%m-%d %H:%M:%S")}}">
+                                                    {% end %}
+                                                    </time>
+                                                </a>
+                                            </span>
+                                        </span>
+                                    </form>
+                                    <span class="pill has_balloon blank showing exclusively_expanded expanded" data-hovercontent-strategy="visibility">
+                                        <a class="popover-btn" href="/project/{{project.id}}" >
+                                            <span name="worker.name" class="echo">
+                                                {{todoItem.project.title}}
+                                            </span>
+                                        </a>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                        {% end %}
+                        {% end %}
+                    </ul>
+                    <ul class="completed truncated" style="display: none;">  
+                    </ul>
+                </article>
+                <article class="todolist">
+                    <ul class="todos">
+                        {% for todoItem in todoItems %} 
+                        {% if (todoItem.deadline is None or todoItem.deadline.date() > date.today() ) %}
+                        {% set project = todoItem.project %}
+                        <li class="todo show editable_container" data-behavior="has_hover_content" 
+                            href="/project/{{project.id}}/todolist/{{todoItem.todolist_id}}/todoitem/{{todoItem.id}}">
+                            <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
+                                <div class="spacer"></div>
+                                <a class="image delete" data-confirm="Are you sure you want to delete this to-do?" data-toggle="post"
+                                    data-remote="true" href="/project/{{project.id}}/todolist/{{todoItem.todolist_id}}/todoitem/{{todoItem.id}}/trash" 
+                                    rel="nofollow">Delete</a>
+                                <a class="edit" data-remote="true" data-toggle="editorTrigger" href="javascript:;">Edit</a>
+                            </div>
+                            <div>
+                                <span class="wrapper">
+                                    <input 
+                                        data-url="/project/{{project.id}}/todo//toggle" name="todo_complete" type="checkbox" value="1">
+                                    <span class="content" >
+                                        <a href="/project/{{project.id}}/todo/" class="editable" data-type="textarea" name="description">
+                                            {{ todoItem.description }}
+                                        </a>
+                                    </span>
+                                    <form action="/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
+                                        data-remote="true" id="edit_todo_41824572" method="post" data-type="html">
+                                        <span style="position:relative">
+                                            <span class="pill has_balloon blank showing exclusively_expanded expanded"
+                                                data-toggle="popover" data-conent="#tpl-todo-popover"
+                                                data-hovercontent-strategy="visibility">
+                                                <a class="popover-btn" data-toggle="popover" 
+                                                    data-remote="true" href="/project/{{project.id}}/todolist/{{todoItem.todolist_id}}/todoitem/{{todoItem.id}}" 
+                                                    data-conent="#tpl-todo-popover">
+                                                    <span name="worker.name" class="echo"> 
+                                                        {{todoItem.worker.name}}
+                                                        <input type="hidden" data-toggle="remote" name="workerId" value="{{todoItem.worker.id}}">
+                                                    </span>
+                                                    <span class="separator"> · </span>
+                                                    <time name="deadlineDate" class="echo">
+                                                    {% if todoItem.deadline is None %}
+                                                        无截止日期
+                                                        <input type="hidden" data-toggle="remote" name="deadLine" value="">
+                                                    {% else %}
+                                                        {{todoItem.deadline.strftime("%Y-%m-%d")}}
+                                                        <input type="hidden" data-toggle="remote" name="deadLine" 
+                                                            value="{{todoItem.deadline.strftime("%Y-%m-%d %H:%M:%S")}}">
+                                                    {% end %}
+                                                    </time>
+                                                </a>
+                                            </span>
+                                        </span>
+                                    </form>
+                                    <span class="pill has_balloon blank showing exclusively_expanded expanded" data-hovercontent-strategy="visibility">
+                                        <a class="popover-btn" href="/project/{{project.id}}" >
+                                            <span name="worker.name" class="echo">
+                                                {{todoItem.project.title}}
+                                            </span>
+                                        </a>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                        {% end %}
+                        {% end %}
+                    </ul>
+                </article>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="popover direction-right-top" style="display: none" id="tpl-todo-popover">
+    <div class="popover-content">
+        <div class="assign-due-popover">
+        	<div class="select-assignee">
+        		<h3>将任务指派给</h3>
+        		<select tabindex="62" name="workerId" class="todo-assignee" >
+                    {% for member in team.members%}
+                    <option value="{{member.id}}">{{member.name}}</option>
+                    {% end %}
+        	  </select>
+        	</div>
+        	<div class="select-due-date">
+        		<h3>任务截止时间</h3>
+        		<div class="datepicker" id="todo-popover-datapicker">
+        			<input type="hidden" class="todo-due-date" />
+        		</div>
+        		<div class="no-due-date">
+        			<a href="javascript:;">没有截止时间</a>
+        		</div>
+        	</div>
+        </div>
+    </div>
+    <div class="popover-arrow"></div>
+</div>
+{% end %}
+
+{% block script %}
+$(function(){
+
+})
+
+{% end %}

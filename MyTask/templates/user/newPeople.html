@@ -1,0 +1,121 @@
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+
+{% block body%}
+<div class="container flat_container" >
+    <div class="panel global_invite people">
+        <form action="/people" class="invite" data-remote="true" method="post">
+            <div class="step">
+                <span>第一步</span>
+            </div>
+            <div class="row">
+                <section class="invite">
+                    <header>
+                        <h1 style="font-weight:bold; margin-bottom: 10px">邀请用户</h1>
+                        <h1>输入要邀请用户的Email:</h1>
+                    </header>
+                    <div class="invitees" data-behavior="invitees" id="invitees">
+                        <div class="person invitee field blank">
+                            <div class="autocomplete_people">
+                                <div class="icon"></div>
+                                <div class="input">
+                                    <input type="text" name="email[]" value="" spellcheck="false" data-toggle="remote">
+                                </div>
+                                <div class="suggestions" data-role="suggestions_view">
+                                    <ol class="suggestions">
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="vertical"></div>
+            </div>
+            <div class="step">
+                <span>第二步</span>
+            </div>
+            <div class="row">
+                <section>
+                    <header>
+                        <h1>用户能访问的项目</h1>
+                    </header>
+                    <p class="person_project_controls">
+                        <a class="decorated" href="#">全选</a>
+                    </p>
+                    <table class="accesses" data-display="invite_projects">
+                        <tbody>
+                            {% for project in team.projects %}
+                            <tr data-project-id="2409861">
+                                <th>
+                                    <input id="invite_project_2409861" name="projectId[]" data-toggle="remote" type="checkbox" value="{{project.id}}">
+                                </th>
+                                <td>
+                                    <label for="invite_project_2409861">
+                                        {{project.title}}
+                                    </label>
+                                </td>
+                            </tr>
+                            {% end %}
+                        </tbody>
+                    </table>
+                </section>
+                <div class="vertical"></div>
+            </div>
+            <div class="step">
+                <span>第三步</span>
+            </div>
+            <div class="row">
+                <section class="superpowers">
+                    <header>
+                        <h1>用户具有的权限</h1>
+                    </header>
+                    <table>
+                        <tbody>
+                            <tr data-project-id="2409861">
+                                <th>
+                                    <input id="can_create_projects" name="create" type="checkbox" value="1" data-toggle="remote">
+                                </th>
+                                <td>
+                                    <label for="invite_project_2409861">
+                                        创建项目
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr data-project-id="2409861">
+                                <th>
+                                    <input id="admin" name="admin" type="checkbox" value="1" data-toggle="remote">
+                                </th>
+                                <td>
+                                    <label for="invite_project_2409861">
+                                        管理员
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                <div class="vertical"></div>
+            </div>
+            <div class="step">
+                <span>第四步</span>
+            </div>
+            <div class="row">
+                <section class="done">
+                    <p class="submit">
+                        <button name="commit" data-toggle="submit" >发送邀请</button>
+                    </p>
+                    <p>每个用户将会收到一封带有加入团队的邮件.</p>
+                </section>
+            </div>
+        </form>
+    </div>
+</div>
+{% end %}
+
+{% block script %}
+$(function(){
+    $('#invitees').autoAdd()
+})
+
+{% end %}

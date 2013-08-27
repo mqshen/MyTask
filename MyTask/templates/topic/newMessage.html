@@ -1,0 +1,121 @@
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+
+{% block body%}
+
+    <div class="container stack_container" style="width: 960px;">
+        <div class="panel sheet project active blank_slate inactive">
+            <header>
+                <h1><a data-restore-position="" href="/project/{{project.id}}">{{project.title}}</a></h1>
+            </header>
+            <div class="panel sheet message new" style="margin-left: 20px; margin-bottom: -20px;">
+                <header>
+                    <h1 style="display: none">Post a new message</h1>
+                </header>
+                <div class="sheet_body">
+                    <article class="message new expanded">
+                        <form action="/project/{{project.id}}/message" class="new_message" data-remote="true" id="new_message" method="post">
+                            <header>
+                                <h3>
+                                    <textarea autofocus="autofocus" data-toggle="remote" 
+                                        id="message_subject" name="title" 
+                                        placeholder="话题" rows="1" 
+                                        data-autoresize="true" 
+                                        style="width: 100%; resize: none; overflow: hidden; min-height: 31px;box-shadow: none">
+                                    </textarea>
+                                </h3>
+                            </header>
+                            <div data-toggle="wysiwyg_container">
+                                <textarea class="body" id="message_content" name="content" rows="7" style="display: none;width: 800px;" 
+                                    data-toggle="remote" 
+                                    placeholder="Type your message here...">
+                                </textarea>
+                            </div>
+                            <div data-behavior="pending_attachments file_drop_target" data-sortable="true" class="attachments">
+                                <span class="prompt_graphic"></span>
+                                <div class="file_input_button">
+                                    <span data-with-features="files_api">
+                                        上传文件
+                                    </span>
+                                    <span class="file_input_container">
+                                        <input name="attachment" type="file" multiple="" 
+                                           id="messageAttachment" tabindex="-1">
+                                        <a class="decorated" data-behavior="local_file_picker" href="#" tabindex="-1">
+                                            选择要上传的文件
+                                        </a>
+                                    </span>
+                                </div>
+                                <ul class="pending_attachments ui-sortable" id="attachments_container">
+                                </ul>
+                            </div>
+                            <footer data-behavior="compose_footer expandable">
+                                <div class="submit">
+                                    <button class="action_button green" name="commit" data-toggle="submit" >发起讨论</button>
+                                </div>
+                            </footer>
+                        </form>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% end %}
+
+{% block script %}
+    $(function(){
+        $("#message_content").editor()
+
+        function fileupload(event) {
+
+		    var $this = $(event.target)
+
+            var file = $this.get(0).files[0]
+
+            var isImage = file.type.indexOf("image") > -1
+            var $attachmentsContainer = $('#attachments_container')
+            var fileObj = '<li class="image uploading selected" data-toggle="select" name="attachment">'
+                + '<a class="remove" data-toggle="remove" href="javascript:;"><span>Remove</span></a>'
+
+            if(!isImage) {
+                fileObj += '<div class="icon"><img src="{{static_url("images/document.png")}}" class="file_icon" width="32" height="32"></div>' 
+            }
+            fileObj += '<span class="name">' + file.name + '</span></li>'
+
+            $fileObj = $(fileObj)
+
+            var $progressBar = $('<div class="progress"></div>')
+            var $progress = $('<div>')
+            $progressBar.append($progress) 
+
+            $fileObj.append($progressBar)
+
+            var $image = $('<img class="thumbnail">')
+            if(isImage)
+                $fileObj.prepend($image)
+
+            function fileUploadCallback(data) {
+                $fileObj.attr("data-content", data.url)
+                $progress.css("width", '100%')
+                $fileObj.removeClass("uploading")
+            }
+            function progress(e) {
+                var pc = parseInt((e.loaded / e.total * 100));
+                $progress.css("width", pc + '%')
+            }
+
+
+            $attachmentsContainer.append($fileObj)
+            $.lily.uploadFile({
+                url: '/attachment',
+                file: file,
+                progress: progress,
+                callback: fileUploadCallback,
+                thumbnail: $image,
+                isImage: isImage
+            }) 
+        }
+        $("#messageAttachment").bind("change", fileupload)
+    })
+{% end %}

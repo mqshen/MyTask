@@ -1,0 +1,674 @@
+{% extends "../base.html" %}
+{% block title %}MyTask{% end %}
+
+{% block body%}
+    {% from datetime import date %}
+    <div class="container stack_container" style="width: 960px;">
+        <div class="panel sheet project active">
+            <header>
+                <div class="header_links">
+                    <a href="/project/{{project.id}}/access">
+                        <span class="link">成员邀请</span><br>
+                        <span class="detail">
+                            {{len(project.users)}}个项目成员
+                        </span>
+                    </a>
+                    {% if project.repository == 1 %}
+                    <a href="/git/{{project.team_id}}/{{project.repositoryName}}">
+                        <span class="link">Git</span><br>
+                        <span class="detail">最近没有修改</span>
+                    </a>
+                    {% end %}
+                </div>
+                <div >
+                    <div class="collapsed_content">
+                        <div class="position_reference">
+                            <h1 class="field" >
+                                {{project.title}}
+                            </h1>
+                        </div>
+                        <div class="description field" style="border-color: transparent; width: auto;">
+                            {{project.description}}
+                        </div>
+                    </div>
+                </div>
+                <div id="project_toolbar" class="project_toolbar" data-autoview="">
+                    <div class="tools has_tools_in_project">
+                        <div class="group in_project">
+                            <a href="/project/{{project.id}}/message" data-tool-name="topics">
+                                <span class=""><strong>{{project.discussionNum}} 讨论</strong></span>
+                            </a>
+                            <a href="/project/{{project.id}}/todolist" data-tool-name="todolists">
+                                <span class=""><strong>{{project.todoNum}} 待办</strong></span>
+                            </a>
+                            <a href="/project/{{project.id}}/files" data-tool-name="attachments">
+                                <span class=""><strong>{{project.fileNum}} 共享文件</strong></span>
+                            </a>
+                            <a href="/project/{{project.id}}/calendar_events" data-tool-name="calendar_events">
+                                <span class=""><strong>日历</strong></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="sheet_body">
+                <section class="topics">
+                    <header class="has_buttons">
+                        <h1>
+                            <a href="/project/{{project.id}}/message">讨论</a>
+                        </h1>
+                        <a class="action_button button" href="/project/{{project.id}}/message/new">发起新讨论</a>
+                    </header>
+                    <table class="inbox">
+                        <tbody>
+                            {% for message in messages %}
+                            <tr class="topic message" id="topic_{{message.id}}">
+                                <td class="avatar">
+                                    <a href="/project/{{project.id}}/message/{{message.id}}">
+                                        <img class="avatar" height="30" src="/avatar/{{message.own.avatar}}" title="{{message.own.name}}" width="30">
+                                    </a>
+                                </td>
+                                <td class="who">
+                                    <a href="/project/{{project.id}}/message/{{message.id}}">{{message.own.name}}</a>
+                                </td>
+                                <td class="what">
+                                    <a href="/project/{{project.id}}/message/{{message.id}}">
+                                        <strong>{{message.title}}</strong>
+                                        <span class="excerpt">{{message.comment_digest}}<span>
+                                    </a>
+                                </td>
+                                <td class="when">
+                                    <a href="/project/{{project.id}}/message/{{message.id}}">
+                                        <time class="timeago" data-time="{{message.createTime}}" style="">{{message.createTime}}</time>
+                                    </a>
+                                </td>
+                                <td class="comments">
+                                    <a href="/project/{{project.id}}/message/{{message.id}}">
+                                        <span class="pill comments circle">{{message.comment_num}}</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% end %}
+                        </tbody>
+                    </table>
+                    {% if project.discussionNum > 5 %}
+                    <p class="more_topics">
+                        <a class="decorated" href="/project/{{project.id}}/message">全部{{project.discussionNum - 5}}条讨论</a>
+                    </p>
+                    {% end %}
+                </section>
+
+
+                <section class="todos">
+                    <header class="has_buttons">
+                        <h1>
+                            <a href="/project/{{project.id}}/todolist">任务列表</a>
+                        </h1>
+                        <a class="action_button button btn" data-toggle="button-display" href="javascript:;" 
+                            data-content="#new_todoList_article">添加任务列表</a>
+                    </header>
+                    <article class="todolist new expanded" id="new_todoList_article" style="display:none">
+                        <header class="expanded_content">
+                            <form action="/project/{{project.id}}/todolist" class="new_todolist" id="new_todolist" method="post">
+                                <header class="text_entry">
+                                    <h3>
+                                        <input id="todolist_name" data-toggle="remote" name="title" size="10" type="text" placeholder="给任务列表起个名字">
+                                    </h3>
+                                </header>
+                                <p class="submit">
+                                    <button name="commit" data-toggle="submit" >保存，开始添加任务</button> or
+                                    <a class="cancel btn" data-toggle="button-display"  
+                                        data-content="#new_todoList_article" href="javascript:;">取消</a>
+                                </p>
+                            </form>
+                        </header>
+                    </article>
+                    <ul class="todolists ui-sortable" id="todolists_container">
+                        {% for todolist in todolists %}
+                        <li data-sortable-type="todolist" id="sortable_todolist"> 
+                            <article class="todolist">
+                                <header class="collapsed_content" data-behavior="has_hover_content">
+                                    <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
+                                        <div class="spacer"></div>
+                                        <a class="image delete" data-confirm="Are you sure you want to delete this to-do list?" data-toggle="post"
+                                            data-method="post" data-remote="true" href="/project/{{project.id}}/todolist/{{todolist.id}}/trash" rel="nofollow">
+                                            Delete
+                                        </a>
+                                        <a class="edit" href="#">Edit</a>
+                                    </div>
+                                    <h3 >
+                                        <a class="linked_title" href="/project/{{project.id}}/todolist/{{todolist.id}}">
+                                            {{ todolist.title}}
+                                        </a>
+                                    </h3>
+                                    <!-- <p><em>{{ todolist.description}}</em></p> -->
+                                </header>
+                                <ul class="todos">
+                                    {% for todoItem in [ todoItem for todoItem in todolist.todoItems if todoItem.done == 0]%}
+                                    <li class="todo show editable_container" data-behavior="has_hover_content" 
+                                        href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}">
+                                        <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
+                                            <div class="spacer"></div>
+                                            <a class="image delete" data-confirm="Are you sure you want to delete this to-do?" data-toggle="post"
+                                                data-remote="true" href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/trash" 
+                                                rel="nofollow">Delete</a>
+                                            <a class="edit" data-remote="true" data-toggle="editorTrigger" href="javascript:;">Edit</a>
+                                        </div>
+                                        <div>
+                                            <span class="wrapper">
+                                                <input href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/done"
+                                                    name="todo_complete" data-toggle="post" type="checkbox" value="1">
+                                                <span class="content" >
+                                                    <a href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
+                                                        class="editable" data-type="textarea" name="description">
+                                                        {{ todoItem.description }}
+                                                    </a>
+                                                </span>
+                                                <form action="/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
+                                                    data-remote="true" id="edit_todo_41824572" method="post" data-type="html">
+                                                    <span style="position:relative">
+                                                        <span class="pill has_balloon blank showing exclusively_expanded expanded{% if todoItem.deadline is not None %} {% if todoItem.deadline.date() < date.today() %} delay {% end %}{% if todoItem.deadline.date() == date.today() %} current {% end %}{% end %}"
+                                                            data-toggle="popover" data-content="#tpl-todo-popover"
+                                                            data-hovercontent-strategy="visibility">
+                                                            <a class="popover-btn data-toggle="popover" 
+                                                                data-remote="true" href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
+                                                                data-content="#tpl-todo-popover">
+                                                                <span name="worker.name" class="echo"> 
+                                                                {% if todoItem.worker is None %}
+                                                                    未分配
+                                                                    </span>
+                                                                    <input type="hidden" data-toggle="remote" name="workerId">
+                                                                {% else %}
+                                                                    {{todoItem.worker.name}}
+                                                                    </span>
+                                                                    <input type="hidden" data-toggle="remote" name="workerId" value="{{todoItem.worker.id}}">
+                                                                {% end %}
+                                                                <span class="separator"> · </span>
+                                                                <time name="deadlineDate" class="echo">
+                                                                {% if todoItem.deadline is None %}
+                                                                    无截止日期
+                                                                    </time>
+                                                                    <input type="hidden" data-toggle="remote" name="deadLine" value="">
+                                                                {% else %}
+                                                                    {{todoItem.deadline.strftime("%Y-%m-%d")}}
+                                                                    </time>
+                                                                    <input type="hidden" data-toggle="remote" name="deadLine" 
+                                                                        value="{{todoItem.deadline.strftime("%Y-%m-%d %H:%M:%S")}}">
+                                                                {% end %}
+                                                            </a>
+                                                        </span>
+                                                    </span>
+                                                </form>
+                                            </span>
+                                        </div>
+                                    </li>
+                                    {% end %}
+                                </ul>
+
+                                <ul class="new expanded">
+                                    <li class="collapsed_content">
+                                        <a class="decorated btn" data-toggle="button-display" id="trigger_todoList_{{todolist.id}}" 
+                                            data-content="#new_todoitem_{{todolist.id}}" data-hidden="#trigger_todoList_{{todolist.id}}" 
+                                            href="javascript:;">
+                                            添加任务
+                                        </a>
+                                    </li>
+                                    <li class="expanded_content edit_mode">
+                                        <form action="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem" class="new_todo" 
+                                            data-remote="true" id="new_todoitem_{{todolist.id}}" 
+                                            style="display:none" method="post">
+                                            <textarea id="todo_content" 
+                                                name="description" placeholder="添加一个新任务" rows="1" data-toggle="remote"
+                                                data-autoresize="true" style="resize: none; overflow: hidden; min-height: 18px;"></textarea>
+                                            <span style="position:relative">
+                                                <span class="pill has_balloon blank ignore_hover"> 
+                                                    <a class="popover-btn" href="javascript:;" data-toggle="popover" data-content="#tpl-todo-popover">
+                                                        <input type="hidden" data-toggle="remote" name="deadLine">
+                                                        <input type="hidden" data-toggle="remote" name="workerId">
+                                                        <span name="workerName"> 
+                                                            未分配
+                                                        </span>
+                                                        <span class="separator"> · </span>
+                                                        <time name="deadlineDate">
+                                                            无截止日期
+                                                        </time>
+                                                    </a>
+                                                </span>
+                                            </span>
+                                            <p class="submit">
+                                                <button name="commit" data-toggle="submit" >添加任务</button>
+                                                <a class="cancel btn" data-role="cancel" href="javascript:;"
+                                                    data-toggle="button-display" data-content="#new_todoitem_{{todolist.id}}" 
+                                                    data-hidden="#trigger_todoList_{{todolist.id}}" >
+                                                    取消
+                                                </a>
+                                            </p>
+                                        </form>
+                                    </li>
+                                </ul>
+
+                                <ul class="completed truncated" style="display: block;">  
+                                    {% for todoItem in [ todoItem for todoItem in todolist.todoItems if todoItem.done == 1]%}
+                                    <li class="todo show" id="todo_41824572">
+                                        <div class="nubbin" style="display: none; left: -45px;" data-behavior="hover_content">
+                                            <div class="spacer"></div>
+                                            <a class="image delete" data-confirm="Are you sure you want to delete this to-do?" data-toggle="post"
+                                                data-remote="true" href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/trash" 
+                                                rel="nofollow">Delete</a>
+                                            <a class="edit" data-remote="true" data-toggle="editorTrigger" href="javascript:;">Edit</a>
+                                        </div>
+                                        <div class="complete">
+                                            <span class="wrapper">
+                                                <input href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/undone"
+                                                    name="todo_complete" checked="true" data-toggle="post" type="checkbox" value="1">
+                                                <span class="content" >
+                                                    <a href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
+                                                        class="editable" data-type="textarea" name="description">
+                                                        {{ todoItem.description }}
+                                                    </a>
+                                                </span>
+                                                <form action="/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
+                                                    data-remote="true" id="edit_todo_41824572" method="post" data-type="html">
+                                                    <span style="position:relative">
+                                                        <span class="pill has_balloon blank showing exclusively_expanded expanded"
+                                                            data-toggle="popover" data-content="#tpl-todo-popover"
+                                                            data-hovercontent-strategy="visibility">
+                                                            <a class="popover-btn" data-toggle="popover" 
+                                                                data-remote="true" href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
+                                                                data-content="#tpl-todo-popover">
+                                                                <input type="hidden" data-toggle="remote" name="workerId" value="{{todoItem.worker.id}}">
+                                                                <input type="hidden" data-toggle="remote" name="deadLine" 
+                                                                        value="{{todoItem.deadline.strftime("%Y-%m-%d %H:%M:%S")}}">
+                                                                <span name="worker.name" class="echo"> 
+                                                                    {{todoItem.worker.name}}
+                                                                </span>
+                                                                <span class="separator"> · </span>
+                                                                <time name="deadlineDate" class="echo">
+                                                                    {{todoItem.deadline.strftime("%Y-%m-%d")}}
+                                                                </time>
+                                                            </a>
+                                                        </span>
+                                                    </span>
+                                                </form>
+                                            </span>
+                                        </div>
+                                    </li>
+                                    {% end %}
+                                </ul>
+                            </article>
+                        </li>
+                        {% end %}
+                    </ul>
+                </section>
+                <section class="attachments">
+                    <header class="has_buttons">
+                        <h1>
+                            <a href="/project/{{project.id}}/files">文件</a>
+                        </h1>
+                        <a class="action_button button btn" data-toggle="button-display" href="javascript:;" 
+                            data-content="#file_upload_article">上传文件</a>
+                    </header>
+                    <section id="file_upload_article" style="display:none">
+                        <form method="post" action="/project/{{project.id}}/files" id="fileupload_form">
+                            <div data-behavior="pending_attachments file_drop_target" data-sortable="true" class="attachments">
+                                <span class="prompt_graphic"></span>
+                                <div class="file_input_button">
+                                    <span data-with-features="files_api">
+                                        上传文件
+                                    </span>
+                                    <span class="file_input_container">
+                                        <input name="attachment" type="file" multiple="" id="messageAttachment" tabindex="-1">
+                                        <a class="decorated" data-behavior="local_file_picker" href="#" tabindex="-1">
+                                            选择要上传的文件
+                                        </a>
+                                    </span>
+                                </div>
+                                <ul class="pending_attachments ui-sortable" id="attachments_container">
+                                </ul>
+                            </div>
+                            <p class="submit">
+                                <button name="commit" data-toggle="submit">上传</button> or
+                                <a class="cancel btn" data-toggle="button-display" data-content="#file_upload_article" href="javascript:;">取消</a>
+                            </p>
+                        </form>
+                    </section>
+                    <section class="attachments grouped_by_date" id="file_container">
+                        {% for file in files %}
+                        <article class="attachment">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="icon">
+                                            <figure class="thumbnail proportinal">
+                                                <a href="/attachment/{{file.url}}" target="_blank">
+                                                    {% if file.fileType == "0" %}
+                                                    <img alt="" class="thumbnail " src="/attachment/{{file.url}}" 
+                                                        data-type="image" data-content="{{file.url}}" data-width="{{file.width}}"
+                                                        data-append="#attachments_container" data-height="{{file.height}}">
+                                                    {% else %}
+                                                    <img alt="" class="" 
+                                                    src="/static/images/filetype/{{file.icon}}.png" >
+                                                    {% end %}
+                                                </a>
+                                            </figure>
+                                        </td>
+                                        <td class="text">
+                                            <h3 class="filename">
+                                                {{file.name}}
+                                            </h3>
+                                            <div class="authorship">
+                                                <p class="meta">
+                                                    <span class="creator">由 {{file.own.name}} 在</span>
+                                                    <time class="timeago" data-time="{{file.createTime}}"></time>
+                                                    <span>上传</span>
+                                                </p>
+                                                <p class="actions">
+                                                <a data-stacker="false" 
+                                                    href="/attachment/{{file.url}}{% if file.fileType == "0" %}origin{% end %}" 
+                                                    target="_blank">下载</a>
+                                                    {% if file.message %}
+                                                    <span>或者</span>
+                                                    <a href="/project/{{file.project_id}}/message/{{file.message.id}}">跳转到该讨论</a>
+                                                    {% end %}
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        {% end %}
+                    </section>
+                    {% if project.fileNum > 5 %}
+                    <p class="more_topics">
+                        <a class="decorated" href="/project/{{project.id}}/files">{{project.fileNum - 5}} more files</a>
+                    </p>
+                    {% end %}
+                </section>
+            </div>
+        </div>
+    </div>
+
+<div class="popover direction-right-top" style="display: none" id="tpl-todo-popover">
+    <div class="popover-content">
+        <div class="assign-due-popover">
+        	<div class="select-assignee">
+        		<h3>将任务指派给</h3>
+        		<select tabindex="62" name="workerId" class="todo-assignee" >
+                    {% for member in project.users %}
+                    <option value="{{member.id}}">{{member.name}}</option>
+                    {% end %}
+        	  </select>
+        	</div>
+        	<div class="select-due-date">
+        		<h3>任务截止时间</h3>
+        		<div class="datepicker" id="todo-popover-datapicker">
+        			<input type="hidden" class="todo-due-date" />
+        		</div>
+        		<div class="no-due-date">
+        			<a href="javascript:;">没有截止时间</a>
+        		</div>
+        	</div>
+        </div>
+    </div>
+    <div class="popover-arrow"></div>
+</div>
+{% end %}
+
+{% block script %}
+$(function(){
+    function dateSelectCallback(date, that) {
+        function processResponse(data) {
+            var date = data.deadline
+            var workerName = data.worker.name
+            that.$element.find('[name=deadlineDate]').text(date.substring(0, 10));
+            that.$element.find('[name="worker.name"]').text(workerName);
+            $.lily.hideWait(that.$element)
+        }
+        var workerId = that.$content.find("select").val()
+        var workerName = that.$content.find("select").find("option:selected").text()
+        that.$element.find('input[name=deadLine]').val($.lily.format.formatDate(date, 'yyyy-mm-dd 23:59:59'));
+        that.$element.find('input[name=workerId]').val(workerId);
+    	if(that.$element.attr("data-remote") == "true") {
+    		that.hide()
+    		var url = that.$element.attr("href");
+    		var requestData = $.lily.collectRequestData(that.$element);
+    		requestData[that.$element.attr("data-date-name")] = $.lily.format.formatDate(date, 'yyyy-mm-dd 23:59:59')
+    		$.lily.showWait(that.$element);
+    		$.lily.ajax({url: url,
+    			dataType: 'json',
+    			data: requestData,
+    	        type: 'POST',
+    	        processResponse: processResponse
+    	    })
+    	}
+    	else {
+        	that.$element.find('[name=deadlineDate]').text($.lily.format.formatDate(date));
+        	that.$element.find('[name=workerName]').text(workerName);
+        	that.hide();
+    	}
+    }
+    $('#tpl-todo-popover').data("callback", dateSelectCallback)
+    function doReponseTodoList(responseData) {
+        var contentStr = '<li data-sortable-type="todolist" id="sortable_todolist">'
+            + '<article class="todolist">'
+            + '<header class="collapsed_content" >'
+            + '<div class="nubbin" style="left: -62px; display: none;">'
+            + '<div class="spacer"></div>'
+            + '<a class="image delete" data-confirm="您确定要删除这个任务列表吗" data-method="post" data-remote="true" href="/project/1/todolist//trash" rel="nofollow">Delete</a>'
+            + '<a class="edit" href="#">Edit</a>'
+            + '</div>'
+            + '<h3 >'
+            + '<a class="linked_title" href="/project/' + responseData.projectId + '/todolist/">'
+            + responseData.title
+            + '</a>'
+            + '</h3>'
+            + '</header>'
+            + '<ul class="todos">'
+            + '</ul>'
+            + '<ul class="new expanded">'
+            + '<li class="collapsed_content">'
+            + '<a class="decorated btn" data-toggle="button-display" style="display:none" id="trigger_todoList_' + responseData.id
+            + '" data-content="#new_todoitem_' + responseData.id + '" data-hidden="#trigger_todoList_' + responseData.id + '" href="javascript:;">'
+            + '添加任务'
+            + '</a>'
+            + '</li>'
+            + '<li class="expanded_content edit_mode">'
+            + '<form action="/project/' + responseData.project_id + '/todolist/' + responseData.id + '/todoitem" class="new_todo" '
+            + 'data-remote="true" id="new_todoitem_' + responseData.id + '" method="post">'
+            + '<textarea id="todo_content" name="description" placeholder="添加一个新任务" '
+            + 'rows="1" data-toggle="remote" data-autoresize="true" style="resize: none; overflow: hidden; min-height: 18px;"></textarea>'
+            + '<span style="position:relative">'
+            + '<span class="pill has_balloon blank ignore_hover">'
+            + '<a class="popover-btn" href="javascript:;" data-toggle="popover" data-content="#tpl-todo-popover">'
+            + '<input type="hidden" data-toggle="remote" name="deadLine">'
+            + '<input type="hidden" data-toggle="remote" name="workerId">'
+            + '<span name="workerName">'
+            + '未分配'
+            + '</span>'
+            + '<span class="separator"> · </span>'
+            + '<time name="deadlineDate">'
+            + '无截止日期'
+            + '</time>'
+            + '</a>'
+            + '</span>'
+            + '</span>'
+            + '<p class="submit">'
+            + '<button name="commit" data-toggle="submit">添加任务</button>'
+            + '<a class="cancel btn" data-role="cancel" href="javascript:;" data-toggle="button-display" '
+            + 'data-content="#new_todoitem_' + responseData.id  + '" data-hidden="#trigger_todoList_' + responseData.id + '" >'
+            + '取消'
+            + '</a>'
+            + '</p>'
+            + '</form>'
+            + '</li>'
+            + '</ul>'
+            + '</article>'
+            + '</li>'
+
+        var $todoList = $(contentStr)
+        $('#new_todoList_article').toggle()
+        $todoList.prependTo('#todolists_container')
+
+        $("form", $todoList).data('doResponse', doReponseTodoItem)
+    }
+
+    function doReponseTodoItem(responseData, $element) {
+        var $target = $element.closest('article').find('.todos') 
+        var contentStr = '<li class="todo show editable_container" data-behavior="has_hover_content" href="/project/' 
+            + responseData.project_id 
+            + '/todolist/' + responseData.todolist_id + '/todoitem/' + responseData.id + '">'
+            + '<div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">'
+            + '<div class="spacer"></div>'
+            + '<a class="image delete" data-confirm="Are you sure you want to delete this to-do?" data-toggle="post" data-toggle="post"' 
+            + ' href="/project/' + responseData.project_id 
+            + '/todolist/' + responseData.todolist_id + '/todoitem/' + responseData.id + '/trash" rel="nofollow">Delete</a>'
+            + '<a class="edit" data-remote="true" data-url="/project/' + responseData.project_id  + '/todolist/' 
+            + responseData.todolist_id + '/todoitem/' 
+            + responseData.id + '/edit" href="#" data-toggle="editorTrigger">Edit</a>'
+            + '</div>'
+            + '<div>'
+            + '<span class="wrapper">'
+            + '<input href="/project/' + responseData.project_id  + '/todolist/' + responseData.todolist_id + '/todoitem/' 
+            + responseData.id + '/done" data-toggle="post" name="todo_complete" type="checkbox" value="1">'
+            + '<span class="content">'
+            + '<a href="/project/' + responseData.project_id + '/todolist/' + responseData.todolist_id + '/todoitem/' 
+            + responseData.id + '" class="editable" data-type="textarea" name="description">'
+            + responseData.description
+            + '</a></span>'
+            + '<form action="/project/' + responseData.project_id  + '/todolist/' + responseData.todolist_id + '/todoitem/' 
+            + responseData.id + '" class="edit_todo editable" data-remote="true" id="edit_todo_41824572" method="post" data-type="html">'
+            + '<span style="position:relative">'
+            + '<span class="pill has_balloon blank showing exclusively_expanded expanded" data-toggle="popover" '
+            + 'data-content="#tpl-todo-popover" data-hovercontent-strategy="visibility">'
+            + '<a class="popover-btn" data-toggle="popover" data-remote="true" data-content="#tpl-todo-popover" href="/project/' 
+            + responseData.project_id + '/todolist/' + responseData.todolist_id + '/todoitem/' + responseData.id + '">'
+            + '<span name="worker.name" class="echo">'
+
+        if(responseData.worker) {
+            contentStr += responseData.worker.name
+            contentStr += '</span><span class="separator"> · </span>'
+            contentStr += '<input type="hidden" data-toggle="remote" name="workerId" value="' + responseData.worker.id + '">'
+        }
+        else {
+            contentStr += '未分配'
+            contentStr += '</span><span class="separator"> · </span>'
+            contentStr += '<input type="hidden" data-toggle="remote" name="workerId" >'
+        }
+
+
+                    	
+        contentStr += '<time name="deadlineDate">'
+        if(responseData.deadline){
+            contentStr += responseData.deadline.substring(0, 10)
+            contentStr += '</time>'
+            contentStr += '<input type="hidden" data-toggle="remote" name="deadLine" value="' + responseData.deadline + '">'
+        }
+        else {
+            contentStr += '无截止日期'
+            contentStr += '</time>'
+            contentStr += '<input type="hidden" data-toggle="remote" name="deadLine" value="">'
+        }
+        contentStr += '</a>'
+            + '</span>'
+            + '</span></form>'
+            + '</span>'
+            + '</div>'
+            + '</li>'
+        var $todoItem = $(contentStr)
+        $todoItem.appendTo($target)
+        $element[0].reset()
+    }
+
+    
+    $("#new_todolist").data('doResponse', doReponseTodoList)
+
+    $(".new_todo").data('doResponse', doReponseTodoItem)
+    $('time.timeago').timeago()
+    function fileupload(event) {
+	    var $this = $(event.target)
+        var file = $this.get(0).files[0]
+        var $attachmentsContainer = $('#attachments_container')
+
+        var isImage = file.type.indexOf("image") > -1
+        var fileObj = '<li class="image uploading selected" data-toggle="select" name="attachment">'
+            + '<a class="remove" data-toggle="remove" href="javascript:;"><span>Remove</span></a>'
+
+        if(!isImage) {
+            fileObj += '<div class="icon"><img src="/static/images/filetype/file.png" class="file_icon" width="32" height="32"></div>' 
+        }
+        fileObj += '<span class="name">' + file.name + '</span></li>'
+
+        var $fileObj = $(fileObj)
+
+        var $progressBar = $('<div class="progress"></div>')
+        var $progress = $('<div>')
+        $progressBar.append($progress) 
+
+        $fileObj.append($progressBar)
+
+        var $image = $('<img class="thumbnail">')
+        if(isImage)
+            $fileObj.prepend($image)
+
+        function fileUploadCallback(data) {
+			if(data.returnCode != '0' && data.returnCode != '000000') {
+                alert(data.errorMessage);
+                $fileObj.remove()
+                return;
+			}
+            $fileObj.attr("data-content", data.url)
+            $progress.css("width", '100%')
+            $fileObj.removeClass("uploading")
+        }
+        function progress(e) {
+            var pc = parseInt((e.loaded / e.total * 100));
+            $progress.css("width", pc + '%')
+        }
+
+
+        $attachmentsContainer.append($fileObj)
+        $.lily.uploadFile({
+            url: '/attachment',
+            file: file,
+            progress: progress,
+            callback: fileUploadCallback,
+            thumbnail: $image,
+            isImage: isImage
+        }) 
+    }
+    $("#messageAttachment").bind("change", fileupload)
+
+
+    function doResponseFileUpload(responseData) {
+        var $fileContainer = $('#file_container')
+        for(var i in responseData.files) {
+            var data = responseData.files[i]
+            console.log(data)
+            var imageStr
+            if(data.fileType == '0')
+                imageStr = '<img alt="" class="thumbnail editable" src="/attachment/' + data.url + '" data-type="image" data-content="' 
+                    + data.url + '" data-width="' + data.width + '" data-append="#attachments_container" data-height="' + data.height + '">'
+            else
+                imageStr = '<img alt="" class="" src="/static/images/filetype/' + data.icon + '.png">'
+            var $fileObj = $('<article class="attachment">'
+                + '<table><tbody><tr><td class="icon"><figure class="thumbnail proportinal">'
+                + '<a href="/attachment/' + data.url + '" target="_blank">'
+                + imageStr 
+                + '</a></figure></td><td class="text"><h3 class="filename">' + data.name
+                + '</h3><div class="authorship"><p class="meta"><span class="creator">由 ' + data.own.name + ' 在</span>'
+                + '<time class="timeago" data-time="' + data.createTime + '"></time><span>上传</span>'
+                + '</p><p class="actions"><a data-stacker="false" href="/attachment/' + data.url + 'target=" _blank"="">下载</a>'
+                + '</p></div></td></tr></tbody></table></article>')
+            $fileContainer.prepend($fileObj)
+        }
+        $('#attachments_container').empty()
+        $('#file_upload_article').hide()
+    }
+
+    $('#fileupload_form').data('doResponse', doResponseFileUpload)
+    $('#file_container').imageView()
+})
+
+{% end %}

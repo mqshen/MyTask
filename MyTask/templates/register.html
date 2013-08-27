@@ -1,0 +1,53 @@
+<html lang="zh-CN" class="js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="">
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<title>MyTask</title>
+	<link rel="stylesheet" href="{{ static_url("css/public.css")}}" type="text/css"/>
+	<link rel="stylesheet" href="{{ static_url("css/logon.css")}}" type="text/css"/>
+</head>
+<body>
+<div id="header">
+    <div class="logo">
+        <a href="/about">MyTask</a>
+    </div>
+    <ul class="nav">
+        <li class="register">
+            <a href="/login">登录</a>
+        </li>
+    </ul>
+</div>
+<div id="logon">
+    <div class="auth-form" id="login">
+        <form accept-charset="UTF-8" action="/register" method="post">
+			{% module xsrf_form_html() %}
+            <div class="auth-form-header">
+                <h1>注册</h1>
+            </div>
+            <div class="auth-form-body">
+                <label for="login_field">
+                    用户名
+                </label>
+                <input autofocus="autofocus" class="input-block" id="login_field" name="name" tabindex="1" type="text">
+                <label for="login_field">
+                    团队名称
+                </label>
+                <input class="input-block" id="login_field" name="teamTitle" tabindex="2" type="text">
+                <label for="login_field">
+                  Email
+                </label>
+                <input class="input-block" id="login_field" name="email" tabindex="3" type="email">
+                <label for="password">
+                    密码
+                </label>
+                <input autocomplete="disabled" class="input-block" id="password" name="password" tabindex="4" type="password">
+                <input class="button" name="commit" tabindex="3" type="submit" value="注册">
+          </div>
+        </form>
+    </div>
+</div>
+<script src="{{ static_url("scripts/lib/jquery.js")}}" type="text/javascript"></script>
+</body>
+</html>

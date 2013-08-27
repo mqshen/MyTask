@@ -1,0 +1,105 @@
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+
+{% block body%}
+    <div class="container stack_container" style="width: 960px;">
+        <div class="panel sheet project active">
+            <header>
+                <h1><a data-restore-position="" href="/project/{{project.id}}">{{project.title}}</a></h1>
+            </header>
+            <div class="panel sheet accesses" style="margin-left: 20px; margin-bottom: -20px;">
+                <header>
+                    <h1 style="padding-bottom: 10px; border-bottom: 1px solid #e5e5e5">成员管理</h1>
+                    <p style="color: black; font-size: 15px">
+                    </p>
+                </header>
+                <div class="sheet_body">
+                    <div class="columns">
+                        <div class="column">
+                            <h3>团队成员</h3>
+                            <section class="invite" id="inviteSection">
+                                {% for people in [people for people in team.members if people not in project.users ]%}
+                                <article class="access btn" data-content="{{people.id}}">
+                                    <div class="wrapper">
+                                        <a data-replace-stack="true" href="/people/{{people.id}}">
+                                            <img class="avatar" height="96" src="/avatar/{{people.avatar}}" title="{{people.name}}" width="96">
+                                        </a>
+                                        <h1>
+                                            <a class="person_name" href="">{{people.name}}</a>
+                                        </h1>
+                                        <div class="email"><a href="mailto:{{people.email}}">{{people.email}}</a></div>
+                                        <div class="controls">
+                                            <div class="intro">
+                                                <a class="decorated remove" data-behavior="start">移除</a>
+                                                <a class="decorated add" data-behavior="start">添加</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                                {% end %}
+                            </section>
+                        </div>
+                        <div class="column">
+                            <h3>项目成员</h3>
+                            <section class="accesses" id="accessesSection">
+                                {% for people in project.users %}
+                                <article class="access btn " data-content="{{people.id}}"> 
+                                    <div class="wrapper">
+                                        <a data-replace-stack="true" href="/people/{{people.id}}">
+                                            <img class="avatar" height="96" src="/avatar/{{people.avatar}}" title="{{people.name}}" width="96">
+                                        </a>
+                                        <h1>
+                                            <a class="person_name" href="">{{people.name}}</a>
+                                        </h1>
+                                        <div class="email"><a href="mailto:{{people.email}}">{{people.email}}</a></div>
+                                        <div class="controls">
+                                            <div class="intro">
+                                                {% if people.id != currentUser.id %}
+                                                <a class="decorated remove" data-behavior="start">移除</a>
+                                                <a class="decorated add" data-behavior="start">添加</a>
+                                                {% end %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                                {% end %}
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popover-arrow"></div>
+</div>
+{% end %}
+
+{% block script %}
+$(function(){
+    var $accessesSection = $("#accessesSection")
+    var $inviteSection = $("#inviteSection")
+    $('a').click(function(e){
+        var $btn = $(e.target) 
+        var $obj = $btn.closest("article")
+        var data = {"userId": $obj.attr("data-content")}
+        var callback
+        if($btn.hasClass("remove")){
+            callback = function() {$obj.prependTo($inviteSection)}
+            $.extend(data, {"operation": "remove"})
+        }
+        else {
+            callback = function() {$obj.prependTo($accessesSection)}
+            $.extend(data, {"operation": "add"})
+        }
+        $.lily.ajax({
+            url : '/project/{{project.id}}/access',
+			data : data,
+			type: 'post',
+			processResponse : callback
+		});
+
+    })
+})
+
+{% end %}

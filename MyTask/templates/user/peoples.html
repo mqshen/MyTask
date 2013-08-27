@@ -1,0 +1,70 @@
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+{% block bodyClass %}topnav_everyone{% end %}
+
+{% block body%}
+<div class="container flat_container" >
+    <div class="panel home_tab people_index groups_blank_slate" >
+        <title>People</title>
+        {% if currentUser.privilege and currentUser.privilege > 1 %}
+        <nav class="people_nav">
+            <span class="position_reference">
+                <a data-bare-workspace="true" data-behavior="bounce" href="/people/new">
+                    <span>邀请用户</span>
+                </a>
+                <div class="blank_slate_arrow"></div>
+            </span>
+        </nav>
+        {% end %}
+        <section class="people cards">
+            {% for i, people in enumerate(team.members) %}
+                {% if i % 4 == 0 %}
+                    <div class="row">
+                {% end %}
+
+                <article class="person">
+                    <div class="avatar">
+                        <a href="/people/{{people.id}}">
+                            <img class="avatar" height="140" src="/avatar/{{people.avatar}}" title="{{people.name}}" width="140">
+                        </a>
+                    </div>
+                    <h3>
+                        <a href="/people/{{people.id}}">{{people.name}}</a>
+                    </h3>
+                </article>
+                {% if i % 4 == 3 or i == len(team.members) - 1 %}
+                    </div>
+                {% end %}
+            {% end %}
+            {% for i, people in enumerate(team.invitedUser) %}
+                {% if i % 4 == 0 %}
+                    <div class="row">
+                {% end %}
+
+                <article class="person">
+                    <div class="avatar">
+                        <a href="javascript:;">
+                            <img class="avatar" height="140" src="/avatar/default" title="{{people.email}}" width="140">
+                        </a>
+                    </div>
+                    <h3>
+                        <a href="javascript:;">{{people.email}}</a>
+                        <span class="role">(已邀请)</span>
+                    </h3>
+                </article>
+                {% if i % 4 == 3 or i == len(team.invitedUser) - 1 %}
+                    </div>
+                {% end %}
+            {% end %}
+        </section>
+    </div>
+    
+</div>
+{% end %}
+
+{% block script %}
+$(function(){
+})
+
+{% end %}

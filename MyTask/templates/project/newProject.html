@@ -1,0 +1,69 @@
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+
+{% block body%}
+    <div class="container flat_container" id="new_project_dialog">
+        <article class="new">
+            <div>
+                <form accept-charset="UTF-8" action="/project" class="new_project" id="new_project" method="post" success="/">
+                    <header>
+                        <h1>创建项目</h1>
+                    </header>
+                    <div class="project">
+                        <section class="details">
+                            <div class="name">
+                                <h1>
+                                    <input type="text" data-toggle="remote" id="project_name" name="name" placeholder="项目名称" rows="1" />
+                                </h1>
+                            </div>
+                            <div class="description">
+                                <p>
+                                    <input type="text" data-toggle="remote" id="project_description" name="description" placeholder="简单描述项目，便于其他人理解（选填）" rows="1" />
+                                </p>
+                            </div>
+                        </section>
+                        <div class="slider accesses" data-behavior="slider">
+                            <section class="invite">
+                                <header>
+                                    <h1>指定项目成员</h1>
+                                </header>
+                                <div class="invitees">
+                                    {% for member in team.members %}
+                                    <article class="person btn"  data-content="{{member.id}}" data-toggle="select" name="member">
+                                        <div class="avatar">
+                                            <img class="avatar" height="40" src="/avatar/{{ member.avatar }}" title="" width="140">
+                                        </div>
+                                        <h3>
+                                            <a href="/member/{{ member.id }}">{{ member.name }}</a>
+                                        </h3>
+                                    </article>
+                                    {% end %}
+                                </div>
+                            </section>
+                        <div class="submit">
+                            <button class="action_button" data-toggle="submit"  data-disable-with="正在创建..."> 创建项目</button> 
+                            <a data-behavior="cancel_new_project" href="/" >取消</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="project_gallery" style="">
+                <header>
+                    <h2>项目例子<br/>名称&amp;描述:</h2>
+                </header>
+                <h3>网站重设计</h3>
+                <p>重新设计主页</p>
+
+                <h3>Email营销</h3>
+                <p>2012计划</p>
+            
+                <h3>品牌重塑</h3>
+                <p>预算: ¥30,000</p>
+            </div>
+            <div class="clear">
+            </div>
+        </article>
+    </div>
+{% end %}
+

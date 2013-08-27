@@ -1,0 +1,6 @@
+__pycache__
+.settings
+fileupload
+MyTask.egg-info
+build
+dist

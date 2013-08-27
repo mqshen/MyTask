@@ -1,0 +1,58 @@
+
+{% from tornado.options import options %}
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>{% block title %}MyTask{% end %}</title>
+	    <link rel="stylesheet" href="{{ static_url("css/public.css")}}" type="text/css"/>
+	    <link rel="stylesheet" href="{{ static_url("css/join.css")}}" type="text/css"/>
+    </head>
+    <body class="identifications rsvp new simple_form identity_validation">
+        <div class="wrapper">
+            <div class="container">
+                <div class="extra_space_for_a_sidebar">
+                    <div class="col">
+                        <div class="banner">
+                            <h1>完善资料</h1>
+                            <form action="/join/{{user.id}}" class="identity_form" method="post">
+                                <div class="pick">
+                                    <div class="validated_field">
+                                        <p class="">
+                                            <input id="name" name="name" placeholder="姓名" size="30" tabindex="1" type="text">
+                                        </p>
+                                        <p class="error"></p>
+                                    </div>
+                                    <div class="validated_field">
+                                        <p class="">
+                                            <input id="email" name="email" placeholder="Email" size="30" tabindex="2" type="text" value="{{user.email}}">
+                                        </p>
+                                        <p class="error"></p>
+                                    </div>
+                                    <div class="validated_field">
+                                        <p class="">
+                                            <input id="password" name="password" placeholder="密码" size="30" tabindex="4" type="password">
+                                        </p>
+                                        <p class="error"></p>
+                                    </div>
+                                    <div class="validated_field">
+                                        <p class="">
+                                            <input id="confirmPassword" name="confirmPassword" placeholder="确认密码" size="30" tabindex="4" type="password">
+                                        </p>
+                                        <p class="error"></p>
+                                    </div>
+                                    <div class="submit">
+                                        <p>
+                                            <input class="submit" value="开始" type="submit">
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <div class="footer">
+            </div>
+        </div>
+<script src="{{ static_url("scripts/lib/jquery.js")}}" type="text/javascript"></script>
+<script src="{{ static_url("scripts/lib/lily.core.js")}}" type="text/javascript"></script>
+</body>
+</html>

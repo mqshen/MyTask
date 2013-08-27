@@ -1,0 +1,202 @@
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+
+{% block body%}
+
+    <div class="container stack_container" style="width: 960px;">
+        <div class="panel sheet project active blank_slate inactive">
+            <header>
+                <h1><a data-restore-position="" href="/project/{{project.id}}">{{project.title}}</a></h1>
+            </header>
+            <div class="panel sheet files" style="margin-left: 20px; margin-bottom: -20px;">
+                <header>
+                    <h1 style="display: none">Post a new message</h1>
+                </header>
+                <div class="sheet_body">
+                    <section class="attachments">
+                        <header class="has_buttons" style="margin-bottom: 10px">
+                            <h1>
+                                <a href="/project/{{project.id}}/files">所有文件</a>
+                            </h1>
+                            <a class="action_button button btn" data-toggle="button-display" href="javascript:;" 
+                                data-content="#file_upload_article">上传文件</a>
+                        </header>
+                        <section id="file_upload_article" style="display:none">
+                            <form method="post" action="/project/{{project.id}}/files" id="fileupload_form">
+                                <div data-behavior="pending_attachments file_drop_target" data-sortable="true" class="attachments">
+                                    <span class="prompt_graphic"></span>
+                                    <div class="file_input_button">
+                                        <span data-with-features="files_api">
+                                            上传文件
+                                        </span>
+                                        <span class="file_input_container">
+                                            <input name="attachment" type="file" multiple="" id="messageAttachment" tabindex="-1">
+                                            <a class="decorated" data-behavior="local_file_picker" href="#" tabindex="-1">
+                                                选择要上传的文件
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <ul class="pending_attachments ui-sortable" id="attachments_container">
+                                    </ul>
+                                </div>
+                                <p class="submit">
+                                    <button name="commit" data-toggle="submit">上传</button> or
+                                    <a class="cancel btn" data-toggle="button-display" data-content="#file_upload_article" href="javascript:;">取消</a>
+                                </p>
+                            </form>
+                        </section>
+                        {% set lastdate = False %}
+                        <section class="attachments grouped_by_date" id="file_container">
+                            {% for file in files %}
+                                {% if lastdate != file.createTime.date() %}
+                                    {% if lastdate %}
+                                        </div>
+                                    {% end %}
+                                    {% set lastdate = file.createTime.date() %}
+                                    <header>
+                                        <div>
+                                            <h2>{{file.createTime.strftime('%m-%d')}}</h2>
+                                        </div>
+                                    </header>
+                                    <div class="date_group" datetime="">
+                                {% end %}
+                                <article class="attachment">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="icon">
+                                                    <figure class="thumbnail proportinal">
+                                                        <a href="/attachment/{{file.url}}" target="_blank">
+                                                            {% if file.fileType == "0" %}
+                                                            <img alt="" class="thumbnail " src="/attachment/{{file.url}}" 
+                                                                data-type="image" data-content="{{file.url}}" data-width="{{file.width}}"
+                                                                data-append="#attachments_container" data-height="{{file.height}}">
+                                                            {% else %}
+                                                            <img alt="" class="" src="/static/images/filetype/{{file.icon}}.png" >
+                                                            {% end %}
+                                                        </a>
+                                                    </figure>
+                                                </td>
+                                                <td class="text">
+                                                    <h3 class="filename">
+                                                        {{file.name}}
+                                                    </h3>
+                                                    <div class="authorship">
+                                                        <p class="meta">
+                                                            <span class="creator">由 {{file.own.name}} 在</span>
+                                                            <time class="timeago" data-time="{{file.createTime}}"></time>
+                                                            <span>上传</span>
+                                                        </p>
+                                                        <p class="actions">
+                                                            <a data-stacker="false" href="/attachment/{{file.url}}origin" target="_blank">下载</a>
+                                                            {% if file.message %}
+                                                            <span>或者</span>
+                                                            <a href="/project/{{file.project_id}}/message/{{file.message.id}}">跳转到该讨论</a>
+                                                            {% end %}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </article>
+                            {% end %}
+                            </div>
+                        </section>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% end %}
+
+{% block script %}
+$(function(){
+    function fileupload(event) {
+	    var $this = $(event.target)
+        var file = $this.get(0).files[0]
+        var $attachmentsContainer = $('#attachments_container')
+
+        var isImage = file.type.indexOf("image") > -1
+        var fileObj = '<li class="image uploading selected" data-toggle="select" name="attachment">'
+            + '<a class="remove" data-toggle="remove" href="javascript:;"><span>Remove</span></a>'
+
+        if(!isImage) {
+            fileObj += '<div class="icon"><img src="/static/images/document.png" class="file_icon" width="32" height="32"></div>' 
+        }
+        fileObj += '<span class="name">' + file.name + '</span></li>'
+
+        var $fileObj = $(fileObj)
+
+        var $progressBar = $('<div class="progress"></div>')
+        var $progress = $('<div>')
+        $progressBar.append($progress) 
+
+        $fileObj.append($progressBar)
+
+        var $image = $('<img class="thumbnail">')
+        if(isImage)
+            $fileObj.prepend($image)
+
+        function fileUploadCallback(data) {
+			if(data.returnCode != '0' && data.returnCode != '000000') {
+                alert(data.errorMessage);
+                $fileObj.remove()
+                return;
+			}
+            $fileObj.attr("data-content", data.url)
+            $progress.css("width", '100%')
+            $fileObj.removeClass("uploading")
+        }
+        function progress(e) {
+            var pc = parseInt((e.loaded / e.total * 100));
+            $progress.css("width", pc + '%')
+        }
+
+
+        $attachmentsContainer.append($fileObj)
+        $.lily.uploadFile({
+            url: '/attachment',
+            file: file,
+            progress: progress,
+            callback: fileUploadCallback,
+            thumbnail: $image,
+            isImage: isImage
+        }) 
+    }
+    $("#messageAttachment").bind("change", fileupload)
+
+
+    function doResponseFileUpload(responseData) {
+        var $fileContainer = $('#file_container')
+        for(var i in responseData.files) {
+            var data = responseData.files[i]
+            console.log(data)
+            var imageUrl = '/static/images/document.png'
+            var imageStr
+            if(data.fileType == '0')
+                imageStr = '<img alt="" class="thumbnail editable" src="' + imageUrl + '" data-type="image" data-content="' 
+                    + data.url + '" data-width="' + data.width + '" data-append="#attachments_container" data-height="' + data.height + '">'
+            else
+                imageStr = '<img alt="" class="" src="/static/images/filetype/' + data.icon + '.png">'
+            var $fileObj = $('<article class="attachment">'
+                + '<table><tbody><tr><td class="icon"><figure class="thumbnail proportinal">'
+                + '<a href="/attachment/' + data.url + '" target="_blank">'
+                + imageStr 
+                + '</a></figure></td><td class="text"><h3 class="filename">' + data.name
+                + '</h3><div class="authorship"><p class="meta"><span class="creator">由 ' + data.own.name + ' 在</span>'
+                + '<time class="timeago" data-time="' + data.createTime + '"></time><span>上传</span>'
+                + '</p><p class="actions"><a data-stacker="false" href="/attachment/' + data.url + 'target=" _blank"="">下载</a>'
+                + '</p></div></td></tr></tbody></table></article>')
+            $fileContainer.prepend($fileObj)
+        }
+        $('#attachments_container').empty()
+        $('#file_upload_article').hide()
+    }
+
+    $('#fileupload_form').data('doResponse', doResponseFileUpload)
+    $('#file_container').imageView()
+})
+{% end %}

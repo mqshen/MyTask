@@ -1,0 +1,148 @@
+{% extends "../identityBase.html" %}
+
+{% block title %}MyTask{% end %}
+
+{% block body%}
+    <div id="container" class="clearfix">
+        <div id="main">
+            <div class="panel">
+                <div class="page_header">
+                    <h2>资料修改</h2>
+                </div>
+                <form action="/settings">
+                    <table>
+                        <tbody>
+                            <tr class="avatar">
+                                <th>
+                                    <img id="avatarThumbnail" alt="Avatar" src="/avatar/{{currentUser.avatar}}">
+                                </th>
+                                <td>
+                                    <div class="change_avatar">
+                                        <p><label>上传头像</label></p>
+                                        <p><input id="avatar" name="avatar" type="file"></p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label for="signal_id_identity_first_name">姓名</label>
+                                </th>
+                                <td>
+                                    <div class="validated_field">
+                                        <p class="field">
+                                        <input id="name" data-toggle="remote" name="name" size="30" tabindex="1" type="text" value="{{currentUser.name}}">
+                                        </p>
+                                        <p class="error"></p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label for="signal_id_identity_last_name">昵称</label>
+                                </th>
+                                <td>
+                                    <div class="validated_field">
+                                        <p class="field">
+                                            <input id="nickName" data-toggle="remote" name="nickName" size="30" tabindex="2" 
+                                                type="text" value="{{currentUser.nickName}}">
+                                        </p>
+                                        <p class="error"></p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label for="signal_id_identity_email_address">Email</label>
+                                </th>
+                                <td>
+                                    <div class="validated_field">
+                                        <p class="field">
+                                        <input id="" name="email" data-toggle="remote" size="30" tabindex="3" type="email" value="{{currentUser.email}}">
+                                        </p>
+                                        <p class="error"></p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label for="signal_id_identity_email_address">密码</label>
+                                </th>
+                                <td>
+                                    <div class="validated_field">
+                                        <p class="field">
+                                            <input id="" name="password" data-toggle="remote" size="30" tabindex="3" type="password" value="">
+                                        </p>
+                                        <p class="error"></p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label for="signal_id_identity_email_address">确认密码</label>
+                                </th>
+                                <td>
+                                    <div class="validated_field">
+                                        <p class="field">
+                                            <input id="" name="confirmPassword" data-toggle="remote" size="30" tabindex="3" type="password" value="">
+                                        </p>
+                                        <p class="error"></p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="submit">
+                        <button class="action_button" data-toggle="submit"> 创建项目</button>
+                        <a data-behavior="cancel_new_project" href="/">取消</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="sidebar">
+            <div id="affected_accounts">
+                <p>账户信息对您的所有团队生效:</p>
+                <dl>
+                    <dt>
+                        <img alt="Bcx_logo" src="{{ static_url("images/logo.png")}}"">
+                        <strong>MyTask</strong>
+                    </dt>
+                    {% for team in currentUser.teams %}
+                    <dd>{{team.title}}</dd>
+                    {% end %}
+                </dl>
+            </div>
+
+    </div>
+    </div>
+{% end %}
+
+{% block script %}
+    $(function(){
+        function fileupload(event) {
+
+		    var $this = $(event.target)
+
+            var file = $this.get(0).files[0]
+
+            var $image = $('#avatarThumbnail')
+
+            function fileUploadCallback(data) {
+            }
+            function progress(e) {
+                var pc = parseInt(100 - (e.loaded / e.total * 100));
+                $progress.css("width", pc + '%')
+            }
+
+            $.lily.uploadFile({
+                url: '/avatar',
+                file: file,
+                callback: fileUploadCallback,
+                thumbnail: $image
+            }) 
+        }
+        $("#avatar").bind("change", fileupload)
+    })
+{% end %}

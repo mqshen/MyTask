@@ -1,0 +1,61 @@
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+
+{% block bodyClass %}topnav_root{% end %}
+
+{% block body%}
+    <div class="container flat_container">
+        <div class="panel home_tab project_index">
+            {% if currentUser.privilege and currentUser.privilege > 0 %}
+            <nav class="projects_nav ">
+                <a data-behavior="new_project bounce" href="/project/new">
+                    <span>新建项目</span>
+                </a>
+            </nav>
+            {% end %}
+            <div id="all_projects">
+                <section class="projects cards">
+                    {% for i, project in enumerate(projects) %}
+                        {% if i % 3 == 0 %}
+                            <div class="row">
+                        {% end %}
+                        <article class="card">
+                        <span class="star" data-project-id="{{project.id}}" title="标记项目"></span>
+                            <a class="project_card" href="/project/{{project.id}}" title="{{project.title}}">
+                                <h5>{{project.title}}</h5>
+                                <p style="margin-bottom: 5px;">{{project.description}}</p>
+                                {% for operation in project.recentlyOperation %}
+                                <p style="font-size: 12px;">
+                                    <span class="creator">
+                                        {{operation.operation_type_name}}
+                                        {{operation.target_type_name}}
+                                    </span>
+                                    <span>
+                                        {{operation.title}}                                
+                                    </span>                               
+                                    <time class="timeago" data-time="{{operation.createTime}}" style=""></time>
+                                </p>
+                                {% end %}
+                                <div class="people">
+                                    {% for people in project.users %}
+                                    <img class="avatar" height="40" src="/avatar/{{people.avatar}}" title="{{people.name}}" width="40">
+                                    {% end %}
+                                </div>
+                            </a>
+                        </article>
+                        {% if i % 3 == 2 or i == len(projects) - 1 %}
+                            </div>
+                        {% end %}
+                    {% end %}
+                <section>
+            </div>
+        </div>
+    </div>
+{% end %}
+
+{% block script %}
+$(function(){
+ $('.timeago').timeago()
+})
+{% end %}
