@@ -26,7 +26,6 @@
 			}
             this.$editor.css({
                 'margin': '5px 0px',
-                'background-color': '#fafafa',
                 'color': 'rgb(0, 0, 0)',
                 'cursor': 'auto',
                 'font-family': '"ProximaNova","Helvetica Neue",helvetica,arial,sans-serif',

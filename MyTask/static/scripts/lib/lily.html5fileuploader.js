@@ -1,55 +1,133 @@
 /**
  * jQuery file uploader - v1.0
  * auth: shenmq
- * E-mail: shenmq@yuchengtech.com
+ * E-mail: shenmq@126.com
  * website: shenmq.github.com
  * 
  */  
 
+!function(){
+    "use strict"
 
-(function( $, undefined ) {
-
-$.extend( $.lily, {
-    uploadFile: function(options) {
-        var xhr = new XMLHttpRequest();
-		if (xhr.upload ) {
-            var file = options.file
-
-            if(options.thumbnail && options.isImage) {
-                var imageReader = new FileReader();
-                imageReader.onload = (function(aFile) {
-                    return function(e) {
-                        options.thumbnail.attr("src", e.target.result)
-
-                    };
-                })(file);
-                imageReader.readAsDataURL(file);
-            }
-
-            var dataType = 'json' 
-            if(options.dataType)
-                dataType = options.dataType
-			// progress bar
-            if(options.progress)
-			    xhr.upload.addEventListener("progress", options.progress, false);
-
-			// file received/failed
-			xhr.onreadystatechange = function(e) {
-				if (xhr.readyState == 4) {
-                    if(xhr.status == 200)
-                        var responseText = xhr.responseText
-                        if(dataType === 'json')
-                            responseText = $.parseJSON(responseText)
-                        options.callback(responseText)
-				}
-			};
-
-			// start upload
-			xhr.open("POST", options.url, true);
-            xhr.setRequestHeader("Content-type", file.type)
-			xhr.setRequestHeader("X_FILENAME", encodeURIComponent(file.name));
-			xhr.send(file);
-		}
+    var FileUploader = function(element, options) {
+        this.$element = $(element)
+        this.options = $.extend({}, $.fn.fileuploader.defaults, options)
+        this.init()
     }
-})
-})( jQuery ); 
+
+
+    FileUploader .prototype = {
+        constructor: FileUploader,
+
+        init: function() {
+            var self = this
+            this.$target = $('[type=file]', this.$element)
+            this.$target.change(function(e) {
+                self.fileupload(e)
+            })
+        },
+
+        progress: function(e) {
+            var pc = parseInt((e.loaded / e.total * 100));
+            this.$progress.css("width", pc + '%')
+        },
+
+        fileUploadCallback: function (data) {
+			if(data.returnCode != '0' && data.returnCode != '000000') {
+                alert(data.errorMessage);
+                $fileObj.remove()
+                return;
+			}
+            this.$fileObj.attr("data-content", data.url)
+            this.$progress.css("width", '100%')
+            this.$fileObj.removeClass("uploading")
+        },
+
+        fileupload: function(event) {
+            this.file = this.$target.get(0).files[0]
+            var $attachmentsContainer = $('#attachments_container', this.$element)
+
+            this.isImage = this.file.type.indexOf("image") > -1
+            var fileObj = '<li class="image uploading selected" data-toggle="select" name="attachment">'
+                + '<a class="remove" data-toggle="remove" href="javascript:;"><span>Remove</span></a>'
+
+            if(!this.isImage) {
+                fileObj += '<div class="icon"><img src="/static/images/filetype/file.png" class="file_icon" width="32" height="32"></div>' 
+            }
+            fileObj += '<span class="name">' + this.file.name + '</span></li>'
+
+            this.$fileObj = $(fileObj)
+
+            var $progressBar = $('<div class="progress"></div>')
+            this.$progress = $('<div>')
+            $progressBar.append(this.$progress) 
+
+            this.$fileObj.append($progressBar)
+
+            this.$image = $('<img class="thumbnail">')
+            if(this.isImage)
+                $fileObj.prepend(this.$image)
+
+            $attachmentsContainer.append(this.$fileObj)
+            this.uploadFile() 
+        },
+
+        uploadFile: function() {
+            var self = this
+            var xhr = new XMLHttpRequest();
+	    	if (xhr.upload ) {
+
+                if(this.isImage) {
+                    var imageReader = new FileReader();
+                    imageReader.onload = (function(aFile) {
+                        return function(e) {
+                            this.$image.attr("src", e.target.result)
+                        };
+                    })(this.file);
+                    imageReader.readAsDataURL(this.file);
+                }
+
+                var dataType = 'json' 
+                if(this.options.dataType)
+                    dataType = options.dataType
+	    		// progress bar
+	    		xhr.upload.addEventListener("progress", 
+                    function(e){
+                        self.progress(e)
+                    }, 
+                    false);
+
+	    		// file received/failed
+	    		xhr.onreadystatechange = function(e) {
+	    			if (xhr.readyState == 4) {
+                        if(xhr.status == 200)
+                            var responseText = xhr.responseText
+                            if(dataType === 'json')
+                                responseText = $.parseJSON(responseText)
+                            self.fileUploadCallback(responseText)
+	    			}
+	    		};
+
+	    		// start upload
+	    		xhr.open("POST", this.options.url, true);
+                xhr.setRequestHeader("Content-type", this.file.type)
+	    		xhr.setRequestHeader("X_FILENAME", encodeURIComponent(this.file.name));
+	    		xhr.send(this.file);
+	    	}
+        }
+    }
+
+    $.fn.fileuploader = function (option) {
+        return this.each(function () {
+            var $this = $(this)
+                , data = $this.data('fileuploader')
+                , options = typeof option == 'object' && option
+            if (!data) $this.data('fileuploader', (data = new FileUploader(this, options)))
+        })
+    }
+
+    $.fn.fileuploader.defaults = {
+    }
+
+    $.fn.fileuploader.Constructor = FileUploader 
+}( jQuery ); 

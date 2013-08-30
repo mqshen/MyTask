@@ -81,7 +81,8 @@
                                                 if attachment.fileType != '0'] %}
                                                 <li>
                                                     <a href="/attachment/{{attachment.url}}" target="_blank">
-                                                        <img src="{{static_url("images/document.png")}}" class="editable"
+                                                        <img class="editable file_icon" width="32" height="32"
+                                                            src="/static/images/filetype/{{attachment.icon}}_small.png" 
                                                             data-type="file" data-content="{{attachment.url}}" 
                                                             data-append="#attachments_container" data-content="{{attachment.url}}">
                                                         <span>{{attachment.name}}</span>
@@ -369,7 +370,8 @@
                 else {
                     var $fileObj = $('<li>'
                         + '<a href="/attachment/' + attachment.url + '" target="_blank">'
-                        + '<img src="{{static_url("images/document.png")}}" class="editable" data-type="file" data-content="' 
+                        + '<img src="/static/images/filetype/' + attachment.icon + '_small.png")}}" class="editable file_icon" '
+                        + 'data-type="file" data-content="' 
                         + attachment.url + '" data-append="#attachments_container">'
                         + '<span>' + attachment.name + '</span>'
                         + '</a>'

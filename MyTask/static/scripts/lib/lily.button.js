@@ -106,7 +106,6 @@
         }
         else
             $btn.parent().remove()
-
     })
   
 

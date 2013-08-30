@@ -56,9 +56,11 @@
 				else if(dataType == "file") {
                     var $this = $(this)
                     var result = '<li class="selected" data-toggle="select" name="attachment" data-content="' + $this.attr("data-content")
-                        + '" data-orgin-statues="selected"><a class="remove" data-toggle="remove" data-content="f" href="javascript:;"><span>Remove</span></a>'
+                        + '" data-orgin-statues="selected"><a class="remove" data-toggle="remove" data-content="f" href="javascript:;">'
+                        + '<span>Remove</span></a>'
                         + '<div class="icon"><img src="' + $this.attr("src") + '" class="file_icon" width="32" height="32">'
-                        + '</div><span class="name">' + '2.pdf' + '</span><div class="progress"><div style="width: 100%;"></div></div></li>'
+                        + '</div><span class="name">' + $this.next().text()  
+                        + '</span><div class="progress"><div style="width: 100%;"></div></div></li>'
                     $obj = $(result)
 				}
 				else {
@@ -89,54 +91,9 @@
 				self.toggle()
 			})
 
-            function fileupload(event) {
-		        var $this = $(event.target)
-                var file = $this.get(0).files[0]
-                var $attachmentsContainer = $('#attachments_container', $form)
-
-                var isImage = file.type.indexOf("image") > -1
-                var fileObj = '<li class="image uploading selected" data-toggle="select" name="attachment">'
-                    + '<a class="remove" data-toggle="remove" href="javascript:;"><span>Remove</span></a>'
-
-                if(!isImage) {
-                    fileObj += '<div class="icon"><img src="/static/images/document.png" class="file_icon" width="32" height="32"></div>' 
-                }
-                fileObj += '<span class="name">' + file.name + '</span></li>'
-
-                var $fileObj = $(fileObj)
-
-                var $progressBar = $('<div class="progress"></div>')
-                var $progress = $('<div>')
-                $progressBar.append($progress) 
-
-                $fileObj.append($progressBar)
-
-                var $image = $('<img class="thumbnail">')
-                if(isImage)
-                    $fileObj.prepend($image)
-
-                function fileUploadCallback(data) {
-                    $fileObj.attr("data-content", data.url)
-                    $progress.css("width", '100%')
-                    $fileObj.removeClass("uploading")
-                }
-                function progress(e) {
-                    var pc = parseInt(100 - (e.loaded / e.total * 100));
-                    $progress.css("width", pc + '%')
-                }
-
-
-                $attachmentsContainer.append($fileObj)
-                $.lily.uploadFile({
-                    url: '/attachment',
-                    file: file,
-                    progress: progress,
-                    callback: fileUploadCallback,
-                    thumbnail: $image,
-                    isImage: isImage
-                }) 
-            }
-            $("#messageAttachment", $form).bind("change", fileupload)
+            $(".attachments", $form).fileuploader({
+                url: '/attachment'
+            })
 
 			this.initialized = true
 		},

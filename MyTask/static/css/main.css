@@ -1606,6 +1606,34 @@ margin: -8px 0 0;
 padding-bottom: 15px;
 display: block;
 }
+ul.file_attachments>li, ul.attachments>article {
+zoom: 1;
+clear: left;
+padding-left: 35px;
+margin: -8px 0 0;
+padding-bottom: 15px;
+display: block;
+}
+ul.file_attachments>li:after, ul.attachments>article:after {
+content: ".";
+display: block;
+height: 0;
+clear: both;
+visibility: hidden;
+}
+ul.file_attachments>li>a img.file_icon, ul.attachments>article>a img.file_icon {
+float: left;
+border: none;
+background-color: none;
+text-decoration: none;
+margin: -7px 2px 7px -40px;
+vertical-align: middle;
+}
+ul.file_attachments>li>a>span, ul.attachments>article>a>span {
+float: left;
+margin: 0 3px 0 0;
+font-size: 12px;
+}
 article.todolist.expanded header.expanded_content header {
 padding: 0;
 border: none;
@@ -2375,6 +2403,9 @@ div.edit_mode input {
     width: 885px;
 border: 0px;
 border-bottom: 1px solid #ccc;
+font-size: 28px;
+line-height: 30px;
+font-weight: normal;
 }
 div.edit_mode .editor_toolbar ,
 div.edit_mode .wysihtml5-sandbox{

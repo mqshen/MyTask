@@ -81,7 +81,7 @@
 
                         <div id="project_editor_singleton" class="popover project_editor calendar_display" style="display: none" >
                             <div class="popover-content balloon">
-                                <form method="post" action="/project/{{project.id}}/color" class="calendar_editor_form">
+                                <form method="post" action="" class="calendar_editor_form">
                                     <header>
                                         <fieldset class="calendar_settings">
                                             <p>选择颜色</p>
@@ -391,7 +391,10 @@ var calendarColor = {
     {% end %}
 }
 var $element = $('#myCalendar')
-var currentCalendar = 'Calendar:{{calendars[0].id}}'
+var currentCalendar = ''
+{% if len(calendars) > 0 %}
+currentCalendar = 'Calendar:{{calendars[0].id}}'
+{% end %}
 var $calendar_editor = $('#calendar_editor_singleton');
 function showCalendarEditor(e) {
     var $btn = $(e.target);

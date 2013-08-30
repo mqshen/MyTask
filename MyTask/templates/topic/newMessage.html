@@ -32,7 +32,8 @@
                                     placeholder="Type your message here...">
                                 </textarea>
                             </div>
-                            <div data-behavior="pending_attachments file_drop_target" data-sortable="true" class="attachments">
+                            <div data-behavior="pending_attachments file_drop_target" 
+                                data-sortable="true" class="attachments" id="file_upload_article">
                                 <span class="prompt_graphic"></span>
                                 <div class="file_input_button">
                                     <span data-with-features="files_api">
@@ -67,55 +68,8 @@
     $(function(){
         $("#message_content").editor()
 
-        function fileupload(event) {
-
-		    var $this = $(event.target)
-
-            var file = $this.get(0).files[0]
-
-            var isImage = file.type.indexOf("image") > -1
-            var $attachmentsContainer = $('#attachments_container')
-            var fileObj = '<li class="image uploading selected" data-toggle="select" name="attachment">'
-                + '<a class="remove" data-toggle="remove" href="javascript:;"><span>Remove</span></a>'
-
-            if(!isImage) {
-                fileObj += '<div class="icon"><img src="{{static_url("images/document.png")}}" class="file_icon" width="32" height="32"></div>' 
-            }
-            fileObj += '<span class="name">' + file.name + '</span></li>'
-
-            $fileObj = $(fileObj)
-
-            var $progressBar = $('<div class="progress"></div>')
-            var $progress = $('<div>')
-            $progressBar.append($progress) 
-
-            $fileObj.append($progressBar)
-
-            var $image = $('<img class="thumbnail">')
-            if(isImage)
-                $fileObj.prepend($image)
-
-            function fileUploadCallback(data) {
-                $fileObj.attr("data-content", data.url)
-                $progress.css("width", '100%')
-                $fileObj.removeClass("uploading")
-            }
-            function progress(e) {
-                var pc = parseInt((e.loaded / e.total * 100));
-                $progress.css("width", pc + '%')
-            }
-
-
-            $attachmentsContainer.append($fileObj)
-            $.lily.uploadFile({
-                url: '/attachment',
-                file: file,
-                progress: progress,
-                callback: fileUploadCallback,
-                thumbnail: $image,
-                isImage: isImage
-            }) 
-        }
-        $("#messageAttachment").bind("change", fileupload)
+        $('#file_upload_article').fileuploader({
+            url: '/attachment'
+        })
     })
 {% end %}
