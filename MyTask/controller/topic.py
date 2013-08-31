@@ -36,12 +36,12 @@ class CommentForm(Form):
 class MessageHandler(BaseHandler):
     _error_message = "email or password incorrect!"
     @tornado.web.authenticated
-    def get(self, projectId):
+    def get(self, teamId, projectId):
         project = Project.query.filter_by(id=projectId).first()
-        self.render("topic/messages.html", project= project)
+        self.render("topic/messages.html", project= project, teamId= teamId)
 
     @tornado.web.authenticated
-    def post(self, projectId):
+    def post(self, teamId, projectId):
         form = MessageForm(self.request.arguments, locale_code=self.locale.code)
         if form.validate():
             currentUser = self.current_user
@@ -99,32 +99,31 @@ class MessageHandler(BaseHandler):
             except:
                 pass
 
-            self.writeSuccessResult(message, successUrl='/project/%s/message/%d'%(projectId, message.id))
+            self.writeSuccessResult(message, successUrl='/%d/project/%s/message/%d'%(teamId, projectId, message.id))
 
 
 class NewMessageHandler(BaseHandler):
     @tornado.web.authenticated
-    def get(self, projectId):
+    def get(self, teamId, projectId):
         project = Project.query.filter_by(id=projectId).first()
-        self.render("topic/newMessage.html", project= project)
+        self.render("topic/newMessage.html", project= project, teamId = teamId)
 
 class MessageDetailHandler(BaseHandler):
     @tornado.web.authenticated
     @core.web.authenticatedProject
-    def get(self, projectId, messageId):
+    def get(self, teamId, projectId, messageId):
         project = Project.query.filter_by(id=projectId).first()
         message = Message.query.filter_by(id=messageId).first()
         currentUser = self.current_user
-        self.render("topic/messageDetail.html", project= project, message= message)
+        self.render("topic/messageDetail.html", project= project, message= message, teamId= teamId)
 
     @tornado.web.authenticated
     @core.web.authenticatedProject
-    def post(self, projectId, messageId, **kwargs):
+    def post(self, teamId, projectId, messageId, **kwargs):
         form = MessageForm(self.request.arguments, locale_code=self.locale.code)
         project = Project.query.filter_by(id=projectId).first()
         message = Message.query.filter_by(id=messageId).first()
         currentUser = self.current_user
-        teamId = currentUser.teamId
         now = datetime.now()
         message.title = form.title.data
         message.content = form.content.data
@@ -153,7 +152,7 @@ class MessageDetailHandler(BaseHandler):
 class CommentDetailHandler(BaseHandler):
     @tornado.web.authenticated
     @core.web.authenticatedProject
-    def get(self, projectId, messageId, commentId):
+    def get(self, teamId, projectId, messageId, commentId):
         project = Project.query.filter_by(id=projectId).first()
         message = Message.query.filter_by(id=messageId).first()
         currentUser = self.current_user
@@ -161,7 +160,7 @@ class CommentDetailHandler(BaseHandler):
 
     @tornado.web.authenticated
     @core.web.authenticatedProject
-    def post(self, projectId, messageId, commentId, **kwargs):
+    def post(self, teamId, projectId, messageId, commentId, **kwargs):
         form = MessageForm(self.request.arguments, locale_code=self.locale.code)
         message = Message.query.filter_by(id=messageId).first()
         comment = Comment.query.filter_by(id=commentId).first()
@@ -193,7 +192,7 @@ class CommentDetailHandler(BaseHandler):
 
 class CommentHandler(BaseHandler):
     @tornado.web.authenticated
-    def post(self, projectId, messageId):
+    def post(self, teamId, projectId, messageId):
         form = CommentForm(self.request.arguments, locale_code=self.locale.code)
         if form.validate():
             currentUser = self.current_user

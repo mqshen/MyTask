@@ -6,13 +6,13 @@
     <div class="container stack_container" style="width: 960px;">
         <div class="panel sheet project active blank_slate inactive">
             <header>
-                <h1><a data-restore-position="" href="/project/{{project.id}}">{{project.title}}</a></h1>
+                <h1><a data-restore-position="" href="/{{teamId}}/project/{{project.id}}">{{project.title}}</a></h1>
             </header>
 
             <div class="panel sheet todolists has_sidebar" style="margin-left: 20px;margin-bottom: -20px;">
                 <header class="has_buttons">
                     <h1>
-                        <a href="/project/{{project.id}}/todolist">任务列表</a>
+                        <span >任务列表</span>
                     </h1>
                     <a class="action_button button btn" data-toggle="button-display" href="javascript:;" 
                         data-content="#new_todoList_article">添加任务列表</a>
@@ -21,7 +21,7 @@
                     <section class="todos">
                         <article class="todolist new expanded" id="new_todoList_article" style="display:none">
                             <header class="expanded_content">
-                                <form action="/project/{{project.id}}/todolist" class="new_todolist" id="new_todolist" method="post">
+                                <form action="/{{teamId}}/project/{{project.id}}/todolist" class="new_todolist" id="new_todolist" method="post">
                                     <header class="text_entry">
                                         <h3>
                                             <input id="todolist_name" data-toggle="remote" name="title" size="10" type="text" placeholder="给任务列表起个名字">
@@ -43,13 +43,13 @@
                                         <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
                                             <div class="spacer"></div>
                                             <a class="image delete" data-confirm="Are you sure you want to delete this to-do list?" data-toggle="post"
-                                                data-method="post" data-remote="true" href="/project/{{project.id}}/todolist/{{todolist.id}}/trash" rel="nofollow">
+                                                data-method="post" data-remote="true" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/trash" rel="nofollow">
                                                 Delete
                                             </a>
-                                            <a class="edit" href="#">Edit</a>
+                                            <a class="edit" href="javascript:;">Edit</a>
                                         </div>
                                         <h3 >
-                                            <a class="linked_title" href="/project/{{project.id}}/todolist/{{todolist.id}}">
+                                            <a class="linked_title" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}">
                                                 {{ todolist.title}}
                                             </a>
                                         </h3>
@@ -58,32 +58,32 @@
                                     <ul class="todos">
                                         {% for todoItem in [ todoItem for todoItem in todolist.todoItems if todoItem.done == 0]%}
                                         <li class="todo show editable_container" data-behavior="has_hover_content" 
-                                            href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}">
+                                            href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}">
                                             <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
                                                 <div class="spacer"></div>
                                                 <a class="image delete" data-confirm="Are you sure you want to delete this to-do?" data-toggle="post"
-                                                    data-remote="true" href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/trash" 
+                                                    data-remote="true" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/trash" 
                                                     rel="nofollow">Delete</a>
                                                 <a class="edit" data-remote="true" data-toggle="editorTrigger" href="javascript:;">Edit</a>
                                             </div>
                                             <div>
                                                 <span class="wrapper">
-                                                    <input href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/done"
+                                                    <input href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/done"
                                                         name="todo_complete" data-toggle="post" type="checkbox" value="1">
                                                     <span class="content" >
-                                                        <a href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
+                                                        <a href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
                                                             class="editable" data-type="textarea" name="description">
                                                             {{ todoItem.description }}
                                                         </a>
                                                     </span>
-                                                    <form action="/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
+                                                    <form action="/{{teamId}}/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
                                                         data-remote="true" id="edit_todo_41824572" method="post" data-type="html">
                                                         <span style="position:relative">
                                                             <span class="pill has_balloon blank showing exclusively_expanded expanded{% if todoItem.deadline is not None %} {% if todoItem.deadline.date() < date.today() %} delay {% end %}{% if todoItem.deadline.date() == date.today() %} current {% end %}{% end %}"
                                                                 data-toggle="popover" data-content="#tpl-todo-popover"
                                                                 data-hovercontent-strategy="visibility">
                                                                 <a class="popover-btn data-toggle="popover" 
-                                                                    data-remote="true" href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
+                                                                    data-remote="true" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
                                                                     data-content="#tpl-todo-popover">
                                                                     <span name="worker.name" class="echo"> 
                                                                     {% if todoItem.worker is None %}
@@ -124,7 +124,7 @@
                                             </a>
                                         </li>
                                         <li class="expanded_content edit_mode">
-                                            <form action="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem" class="new_todo" 
+                                            <form action="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem" class="new_todo" 
                                                 data-remote="true" id="new_todoitem_{{todolist.id}}" 
                                                 style="display:none" method="post">
                                                 <textarea id="todo_content" 
@@ -163,28 +163,28 @@
                                             <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
                                                 <div class="spacer"></div>
                                                 <a class="image delete" data-confirm="Are you sure you want to delete this to-do?" data-toggle="post"
-                                                    data-remote="true" href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/trash" 
+                                                    data-remote="true" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/trash" 
                                                     rel="nofollow">Delete</a>
                                                 <a class="edit" data-remote="true" data-toggle="editorTrigger" href="javascript:;">Edit</a>
                                             </div>
                                             <div class="complete">
                                                 <span class="wrapper">
-                                                    <input href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/undone"
+                                                    <input href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/undone"
                                                         name="todo_complete" checked="true" data-toggle="post" type="checkbox" value="1">
                                                     <span class="content" >
-                                                        <a href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
+                                                        <a href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
                                                             class="editable" data-type="textarea" name="description">
                                                             {{ todoItem.description }}
                                                         </a>
                                                     </span>
-                                                    <form action="/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
+                                                    <form action="/{{teamId}}/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
                                                         data-remote="true" id="edit_todo_41824572" method="post" data-type="html">
                                                         <span style="position:relative">
                                                             <span class="pill has_balloon blank showing exclusively_expanded expanded"
                                                                 data-toggle="popover" data-content="#tpl-todo-popover"
                                                                 data-hovercontent-strategy="visibility">
                                                                 <a class="popover-btn" data-toggle="popover" 
-                                                                    data-remote="true" href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
+                                                                    data-remote="true" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
                                                                     data-content="#tpl-todo-popover">
                                                                     <span name="worker.name" class="echo"> 
                                                                         {{todoItem.worker.name}}

@@ -84,7 +84,7 @@ class LoginHandler(BaseHandler):
             self.set_secure_cookie("sid", self.session.sessionid)
             if len(currentUser.teams) == 1:
                 self.session["user"] = UserObj(currentUser, currentUser.teams[0].id)
-                self.redirect("/")
+                self.redirect("/%d"%currentUser.teams[0].id)
             else:
                 self.session["user"] = UserObj(currentUser)
                 self.session._save()
@@ -130,7 +130,7 @@ class TeamHandler(BaseHandler):
         currentUser = self.current_user
         currentUser.teamId = int(teamId)
         self.session["user"] = currentUser
-        self.redirect("/")
+        self.redirect("/%s"%teamId)
 
 class TeamNewHandler(BaseHandler):
     @tornado.web.authenticated

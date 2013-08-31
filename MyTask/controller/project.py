@@ -38,16 +38,14 @@ class ProjectHandler(BaseHandler):
     _error_message = "项目已存在"
 
     @tornado.web.authenticated
-    def get(self):
+    def get(self, teamId):
         currentUser = self.current_user
-        teamId = currentUser.teamId 
         projects = Project.query.join(Project.users).filter(User.id==currentUser.id, Project.team_id==teamId).all()
-        self.render("project/project.html", projects= projects)
+        self.render("project/project.html", projects= projects, teamId = teamId)
 
     @tornado.web.authenticated
-    def post(self):
+    def post(self, teamId):
         currentUser = self.current_user
-        teamId = currentUser.teamId 
         form = ProjectForm(self.request.arguments, locale_code=self.locale.code)
         
         project = Project.query.filter_by(title=form.name.data, team_id=teamId).first()
@@ -83,7 +81,7 @@ class ProjectHandler(BaseHandler):
         
         currentUser.projects.append(project.id)
         self.session["user"] = currentUser
-        self.writeSuccessResult(project, successUrl='/')
+        self.writeSuccessResult(project, successUrl='/%d'%teamId)
 
 
 class NewProjectHandler(BaseHandler):
@@ -102,26 +100,25 @@ class NewProjectHandler(BaseHandler):
 class ProjectDetailHandler(BaseHandler):
     @tornado.web.authenticated
     @core.web.authenticatedProject
-    def get(self, projectId):
+    def get(self, teamId, projectId):
         project = Project.query.filter_by(id=projectId).first()
         messages = Message.query.filter_by(project_id=projectId).order_by(Message.createTime).limit(5).all()
         todolists = TodoList.query.filter_by(project_id=projectId).all()
         from model.attachment import Attachment
         files = Attachment.query.filter_by(project_id=projectId).order_by(Attachment.createTime.desc()).limit(5).all()
 
-        self.render("project/projectDetail.html", project= project, messages= messages, todolists= todolists, files= files)
+        self.render("project/projectDetail.html", project= project, messages= messages, todolists= todolists, files= files, teamId=teamId)
 
 
 class ProjectAccessHandler(BaseHandler):
     @tornado.web.authenticated
     @core.web.authenticatedProject
-    def get(self, projectId):
+    def get(self, teamId, projectId):
         project = Project.query.filter_by(id=projectId).first()
         currentUser = self.current_user
-        teamId = currentUser.teamId 
         team = Team.query.filter_by(id=teamId).first()
         currentUser = self.current_user
-        self.render("project/projectAccess.html", project= project, team= team)
+        self.render("project/projectAccess.html", project= project, team= team, teamId = teamId)
 
     @tornado.web.authenticated
     @core.web.authenticatedProject
@@ -140,14 +137,14 @@ class ProjectAccessHandler(BaseHandler):
 class ProjectFilesHandler(BaseHandler):
     @tornado.web.authenticated
     @core.web.authenticatedProject
-    def get(self, projectId):
+    def get(self, teamId, projectId):
         project = Project.query.filter_by(id=projectId).first()
         files = Attachment.query.filter_by(project_id=projectId).order_by(Attachment.createTime.desc()).all()
-        self.render("files/files.html", project= project, files= files)
+        self.render("files/files.html", project= project, files= files, teamId = teamId)
 
     @tornado.web.authenticated
     @core.web.authenticatedProject
-    def post(self, projectId):
+    def post(self, teamId, projectId):
         form = ProjectFilesForm(self.request.arguments, locale_code=self.locale.code)
         project = Project.query.filter_by(id= projectId).with_lockmode("update").first()
         files = []
@@ -167,7 +164,6 @@ class ProjectFilesHandler(BaseHandler):
         title = ','.join(fileNames)
         title = title[:30]
         currentUser = self.current_user
-        teamId = currentUser.teamId 
         operation = Operation(own_id = currentUser.id, createTime= now, operation_type=11, target_type=6,
             target_id= project.id, title= title, team_id= teamId, project_id= project.id, url= url)
         db.session.add(operation)

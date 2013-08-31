@@ -40,18 +40,16 @@ class EventForm(Form):
 
 class CalendarHandler(BaseHandler):
     @tornado.web.authenticated
-    def get(self):
+    def get(self, teamId):
         currentUser = self.current_user
-        teamId = currentUser.teamId 
         projects = Project.query.join(Project.users).filter(User.id==currentUser.id, Project.team_id==teamId).all()
         calendars = Calendar.query.join(Calendar.users).filter(User.id==currentUser.id, Calendar.team_id==teamId).all()
         team = Team.query.filter_by(id=teamId).first()
-        self.render("calendar/calendar.html", projects= projects, calendars= calendars , team = team)
+        self.render("calendar/calendar.html", projects= projects, calendars= calendars , team = team, teamId = teamId)
 
     @tornado.web.authenticated
-    def post(self):
+    def post(self, teamId):
         currentUser = self.current_user
-        teamId = currentUser.teamId 
         form = CalendarForm(self.request.arguments, locale_code=self.locale.code)
         if form.id.data :
             calendar = Calendar.query.filter_by(id=form.id.data).first()
@@ -84,10 +82,9 @@ class CalendarHandler(BaseHandler):
 
 class CalendarEventHandler(BaseHandler):
     @tornado.web.authenticated
-    def get(self):
+    def get(self, teamId):
         form = EventQueryForm(self.request.arguments, locale_code=self.locale.code)
         currentUser = self.current_user
-        teamId = currentUser.teamId 
         todoItems = TodoItem.query.filter(TodoItem.team_id==teamId, TodoItem.worker_id == currentUser.id, 
             TodoItem.deadline >= form.start_date.data, TodoItem.deadline <= form.end_date.data).all()
         

@@ -32,7 +32,7 @@ def authenticatedProject(method):
     """
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
-        currentProjectId = int(args[0])
+        currentProjectId = int(args[1])
         if currentProjectId not in self.current_user.projects:
             raise HTTPError(404)
         return method(self, *args, **kwargs)

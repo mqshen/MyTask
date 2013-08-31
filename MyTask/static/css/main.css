@@ -11,6 +11,9 @@ body {
     color: #333333;
 }
 
+input {
+    outline: none;
+}
 h1, h2, h3, h4, h5, h6 {
 font-weight: bold;
 }
@@ -558,6 +561,10 @@ border-top: 1px solid #dedede;
 border-bottom: 1px solid #dedede;
 margin-bottom: 20px;
 overflow: hidden;
+}
+div.sheet>header>p a, div.sheet div.sheet_body>section>header>p a, div.sheet div.sheet_body>div>section>header>p a {
+color: #1c5c76;
+text-decoration: underline;
 }
 div.sheet.project>header div.tools div.group {
 float: left;

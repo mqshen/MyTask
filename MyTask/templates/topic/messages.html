@@ -5,15 +5,15 @@
     <div class="container stack_container" style="width: 960px;">
         <div class="panel sheet project active blank_slate inactive">
             <header>
-                <h1><a data-restore-position="" href="/project/{{project.id}}">{{project.title}}</a></h1>
+                <h1><a data-restore-position="" href="/{{teamId}}/project/{{project.id}}">{{project.title}}</a></h1>
             </header>
 
             <div class="panel sheet topics" style="margin-left: 20px;margin-bottom: -20px;">
                 <header class="has_buttons">
                     <h1>
-                        <a href="/project/{{project.id}}/topics">讨论</a>
+                        <a href="/{{teamId}}/project/{{project.id}}/topics">讨论</a>
                     </h1>
-                    <a class="action_button button" href="/project/{{project.id}}/message/new">发起新讨论</a>
+                    <a class="action_button button" href="/{{teamId}}/project/{{project.id}}/message/new">发起新讨论</a>
                 </header>
                 <div class="sheet_body">
                     <section class="topics">
@@ -22,26 +22,26 @@
                                 {% for message in project.messages %}
                                 <tr class="topic message" id="topic_{{message.id}}">
                                     <td class="avatar">
-                                        <a href="/project/{{project.id}}/message/{{message.id}}">
+                                        <a href="/{{teamId}}/project/{{project.id}}/message/{{message.id}}">
                                             <img class="avatar" height="30" src="/avatar/{{message.own.avatar}}" title="{{message.own.name}}" width="30">
                                         </a>
                                     </td>
                                     <td class="who">
-                                        <a href="/project/{{project.id}}/message/{{message.id}}">{{message.own.name}}</a>
+                                        <a href="/{{teamId}}/project/{{project.id}}/message/{{message.id}}">{{message.own.name}}</a>
                                     </td>
                                     <td class="what">
-                                        <a href="/project/{{project.id}}/message/{{message.id}}">
+                                        <a href="/{{teamId}}/project/{{project.id}}/message/{{message.id}}">
                                             <strong>{{message.title}}</strong>
                                             <span class="excerpt">{{message.comment_digest}}<span>
                                         </a>
                                     </td>
                                     <td class="when">
-                                        <a href="/project/{{project.id}}/message/{{message.id}}">
+                                        <a href="/{{teamId}}/project/{{project.id}}/message/{{message.id}}">
                                             <time class="timeago" data-time="{{message.createTime}}" style="">{{message.createTime}}</time>
                                         </a>
                                     </td>
                                     <td class="comments">
-                                        <a href="/project/{{project.id}}/message/{{message.id}}">
+                                        <a href="/{{teamId}}/project/{{project.id}}/message/{{message.id}}">
                                             <span class="pill comments circle">{{message.comment_num}}</span>
                                         </a>
                                     </td>

@@ -36,16 +36,15 @@ class TodoListHandler(BaseHandler):
     _error_message = "email or password incorrect!"
 
     @tornado.web.authenticated
-    def get(self, projectId):
+    def get(self, teamId, projectId):
         project = Project.query.filter_by(id=projectId).first()
-        self.render("todo/todolists.html", project= project)
+        self.render("todo/todolists.html", project= project, teamId = teamId)
 
     @tornado.web.authenticated
-    def post(self, projectId):
+    def post(self, teamId, projectId):
         form = TodoListForm(self.request.arguments, locale_code=self.locale.code)
         if form.validate():
             currentUser = self.current_user
-            teamId = currentUser.teamId
             now = datetime.now()
             todoList = TodoList(title=form.title.data, 
                 own_id=currentUser.id, project_id= projectId, team_id=teamId, createTime= now)
@@ -65,13 +64,13 @@ class TodoListDetailHandler(BaseHandler):
     _error_message = "email or password incorrect!"
 
     @tornado.web.authenticated
-    def get(self, projectId, todolistId):
+    def get(self, teamId, projectId, todolistId):
         project = Project.query.filter_by(id=projectId).first()
         todolist = TodoList.query.filter_by(id=todolistId).first()
-        self.render("todo/todolist.html", todolist= todolist, project= project)
+        self.render("todo/todolist.html", todolist= todolist, project= project, teamId = teamId)
 
     @tornado.web.authenticated
-    def post(self, projectId, todolistId):
+    def post(self, teamId, projectId, todolistId):
         form = CommentForm(self.request.arguments, locale_code=self.locale.code)
         if form.validate():
             currentUser = self.current_user
@@ -107,7 +106,7 @@ class TodoItemHandler(BaseHandler):
     _error_message = ""
 
     @tornado.web.authenticated
-    def post(self, projectId, todoListId):
+    def post(self, teamId, projectId, todoListId):
         form = TodoItemForm(self.request.arguments, locale_code=self.locale.code)
         if form.validate():
             currentUser = self.current_user
@@ -133,21 +132,21 @@ class TodoItemHandler(BaseHandler):
             worker = None
             if todoItem.worker_id is not None:
                 worker = User.query.filter_by(id=todoItem.worker_id).first()
-            self.writeSuccessResult(todoItem, worker=worker)
+            self.writeSuccessResult(todoItem, worker=worker, teamId = teamId)
 
 class TodoItemDetailHandler(BaseHandler):
     _error_message = ""
 
     @tornado.web.authenticated
-    def get(self, projectId, todoListId, todoItemId):
+    def get(self, teamId, projectId, todoListId, todoItemId):
         project = Project.query.filter_by(id=projectId).first()
         todoItem = TodoItem.query.filter_by(id=todoItemId).first()
-        self.render("todo/todoItem.html", project= project, todoItem= todoItem, todolist= todoItem.todolist)
+        self.render("todo/todoItem.html", project= project, todoItem= todoItem, todolist= todoItem.todolist, teamId= teamId)
 
 
 
     @tornado.web.authenticated
-    def post(self, projectId, todoListId, todoItemId):
+    def post(self, teamId,  projectId, todoListId, todoItemId):
         form = TodoItemForm(self.request.arguments, locale_code=self.locale.code)
         if form.validate():
             currentUser = self.current_user

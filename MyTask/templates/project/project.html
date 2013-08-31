@@ -9,7 +9,7 @@
         <div class="panel home_tab project_index">
             {% if currentUser.privilege and currentUser.privilege > 0 %}
             <nav class="projects_nav ">
-                <a data-behavior="new_project bounce" href="/project/new">
+                <a data-behavior="new_project bounce" href="/{{teamId}}/project/new">
                     <span>新建项目</span>
                 </a>
             </nav>
@@ -22,7 +22,7 @@
                         {% end %}
                         <article class="card">
                         <span class="star" data-project-id="{{project.id}}" title="标记项目"></span>
-                            <a class="project_card" href="/project/{{project.id}}" title="{{project.title}}">
+                            <a class="project_card" href="/{{teamId}}/project/{{project.id}}" title="{{project.title}}">
                                 <h5>{{project.title}}</h5>
                                 <p style="margin-bottom: 5px;">{{project.description}}</p>
                                 {% for operation in project.recentlyOperation %}

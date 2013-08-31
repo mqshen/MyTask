@@ -761,7 +761,7 @@ function queryEvents(startDate, endDate) {
         }
     }
     $.lily.ajax({
-        url : '/event',
+        url : '/{{teamId}}/event',
         data : {start_date: startDate, end_date: endDate},
     	type: 'get',
     	processResponse : callback

@@ -164,7 +164,8 @@
                             this.weekFirstDayArray.push(day)
                         }
 						html += "<div class='date' data-date='" + day.format('yyyy-mm-dd') 
-                            + "'><div class='day'>" + (lastMonthDay++) + "</div><div class='events spanned'></div></div>";
+                            + "'><div class='day'>" + (lastMonthDay++) + "</div><div class='events spanned'></div>"
+                            + "<div class='events all_day'></div><div class='events timed'></div></div>";
 						continue;
 					}
 					if (days > this.days) {
@@ -173,7 +174,8 @@
                             this.weekFirstDayArray.push(day)
                         }
 						html += "<div class='date' data-content='next' data-date='" + day.format('yyyy-mm-dd') 
-                            + "'><div class='day' >" + (firstMonthDay++) + "</div><div class='events spanned'></div></div>";
+                            + "'><div class='day' >" + (firstMonthDay++) + "</div><div class='events spanned'></div>"
+                            + "<div class='events all_day'></div><div class='events timed'></div></div>";
                         this.endDate =  this.year + "-" + (this.month + 2) + "-" + firstMonthDay
 						continue;
 					}
@@ -183,7 +185,8 @@
                             this.weekFirstDayArray.push(day)
                         }
 						html += "<div class='date current_month today' data-date='" + day.format('yyyy-mm-dd') 
-                            + "'><div class='day'>" + (days++) + "</div><div class='events spanned'></div></div>";
+                            + "'><div class='day'>" + (days++) + "</div><div class='events spanned'></div>"
+                            + "<div class='events all_day'></div><div class='events timed'></div></div>";
 					} 
 					else {
                         var day = new Date(this.year ,this.month , days)
@@ -191,7 +194,8 @@
                             this.weekFirstDayArray.push(day)
                         }
 						html += "<div class='date current_month' data-date='" + day.format('yyyy-mm-dd') 
-                            + "'><div class='day'>" + (days++) + "</div><div class='events spanned'></div></div>";
+                            + "'><div class='day'>" + (days++) + "</div><div class='events spanned'></div>"
+                            + "<div class='events all_day'></div><div class='events timed'></div></div>";
 					}
 				}
 				html += "</div></div></div>";

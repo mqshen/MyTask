@@ -5,11 +5,9 @@
 {% block body%}
     {% set url = '/project/%s/todolist/%s/todoitem/%d'%(project.id, todolist.id, todoItem.id) %}
     <div class="container stack_container" style="width: 960px;">
-        <div class="panel sheet project active">
+        <div class="panel sheet project active blank_slate inactive">
             <header>
-                <h1 class="field" >
-                    {{project.title}}
-                </h1>
+                <h1><a data-restore-position="" href="/{{teamId}}/project/{{project.id}}">{{project.title}}</a></h1>
             </header>
             <div class="panel sheet todo" style="margin-left: 20px; margin-bottom: -20px;">
                 <header>
@@ -38,10 +36,7 @@
                                             <input href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/done"
                                             name="todo_complete" data-toggle="post" type="checkbox" {% if todoItem.done == 1 %} checked="true" {% end %} value="1">
                                             <span class="content" >
-                                                <a href="/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
-                                                    class="editable" data-type="textarea" name="description">
-                                                    {{ todoItem.description }}
-                                                </a>
+                                                {{ todoItem.description }}
                                             </span>
                                             <form action="/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
                                                 data-remote="true" id="edit_todo_41824572" method="post" data-type="html">
