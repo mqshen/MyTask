@@ -114,59 +114,9 @@
 
 {% block script %}
 $(function(){
-    function fileupload(event) {
-	    var $this = $(event.target)
-        var file = $this.get(0).files[0]
-        var $attachmentsContainer = $('#attachments_container')
-
-        var isImage = file.type.indexOf("image") > -1
-        var fileObj = '<li class="image uploading selected" data-toggle="select" name="attachment">'
-            + '<a class="remove" data-toggle="remove" href="javascript:;"><span>Remove</span></a>'
-
-        if(!isImage) {
-            fileObj += '<div class="icon"><img src="/static/images/document.png" class="file_icon" width="32" height="32"></div>' 
-        }
-        fileObj += '<span class="name">' + file.name + '</span></li>'
-
-        var $fileObj = $(fileObj)
-
-        var $progressBar = $('<div class="progress"></div>')
-        var $progress = $('<div>')
-        $progressBar.append($progress) 
-
-        $fileObj.append($progressBar)
-
-        var $image = $('<img class="thumbnail">')
-        if(isImage)
-            $fileObj.prepend($image)
-
-        function fileUploadCallback(data) {
-			if(data.returnCode != '0' && data.returnCode != '000000') {
-                alert(data.errorMessage);
-                $fileObj.remove()
-                return;
-			}
-            $fileObj.attr("data-content", data.url)
-            $progress.css("width", '100%')
-            $fileObj.removeClass("uploading")
-        }
-        function progress(e) {
-            var pc = parseInt((e.loaded / e.total * 100));
-            $progress.css("width", pc + '%')
-        }
-
-
-        $attachmentsContainer.append($fileObj)
-        $.lily.uploadFile({
-            url: '/attachment',
-            file: file,
-            progress: progress,
-            callback: fileUploadCallback,
-            thumbnail: $image,
-            isImage: isImage
-        }) 
-    }
-    $("#messageAttachment").bind("change", fileupload)
+    $("#file_upload_article").fileuploader({
+        url: '/attachment'
+    })
 
 
     function doResponseFileUpload(responseData) {

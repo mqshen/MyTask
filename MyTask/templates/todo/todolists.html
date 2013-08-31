@@ -4,17 +4,9 @@
 {% block body%}
     {% from datetime import date %}
     <div class="container stack_container" style="width: 960px;">
-        <div class="panel sheet project active">
-            <header >
-                <div >
-                    <div class="collapsed_content">
-                        <div class="position_reference">
-                            <h1 class="field" >
-                                {{project.title}}
-                            </h1>
-                        </div>
-                    </div>
-                </div>
+        <div class="panel sheet project active blank_slate inactive">
+            <header>
+                <h1><a data-restore-position="" href="/project/{{project.id}}">{{project.title}}</a></h1>
             </header>
 
             <div class="panel sheet todolists has_sidebar" style="margin-left: 20px;margin-bottom: -20px;">

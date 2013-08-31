@@ -478,6 +478,13 @@ box-shadow: 0 0 6px rgba(0,0,0,0.3);
 -moz-border-radius: 3px;
 border-radius: 3px;
 }
+div.sheet.inactive {
+padding: 0;
+background-color: #f9f9f9;
+-webkit-box-shadow: 0 0 0px rgba(0,0,0,0.2);
+-moz-box-shadow: 0 0 0px rgba(0,0,0,0.2);
+box-shadow: 0 0 0px rgba(0,0,0,0.2);
+}
 div.sheet.project>header {
 margin: 0;
 padding: 30px 30px 0px 30px;
@@ -1263,7 +1270,6 @@ form.new_comment .editor_toolbar>a.editor_act {
 padding: 0px 65px;
 }
 .wysihtml5-sandbox {
-background-color: rgb(255, 255, 255);
 border-collapse: separate;
 border: 0px none rgb(0, 0, 0);
 clear: none;
@@ -3279,4 +3285,7 @@ width: auto !important;
 }
 div.calendar_grid div.week div.dates div.date:last-of-type {
 border-right: none;
+}
+div.prompt {
+    cursor: pointer;
 }

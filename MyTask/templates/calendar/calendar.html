@@ -69,7 +69,8 @@
                                     {% for project in projects %}
                                     <li data-url="/project/{{project.id}}/color" data-bucket="Project:{{project.id}}" class="">
                                         <span class="swatch" style="background-color: #{{project.color}}">
-                                            <a href="#" class="selected btn" data-toggle="select" ></a>
+                                            <a href="javascript:;" class="selected btn" data-toggle="select" data-behavior="toggle_bucket">
+                                            </a>
                                         </span>
                                         <a href="javascript:;" title="Only show this calendar">{{project.title}}</a>
                                         <a href="javascript:;" class="popover-btn" >设置</a>
@@ -79,81 +80,6 @@
                             </section>
                         </div>
 
-                        <div id="project_editor_singleton" class="popover project_editor calendar_display" style="display: none" >
-                            <div class="popover-content balloon">
-                                <form method="post" action="" class="calendar_editor_form">
-                                    <header>
-                                        <fieldset class="calendar_settings">
-                                            <p>选择颜色</p>
-                                            <div class="swatches" data-toggle="select-radio">
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="3185c5" 
-                                                    style="background-color: #3185c5">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="000099" 
-                                                    style="background-color: #000099">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="3b9e93" 
-                                                    style="background-color: #3B9E93">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="009900" 
-                                                    style="background-color: #009900">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="aa0000" 
-                                                    style="background-color: #aa0000">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="ec61a2" 
-                                                    style="background-color: #ec61a2">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="cc6633" 
-                                                    style="background-color: #cc6633">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="666666" 
-                                                    style="background-color: #666666">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="000000" 
-                                                    style="background-color: #000000">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="660099" 
-                                                    style="background-color: #660099">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="ff9c00" 
-                                                    style="background-color: #ff9c00">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="e207c1" 
-                                                    style="background-color: #e207c1">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="a5460d" 
-                                                    style="background-color: #a5460d">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="650606" 
-                                                    style="background-color: #650606">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="482a15" 
-                                                    style="background-color: #482a15">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="2c5322" 
-                                                    style="background-color: #2c5322">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="b3a543" 
-                                                    style="background-color: #b3a543">
-                                                </label>
-                                                <label class="swatch btn" name="color" data-toggle="select" data-content="46647c" 
-                                                    style="background-color: #46647c">
-                                                </label>
-                                            </div>
-                                        </fieldset>
-                                    </header>
-                                    <footer>
-                                        <p class="submit">
-                                            <a href="javascript:;" id="project_editor_submit" class="action_button" 
-                                                data-disabled-with="正在修改...">提交</a>
-                                            or <a href="#" class="cancel" data-behavior="cancel">取消</a>
-                                        </p>
-                                    </footer>
-                                </form>
-                            </div>
-                            <div class="popover-arrow"></div>
-                        </div>
                     </aside>
                 </div>
             </div>
@@ -378,6 +304,82 @@
     </div>
 </div>
 
+<div id="project_editor_singleton" class="popover project_editor calendar_display" style="display: none" >
+    <div class="popover-content balloon">
+        <form method="post" action="" class="calendar_editor_form">
+            <header>
+                <fieldset class="calendar_settings">
+                    <p>选择颜色</p>
+                    <div class="swatches" data-toggle="select-radio">
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="3185c5" 
+                            style="background-color: #3185c5">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="000099" 
+                            style="background-color: #000099">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="3b9e93" 
+                            style="background-color: #3B9E93">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="009900" 
+                            style="background-color: #009900">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="aa0000" 
+                            style="background-color: #aa0000">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="ec61a2" 
+                            style="background-color: #ec61a2">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="cc6633" 
+                            style="background-color: #cc6633">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="666666" 
+                            style="background-color: #666666">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="000000" 
+                            style="background-color: #000000">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="660099" 
+                            style="background-color: #660099">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="ff9c00" 
+                            style="background-color: #ff9c00">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="e207c1" 
+                            style="background-color: #e207c1">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="a5460d" 
+                            style="background-color: #a5460d">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="650606" 
+                            style="background-color: #650606">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="482a15" 
+                            style="background-color: #482a15">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="2c5322" 
+                            style="background-color: #2c5322">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="b3a543" 
+                            style="background-color: #b3a543">
+                        </label>
+                        <label class="swatch btn" name="color" data-toggle="select" data-content="46647c" 
+                            style="background-color: #46647c">
+                        </label>
+                    </div>
+                </fieldset>
+            </header>
+            <footer>
+                <p class="submit">
+                    <a href="javascript:;" id="project_editor_submit" class="action_button" 
+                        data-disabled-with="正在修改...">提交</a>
+                    or <a href="#" class="cancel" data-behavior="cancel">取消</a>
+                </p>
+            </footer>
+        </form>
+    </div>
+    <div class="arrow"></div>
+    <div class="arrow"></div>
+</div>
 {% end %}
 
 {% block script %}
@@ -518,12 +520,16 @@ function spannedOperation($target, start, end, flag) {
 }
 
 function changeEvent(event, $target, oldEvent, type) {
+    if(event.startTime != undefined) {
+        event.startTime = $.lily.timFormater.parse(event.startTime)
+    }
     var eventType = getEventType(event)
     var oldEventType = getEventType(oldEvent)
     event.bucket =  'Calendar:' + event.calendar_id
     if(event.project_id != undefined)
         event.bucket = 'Project:' + event.project_id
     var color = calendarColor[event.bucket]
+    $target.attr("data-bucket", event.bucket)
     if(eventType != oldEventType) {
         removeEvent(oldEvent)
         appendEvent(event)
@@ -722,22 +728,24 @@ function queryEvents(startDate, endDate) {
         for(var i in todoItems) {
             var todoItem = todoItems[i]
             var date = todoItem.deadline.substring(0,10)
-            var $dayElement = $('[data-date=' + date + ']', $element)
+            var $dayElement = $('.date[data-date=' + date + ']', $element)
             var $todoContainer = $('.todos', $dayElement)
             if($todoContainer.length == 0 ) {
                 $todoContainer = $('<div class="events todos "></div>')
                 $dayElement.append($todoContainer) 
             }
+            var color = calendarColor['Project:' + todoItem.project_id]
             var description = todoItem.description
             if(description.length > 7 )
                 description = description.substring(0, 7) + '...'
             var checkFlag = ''
             if(todoItem.done)
                 checkFlag = 'checked'
-            var $todoElement = $('<div class="event todo " data-id="45285047" data-behavior="calendar_todo"><span class="wrapper event">'
+            var $todoElement = $('<div class="event todo " data-bucket="Project:' + todoItem.project_id + '" style="color:#' + color + '">'
+                + ' <span class="wrapper event">'
                 + '<input type="checkbox" value="1" ' + checkFlag + ' data-behavior="toggle_todo" data-url="/project/' + todoItem.project_id 
                 + '/todolist' + todoItem.todolist_id + '/todoitem/' + todoItem.id + '/done">'
-                + '<span class="content" title="Project:' + todoItem.project_id + '" style="color:#3185c5">' 
+                + '<span class="content">'
                 + description + '</span></span></div>')
             $todoContainer.append($todoElement)
         }
@@ -773,13 +781,15 @@ $('.toggle_calendar_list').click(function(){
     $('#calendar_display_singleton').toggleClass('calendar_list_visible')
 })
 $('#event_start_time').time()
-   $(document).on('click.bucket.data-api', '[data-behavior=toggle_bucket]', function (e) {
-        var $btn = $(e.target)
-        var bucket = $btn.parent().parent().attr("data-bucket")
-        $('.event[data-bucket="' + bucket + '"]').toggle()
-        $('.row[data-bucket="' + bucket + '"]').toggle()
-   })
+$(document).on('click.bucket.data-api', '[data-behavior=toggle_bucket]', function (e) {
+    var $btn = $(e.target)
+    var bucket = $btn.parent().parent().attr("data-bucket")
+    $('.event[data-bucket="' + bucket + '"]').toggle()
+    $('.row[data-bucket="' + bucket + '"]').toggle()
 })
+
+})
+
 {% end %}
 {% block includeScript %}
 <script src="{{ static_url("scripts/calendarEditor.js")}}" type="text/javascript"></script>
