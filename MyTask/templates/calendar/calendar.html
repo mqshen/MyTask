@@ -44,13 +44,13 @@
                     <aside class="calendar_list">
                         <div id="calendar_list_singleton" class="calendar_list">
                             <section class="calendars">
-                                <div class="new_calendar_event" id="new_calendar_area" data-url="/calendar">
+                                <div class="new_calendar_event" id="new_calendar_area" data-url="/{{teamId}}/calendar">
                                     <a href="javascrtipt:;" class="decorated popover-btn">+ 添加日历</a>
                                 </div>
                                 <h4>日历</h4>
                                 <ul class="have_not_been_shared" id="calendar_list">
                                     {% for calendar in calendars %}
-                                    <li class="calendar" id="calendar_451504" data-url="/calendar" data-bucket="Calendar:{{calendar.id}}">
+                                    <li class="calendar" id="calendar_451504" data-url="/{{teamId}}/calendar" data-bucket="Calendar:{{calendar.id}}">
                                         <input data-toggle="remote" type="hidden" name="id" value="{{calendar.id}}">
                                         <span class="swatch" style="background-color: #{{calendar.color}}">
                                             <a href="javascript:;" class="btn selected" data-toggle="select" data-behavior="toggle_bucket">
@@ -193,7 +193,7 @@
     <div class="arrow"></div>
     <div class="arrow"></div>
     <div class="popover-content balloon">
-        <form method="post" action="/calendar" class="calendar_editor_form">
+        <form method="post" action="/{{teamId}}/calendar" class="calendar_editor_form">
             <header>
                 <input type="hidden" name="id" data-toggle="remote" value="">
                 <fieldset class="calendar_settings">
@@ -419,7 +419,7 @@ function projectProcess(responseData, $element) {
 }
 
 function newCalendarProcess(responseData, $element) {
-    var $calendar = $('<li class="calendar" id="calendar_451504" data-url="/calendar" data-bucket-id="' 
+    var $calendar = $('<li class="calendar" id="calendar_451504" data-url="/{{teamId}}/calendar" data-bucket-id="' 
         + responseData.id + '">'
         + '<span class="swatch" style="background-color: #' + responseData.color + '">'
         + '<a href="javascript:;" class="active btn" data-toggle="select" data-behavior="toggle_bucket"></a>'
@@ -494,7 +494,7 @@ function generateEventHtml(event, eventStyle) {
     if(event.project_id != undefined)
         event.bucket = 'Project:' + event.project_id
     var color = calendarColor['Calendar:' + event.calendar_id]
-    return '<div class="row" data-url="/event" data-id="' + event.id + '" data-bucket="' + event.bucket +'">'
+    return '<div class="row" data-url="/{{teamId}}/event" data-id="' + event.id + '" data-bucket="' + event.bucket +'">'
         + '<div class="event ' + eventStyle.class + '" style="background-color: #' + color + '" >'
         + '<input data-toggle="remote" type="hidden" name="id" value="' + event.id + '">'
         + '<input data-toggle="remote" type="hidden" name="startDate" value="' + event.startDate + '">'
@@ -640,7 +640,7 @@ function addEvent($dayElement, event, type){
     if(type === 'project')
         bucket = 'Project:' + event.project_id
     var color = calendarColor[bucket]
-    $eventElement = $('<div class="event " data-url="/event" data-id="'+ event.id + '" data-bucket="' + bucket +'">' 
+    $eventElement = $('<div class="event " data-url="/{{teamId}}/event" data-id="'+ event.id + '" data-bucket="' + bucket +'">' 
         + '<input data-toggle="remote" type="hidden" name="id" value="' + event.id + '">'
         + '<input data-toggle="remote" type="hidden" name="startDate" value="' + event.startDate + '">'
         + '<input data-toggle="remote" type="hidden" name="endDate" value="' + event.endDate + '">'
@@ -664,7 +664,7 @@ function addNewEvent($dayElement, event){
         $dayElement.append($eventContainer) 
     }
     var color = calendarColor[currentCalendar]
-    $eventElement = $('<div class="event " data-url="/event">' 
+    $eventElement = $('<div class="event " data-url="/{{teamId}}/event">' 
         + '<input data-toggle="remote" type="hidden" name="startDate" value="' + $dayElement.attr("data-date") + '">'
         + '<input data-toggle="remote" type="hidden" name="endDate" value="' + $dayElement.attr("data-date") + '">'
         + '<span class="event" style="color: #' + color + '" title="Calendar: General">'

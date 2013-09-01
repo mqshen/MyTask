@@ -169,10 +169,9 @@ class TodoItemModifyHandler(BaseHandler):
     _error_message = ""
 
     @tornado.web.authenticated
-    def post(self, projectId, todoListId, todoItemId, operation):
+    def post(self, teamId, projectId, todoListId, todoItemId, operation):
         todoItem = TodoItem.query.filter_by(id=todoItemId).first()
         currentUser = self.current_user
-        teamId = currentUser.teamId 
         now = datetime.now()
         if operation == "trash" :
             db.session.delete(todoItem)

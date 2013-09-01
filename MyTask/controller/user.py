@@ -198,13 +198,12 @@ class SettingHandler(BaseHandler):
 
 class PeopleHandler(BaseHandler):
     @tornado.web.authenticated
-    def get(self):
-        teamId = self.current_user.teamId
+    def get(self, teamId):
         team = Team.query.filter_by(id=teamId).first()
-        self.render("user/peoples.html", team= team)
+        self.render("user/peoples.html", team= team, teamId = teamId)
 
     @tornado.web.authenticated
-    def post(self):
+    def post(self, teamId):
         currentUser = self.current_user
         teamId = currentUser.teamId
         team = Team.query.filter_by(id=teamId).first()
@@ -241,15 +240,13 @@ class PeopleHandler(BaseHandler):
 
 class NewPeopleHandler(BaseHandler):
     @tornado.web.authenticated
-    def get(self):
-        teamId = self.current_user.teamId
+    def get(self, teamId):
         team = Team.query.filter_by(id=teamId).first()
-        self.render("user/newPeople.html", team=  team)
+        self.render("user/newPeople.html", team=  team, teamId = teamId)
 
 class PeopleDetailHandler(BaseHandler):
     @tornado.web.authenticated
-    def get(self, userId):
-        teamId = self.current_user.teamId
+    def get(self, teamId, userId):
         user = User.query.filter_by(id=userId).first()
         team = Team.query.filter_by(id=teamId).first()
         todoItems = TodoItem.query.filter_by(team_id=teamId, worker_id=user.id, done=0).all()

@@ -7,7 +7,7 @@
     <div class="container stack_container" style="width: 960px;">
         <div class="panel sheet project active blank_slate inactive">
             <header>
-                <h1><a data-restore-position="" href="/project/{{project.id}}">{{project.title}}</a></h1>
+                <h1><a data-restore-position="" href="/{{teamId}}/project/{{project.id}}">{{project.title}}</a></h1>
             </header>
             <div class="panel sheet files" style="margin-left: 20px; margin-bottom: -20px;">
                 <header>
@@ -17,13 +17,13 @@
                     <section class="attachments">
                         <header class="has_buttons" style="margin-bottom: 10px">
                             <h1>
-                                <a href="/project/{{project.id}}/files">所有文件</a>
+                                <a href="/{{teamId}}/project/{{project.id}}/files">所有文件</a>
                             </h1>
                             <a class="action_button button btn" data-toggle="button-display" href="javascript:;" 
                                 data-content="#file_upload_article">上传文件</a>
                         </header>
                         <section id="file_upload_article" style="display:none">
-                            <form method="post" action="/project/{{project.id}}/files" id="fileupload_form">
+                            <form method="post" action="/{{teamId}}/project/{{project.id}}/files" id="fileupload_form">
                                 <div data-behavior="pending_attachments file_drop_target" data-sortable="true" class="attachments">
                                     <span class="prompt_graphic"></span>
                                     <div class="file_input_button">
@@ -32,7 +32,7 @@
                                         </span>
                                         <span class="file_input_container">
                                             <input name="attachment" type="file" multiple="" id="messageAttachment" tabindex="-1">
-                                            <a class="decorated" data-behavior="local_file_picker" href="#" tabindex="-1">
+                                            <a class="decorated" data-behavior="local_file_picker" href="javascript:;" tabindex="-1">
                                                 选择要上传的文件
                                             </a>
                                         </span>
@@ -67,7 +67,7 @@
                                             <tr>
                                                 <td class="icon">
                                                     <figure class="thumbnail proportinal">
-                                                        <a href="/attachment/{{file.url}}" target="_blank">
+                                                        <a href="/{{teamId}}/attachment/{{file.url}}" target="_blank">
                                                             {% if file.fileType == "0" %}
                                                             <img alt="" class="thumbnail " src="/attachment/{{file.url}}" 
                                                                 data-type="image" data-content="{{file.url}}" data-width="{{file.width}}"
@@ -89,10 +89,10 @@
                                                             <span>上传</span>
                                                         </p>
                                                         <p class="actions">
-                                                            <a data-stacker="false" href="/attachment/{{file.url}}origin" target="_blank">下载</a>
+                                                            <a data-stacker="false" href="/{{teamId}}/attachment/{{file.url}}origin" target="_blank">下载</a>
                                                             {% if file.message %}
                                                             <span>或者</span>
-                                                            <a href="/project/{{file.project_id}}/message/{{file.message.id}}">跳转到该讨论</a>
+                                                            <a href="/{{teamId}}/project/{{file.project_id}}/message/{{file.message.id}}">跳转到该讨论</a>
                                                             {% end %}
                                                         </p>
                                                     </div>
@@ -133,12 +133,12 @@ $(function(){
                 imageStr = '<img alt="" class="" src="/static/images/filetype/' + data.icon + '.png">'
             var $fileObj = $('<article class="attachment">'
                 + '<table><tbody><tr><td class="icon"><figure class="thumbnail proportinal">'
-                + '<a href="/attachment/' + data.url + '" target="_blank">'
+                + '<a href="/{{teamId}}/attachment/' + data.url + '" target="_blank">'
                 + imageStr 
                 + '</a></figure></td><td class="text"><h3 class="filename">' + data.name
                 + '</h3><div class="authorship"><p class="meta"><span class="creator">由 ' + data.own.name + ' 在</span>'
                 + '<time class="timeago" data-time="' + data.createTime + '"></time><span>上传</span>'
-                + '</p><p class="actions"><a data-stacker="false" href="/attachment/' + data.url + 'target=" _blank"="">下载</a>'
+                + '</p><p class="actions"><a data-stacker="false" href="/{{teamId}}/attachment/' + data.url + 'target=" _blank"="">下载</a>'
                 + '</p></div></td></tr></tbody></table></article>')
             $fileContainer.prepend($fileObj)
         }

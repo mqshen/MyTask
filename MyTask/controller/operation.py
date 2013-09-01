@@ -21,13 +21,12 @@ class OperationHandler(BaseHandler):
     PAGE_SIZE = 20
     _error_message = "email or password incorrect!"
     @tornado.web.authenticated
-    def get(self):
-        self.render("operation/operation.html")
+    def get(self, teamId):
+        self.render("operation/operation.html", teamId = teamId)
 
     @tornado.web.authenticated
-    def post(self):
+    def post(self, teamId):
         currentUser = self.current_user
-        teamId = currentUser.teamId
         form = PageForm(self.request.arguments, locale_code=self.locale.code)
         operations = Operation.query.options(eagerload('own')).filter_by(team_id= teamId).order_by(Operation.createTime.desc()).limit(self.PAGE_SIZE).offset(form.begin.data * self.PAGE_SIZE).all()
 

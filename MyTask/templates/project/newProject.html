@@ -6,7 +6,7 @@
     <div class="container flat_container" id="new_project_dialog">
         <article class="new">
             <div>
-                <form accept-charset="UTF-8" action="/project" class="new_project" id="new_project" method="post" success="/">
+                <form accept-charset="UTF-8" action="/{{teamId}}/project" class="new_project" id="new_project" method="post" success="/">
                     <header>
                         <h1>创建项目</h1>
                     </header>
@@ -35,7 +35,7 @@
                                             <img class="avatar" height="40" src="/avatar/{{ member.avatar }}" title="" width="140">
                                         </div>
                                         <h3>
-                                            <a href="/member/{{ member.id }}">{{ member.name }}</a>
+                                            <a href="{{teamId}}/member/{{ member.id }}">{{ member.name }}</a>
                                         </h3>
                                     </article>
                                     {% end %}

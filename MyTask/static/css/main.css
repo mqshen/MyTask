@@ -1021,6 +1021,7 @@ margin: 4px 0px 6px;
 width: 100%;
 max-width: 100%;
 box-sizing: border-box;
+border: 1px solid #ddd;
 }
 .no-due-date {
     font-size: 12px;

@@ -124,10 +124,9 @@ class CalendarEventHandler(BaseHandler):
         self.writeSuccessResult(todoItems = todoItems ,calendar_events= calendar_events, project_events= project_events)
 
     @tornado.web.authenticated
-    def post(self):
+    def post(self, teamId):
         form = EventForm(self.request.arguments, locale_code=self.locale.code)
         currentUser = self.current_user
-        teamId = currentUser.teamId 
         now = datetime.now()
 
         if(form.bucket.data.startswith('Calendar:')):
@@ -137,7 +136,6 @@ class CalendarEventHandler(BaseHandler):
             project_id = form.bucket.data[8:]
             calendar_id = None
 
-        print(form.startTime.data)
         if form.id.data:
             event = Event.query.filter_by(id= form.id.data).first()
             if event:

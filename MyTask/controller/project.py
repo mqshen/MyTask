@@ -81,17 +81,16 @@ class ProjectHandler(BaseHandler):
         
         currentUser.projects.append(project.id)
         self.session["user"] = currentUser
-        self.writeSuccessResult(project, successUrl='/%d'%teamId)
+        self.writeSuccessResult(project, successUrl='/%s'%teamId)
 
 
 class NewProjectHandler(BaseHandler):
 
     @tornado.web.authenticated
-    def get(self):
+    def get(self, teamId):
         currentUser = self.current_user
-        teamId = currentUser.teamId 
         team = Team.query.filter_by(id=teamId).first()
-        self.render("project/newProject.html", team= team)
+        self.render("project/newProject.html", team= team, teamId = teamId)
 
     @tornado.web.authenticated
     def post(self):

@@ -93,7 +93,7 @@ function queryOperation(begin){
     isQuery = true
     $('#wait').show()
     $.lily.ajax({
-        url : '/operation',
+        url : '/{{teamId}}/operation',
         data : {begin: begin, size: 30},
 		type: 'post',
 		processResponse : callback

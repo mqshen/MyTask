@@ -10,7 +10,7 @@
         {% if currentUser.privilege and currentUser.privilege > 1 %}
         <nav class="people_nav">
             <span class="position_reference">
-                <a data-bare-workspace="true" data-behavior="bounce" href="/people/new">
+                <a data-bare-workspace="true" data-behavior="bounce" href="/{{teamId}}/people/new">
                     <span>邀请用户</span>
                 </a>
                 <div class="blank_slate_arrow"></div>
@@ -25,12 +25,12 @@
 
                 <article class="person">
                     <div class="avatar">
-                        <a href="/people/{{people.id}}">
+                        <a href="/{{teamId}}/people/{{people.id}}">
                             <img class="avatar" height="140" src="/avatar/{{people.avatar}}" title="{{people.name}}" width="140">
                         </a>
                     </div>
                     <h3>
-                        <a href="/people/{{people.id}}">{{people.name}}</a>
+                        <a href="/{{teamId}}/people/{{people.id}}">{{people.name}}</a>
                     </h3>
                 </article>
                 {% if i % 4 == 3 or i == len(team.members) - 1 %}
