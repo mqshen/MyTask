@@ -279,6 +279,14 @@
 			$(this.options.body, this.$element).append(this.monthOjb);
 
             self.initEvent(month)
+			var $headObj = $(this.options.title, this.$element);
+            $headObj.click(function(e){
+                var $this = $(this)
+                var $monthSelector = $this.next()
+                $monthSelector.show()
+                $.lily.lastWindow = $monthSelector
+                e.stopPropagation()
+            })
 		},
 
         initEvent: function(month) {
@@ -309,6 +317,33 @@
 			}
 		},
 		
+		changeMonth: function(date) {
+			var self = this;
+			this.currentMonth = date.getMonth();
+			
+		    this.year = date.getFullYear();
+
+			this.updateCalendarHead();
+			
+			var currentDay = null
+			if(this.currentMonth == this.now.getMonth())
+				currentDay = this.now.getDate()
+			var month = new Month(this.year, this.currentMonth , currentDay);
+			
+            this.month = month
+			
+			var oldMonthObj = this.monthOjb;
+			this.monthOjb = $("<div class='lily-days-container'>" + month.renderDays() + "</div>");
+			
+			$('td', this.monthOjb).bind('click.myCalendar-day', function(event) {
+				return self.dayClick(event);
+			});
+			
+			$(this.options.body, this.$element).append(this.monthOjb);
+			oldMonthObj.remove();
+            self.initEvent(month)
+            self.selectMonth()
+		},
 		prevMonth: function() {
 			var self = this;
 			this.currentMonth -= 1;
@@ -336,6 +371,7 @@
 			$(this.options.body, this.$element).append(this.monthOjb);
 			oldMonthObj.remove();
             self.initEvent(month)
+            self.selectMonth()
 		},
 		
 		nextMonth: function() {
@@ -366,6 +402,7 @@
 				
 			oldMonthObj.remove();
             self.initEvent(month)
+            self.selectMonth()
 		},
 
         getWeekFirstDayArray: function() {
@@ -381,10 +418,42 @@
 			return monthHtml;
 		},
 		
+        buildCalendarJump: function(year) {
+            var html = this.buildCalendarJumpItem(this.year)
+            html += this.buildCalendarJumpItem(this.year + 1)
+			this.$jumpObj = $(this.options.jump, this.$element);
+			this.$jumpObj.append(html);
+            var self = this
+            this.selectMonth()
+            $('a', this.$jumpObj).click(function(){
+                var $this = $(this)
+				var date = $.lily.format.parseDate($this.attr("data-date"), "yyyy-mm-dd")
+                self.changeMonth(date)
+            })
+        },
+        
+        selectMonth: function() {
+            var delimiter = this.currentMonth < 10 ? '-0' : '-'
+            $('a', this.$jumpObj).removeClass("selected")
+            $('[data-date=' + this.year + delimiter + (this.currentMonth + 1) + '-01]', this.$jumpObj).addClass('selected')
+        },
+        
+        buildCalendarJumpItem: function(year) {
+            var html = '<dl><dt>' + year + '</dt>'
+            for(var i = 1; i < 13; ++i) {
+                var delimiter = i < 10 ? '-0' : '-'
+                html += '<dd><a href="javascript:;" data-date="' + year + delimiter + i + '-01" >'
+                    + this.localization.monthNamesShort[i - 1]
+                    + '</a></dd>'
+            }
+            html += '</dl>'
+            return html
+        },
+
 		updateCalendarHead: function() {
 			var monthHtml = this.buildCalendarHead();
-			var headObj = $(this.options.title, this.$element);
-			headObj.text(monthHtml);
+			var $headObj = $(this.options.title, this.$element);
+			$headObj.text(monthHtml);
 		},
 		
 		renderCalendar: function () {
@@ -392,6 +461,7 @@
 			var monthHtml = this.buildCalendarHead();
 			
             this.updateCalendarHead()
+            this.buildCalendarJump()
 			var html = "<div class='days_of_week'><div class='days'>"
 			for(var i = 0; i < 	this.localization.dayNamesMin.length; ++i) {
 				html += '<div class="day" >' + this.localization.dayNamesMin[i] + "</div>";

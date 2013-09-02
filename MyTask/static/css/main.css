@@ -1516,9 +1516,6 @@ border: 1px solid #ddd;
 height: 55px;
 width: 55px;
 }
-table td {
-padding-left: 10px;
-}
 table tr th {
 vertical-align: top;
 padding-top: 10px;
@@ -3296,4 +3293,93 @@ border-right: none;
 }
 div.prompt {
     cursor: pointer;
+}
+div.calendar_display div.sheet div.position_reference {
+height: 1px;
+width: 1px;
+margin: -1px auto 0 auto;
+position: relative;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon {
+top: 12px;
+left: -282px;
+width: 560px;
+padding: 20px 0 15px 0;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon .arrow {
+left: 270px;
+}
+.balloon.top_left_side .arrow, .balloon.top_right_side .arrow {
+border-color: transparent transparent #ccc transparent;
+top: -24px;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon .arrow+.arrow {
+border-color: transparent transparent #fff transparent;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon td.nav {
+width: 1%;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon td {
+width: 98%;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon dl {
+float: left;
+margin-bottom: 3px;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon dt {
+width: 40px;
+color: #000;
+margin-right: 15px;
+padding: 2px 4px 4px 4px;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon dt, div.calendar_display div.sheet div.calendar_jump.balloon dd {
+float: left;
+margin: 0 1px;
+font-size: 14px;
+}
+.balloon {
+white-space: normal;
+position: absolute;
+top: -30px;
+background: #fff;
+padding: 8px 12px 8px;
+width: 154px;
+z-index: 1000;
+border: 1px solid #bbb;
+font-size: 13px;
+line-height: 15px;
+vertical-align: baseline;
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+-webkit-box-shadow: 0 1px 12px rgba(0,0,0,0.3);
+-moz-box-shadow: 0 1px 12px rgba(0,0,0,0.3);
+box-shadow: 0 1px 12px rgba(0,0,0,0.3);
+}
+.balloon .arrow {
+position: absolute;
+top: 24px;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon dd a {
+float: left;
+display: block;
+padding: 2px 4px 4px 4px;
+border-radius: 4px;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon td.nav a {
+font-family: "Lucida Grande","Helvetica Neue",helvetica,arial,sans-serif;
+font-size: 13px;
+padding: 0 15px;
+float: left;
+line-height: 44px;
+display: block;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon td.nav a:last-of-type {
+float: right;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon dd a.selected {
+color: #fff;
+background-color: #222;
 }

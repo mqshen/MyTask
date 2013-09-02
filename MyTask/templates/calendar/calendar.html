@@ -27,10 +27,22 @@
                             <h1 data-behavior="expandable" class="calendar_title">
                                 <a href="#" data-behavior="jump_to_month" id="myCalendar_title">
                                 </a>
-                                <div id="calendar_jump_singleton" class="position_reference" style="display: none;" data-autoview="">
+                                <div id="calendar_jump_singleton" class="position_reference" data-autoview="" style="display:none">
                                     <div class="calendar_jump balloon top_left_side">
                                         <span class="arrow"></span>
                                         <span class="arrow"></span>
+                                        <form>
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="nav"><a href="#" data-direction="backward">◀</a></td>
+                                                        <td id="myCalendar_month_select">
+                                                        </td>
+                                                        <td class="nav"><a href="#" data-direction="forward">▶</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
                                     </div>
                                 </div>
                             </h1>
@@ -67,7 +79,7 @@
                                 <h4>项目</h4>
                                 <ul id="project_list">
                                     {% for project in projects %}
-                                    <li data-url="/project/{{project.id}}/color" data-bucket="Project:{{project.id}}" class="">
+                                    <li data-url="/{{teamId}}/project/{{project.id}}/color" data-bucket="Project:{{project.id}}" class="">
                                         <span class="swatch" style="background-color: #{{project.color}}">
                                             <a href="javascript:;" class="selected btn" data-toggle="select" data-behavior="toggle_bucket">
                                             </a>
@@ -771,6 +783,7 @@ function queryEvents(startDate, endDate) {
 $element.myCalendar({
     title: '#myCalendar_title',
     body: '#calendar_grid_singleton',
+    jump: '#myCalendar_month_select',
     changer: queryEvents,
     selector: addNewEvent
 })

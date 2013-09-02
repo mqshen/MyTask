@@ -178,12 +178,12 @@ class ColorForm(Form):
 class ProjectColorHandler(BaseHandler):
     @tornado.web.authenticated
     @core.web.authenticatedProject
-    def get(self, projectId):
+    def get(self, teamId, projectId):
         self.post(projectId)
 
     @tornado.web.authenticated
     @core.web.authenticatedProject
-    def post(self, projectId):
+    def post(self, teamId, projectId):
         project = Project.query.filter_by(id=projectId).first()
         form = ColorForm(self.request.arguments, locale_code=self.locale.code)
 
