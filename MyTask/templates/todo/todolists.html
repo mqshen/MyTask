@@ -37,19 +37,21 @@
                         </article>
                         <ul class="todolists ui-sortable" id="todolists_container">
                             {% for todolist in project.todolists %}
-                            <li data-sortable-type="todolist" id="sortable_todolist"> 
+                            <li data-sortable-type="todolist" id="sortable_todolist" >
                                 <article class="todolist">
-                                    <header class="collapsed_content" data-behavior="has_hover_content">
+                                    <header class="collapsed_content editable_container" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}"
+                                        data-behavior="has_hover_content">
                                         <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
                                             <div class="spacer"></div>
                                             <a class="image delete" data-confirm="Are you sure you want to delete this to-do list?" data-toggle="post"
-                                                data-method="post" data-remote="true" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/trash" rel="nofollow">
+                                                data-method="post" data-remote="true" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/trash" 
+                                                rel="nofollow">
                                                 Delete
                                             </a>
-                                            <a class="edit" href="javascript:;">Edit</a>
+                                            <a class="edit" href="javascript:;" data-toggle="editorTrigger">Edit</a>
                                         </div>
                                         <h3 >
-                                            <a class="linked_title" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}">
+                                            <a class="linked_title editable" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}" name="title">
                                                 {{ todolist.title}}
                                             </a>
                                         </h3>

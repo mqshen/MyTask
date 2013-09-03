@@ -1650,6 +1650,19 @@ padding: 0;
 border: none;
 box-shadow: none;
 }
+.edit_mode input[type=text] {
+padding: 5px 0;
+color: black;
+padding: 0;
+margin: 0;
+width: 99%;
+background: #fff;
+border: none;
+border-bottom: 1px dotted #b3b3b3;
+outline: none;
+line-height: inherit;
+-webkit-appearance: none;
+}
 div.sheet.project>div.sheet_body>section>header, div.sheet.project>div.sheet_body>div>section>header {
 padding: 10px 0;
 }

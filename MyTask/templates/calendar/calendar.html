@@ -671,10 +671,6 @@ function addEvent($dayElement, event, type){
 }
 function addNewEvent($dayElement, event){
     var $eventContainer = $('.all_day', $dayElement)
-    if($eventContainer.length == 0 ) {
-        $eventContainer = $('<div class="events all_day"></div>')
-        $dayElement.append($eventContainer) 
-    }
     var color = calendarColor[currentCalendar]
     $eventElement = $('<div class="event " data-url="/{{teamId}}/event">' 
         + '<input data-toggle="remote" type="hidden" name="startDate" value="' + $dayElement.attr("data-date") + '">'
@@ -686,7 +682,10 @@ function addNewEvent($dayElement, event){
     $eventElement.calendarEditor({
         content: '#tpl-event-popover',
         position: 'side',
-        processResponse: doEventResponse,
+        processResponse: function(responseData, $element, requestData) {
+            $eventElement.remove()
+            doEventResponse(responseData, $element, requestData)
+        },
         doCancel: function() {
             $eventElement.remove()
         }

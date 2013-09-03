@@ -70,18 +70,32 @@ class TodoListDetailHandler(BaseHandler):
         self.render("todo/todolist.html", todolist= todolist, project= project, teamId = teamId)
 
     @tornado.web.authenticated
+    def post(self, teamId,  projectId, todoListId):
+        form = TodoListForm(self.request.arguments, locale_code=self.locale.code)
+        if form.validate():
+            currentUser = self.current_user
+            todoList = TodoList.query.filter_by(id=todoListId).first()
+            if todoList is not None:
+                todoList.title = form.title.data
+                db.session.add(todoList)
+                db.session.commit()
+                self.writeSuccessResult(todoList)
+
+class TodoListCommentHandler(BaseHandler):
+    _error_message = "email or password incorrect!"
+
+    @tornado.web.authenticated
     def post(self, teamId, projectId, todolistId):
         form = CommentForm(self.request.arguments, locale_code=self.locale.code)
         if form.validate():
             currentUser = self.current_user
-            teamId = currentUser.teamId
             now = datetime.now()
             todoComment = TodoListComment(content=form.content.data, todolist_id=todolistId,
                 own_id=currentUser.id, project_id= projectId, team_id=teamId, createTime= now, attachments=[])
             todCommentId = todoComment.id
 
 
-            url = "/project/%s/todolist/%s/"%(projectId, todolistId)
+            url = "/%s/project/%s/todolist/%s/"%(teamId, projectId, todolistId)
 
             for attachment in form.attachment.data:
                 attachment = Attachment.query.filter_by(url=attachment).first()
@@ -102,6 +116,7 @@ class TodoListDetailHandler(BaseHandler):
             send_message(currentUser.id, teamId, 2, 3, todoComment)
 
             self.writeSuccessResult(todoComment)
+
 class TodoItemHandler(BaseHandler):
     _error_message = ""
 
@@ -110,7 +125,6 @@ class TodoItemHandler(BaseHandler):
         form = TodoItemForm(self.request.arguments, locale_code=self.locale.code)
         if form.validate():
             currentUser = self.current_user
-            teamId = currentUser.teamId
             now = datetime.now()
             todoItem = TodoItem(description=form.description.data, 
                 own_id=currentUser.id, todolist_id= todoListId, project_id= projectId, worker_id= form.workerId.data,
@@ -239,4 +253,21 @@ class TodoItemCommentHandler(BaseHandler):
             send_message(currentUser.id, teamId, 2, 4, todoComment)
 
             self.writeSuccessResult(todoComment)
+
+class TodoListModifyHandler(BaseHandler):
+    _error_message = ""
+
+    @tornado.web.authenticated
+    def post(self, teamId, projectId, todoListId ):
+        todoList = TodoList.query.filter_by(id=todoListId).first()
+        currentUser = self.current_user
+        now = datetime.now()
+        db.session.delete(todoList)
+
+        url = '/%s/project/todolist/%s'%(teamId, todoListId )
+        myOperation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=4,
+            target_id=todoList.id, title= todoList.description, team_id= teamId, project_id= projectId, url= url)
+        db.session.add(myOperation)
+        db.session.commit()
+        self.writeSuccessResult()
 

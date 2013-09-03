@@ -19,17 +19,18 @@
                 <div class="sheet_body">
                     <section class="todos perma has_tools">
                         <article class="todolist">
-                            <header class="collapsed_content" data-behavior="has_hover_content">
+                            <header class="collapsed_content editable_container" data-behavior="has_hover_content" 
+                                href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}">
                                 <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
                                     <div class="spacer"></div>
                                     <a class="image delete" data-confirm="Are you sure you want to delete this to-do list?" data-toggle="post"
                                         data-method="post" data-remote="true" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/trash" rel="nofollow">
                                         Delete
                                     </a>
-                                    <a class="edit" href="javascript:;">Edit</a>
+                                    <a class="edit" href="javascript:;" data-toggle="editorTrigger">Edit</a>
                                 </div>
                                 <h3 >
-                                    <span class="linked_title" >
+                                    <span class="linked_title editable" name="title">
                                         {{ todolist.title}}
                                     </span>
                                 </h3>

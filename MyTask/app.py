@@ -15,7 +15,7 @@ class Application(tornado.web.Application):
         from controller.project import ProjectHandler, ProjectFilesHandler, ProjectColorHandler, ProjectDetailHandler, \
                 ProjectAccessHandler, NewProjectHandler
         from controller.todo import TodoListHandler, TodoListDetailHandler, TodoItemHandler, TodoItemDetailHandler, \
-                TodoItemModifyHandler, TodoItemCommentHandler
+                TodoItemModifyHandler, TodoItemCommentHandler, TodoListModifyHandler, TodoListCommentHandler
         from controller.topic import MessageHandler, MessageDetailHandler, NewMessageHandler, CommentHandler, CommentDetailHandler
         from controller.user import RegisterHandler, LoginHandler, SignOutHandler, TeamNewHandler, TeamHandler, SettingHandler, \
                 PeopleHandler, NewPeopleHandler, PeopleDetailHandler, JoinHandler
@@ -34,7 +34,8 @@ class Application(tornado.web.Application):
             ('/([0-9]+)/project/new', NewProjectHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist', TodoListHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)', TodoListDetailHandler),
-            ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/comment', TodoListDetailHandler),
+            ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/trash', TodoListModifyHandler),
+            ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/comment', TodoListCommentHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/todoitem', TodoItemHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/todoitem/([0-9]+)', TodoItemDetailHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/todoitem/([0-9]+)/(done|undone|trash)', TodoItemModifyHandler),
