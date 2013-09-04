@@ -95,7 +95,7 @@
                         </tbody>
                     </table>
                     <div class="submit">
-                        <button class="action_button" data-toggle="submit"> 创建项目</button>
+                        <button class="action_button" data-toggle="submit">保存</button>
                         <a data-behavior="cancel_new_project" href="/">取消</a>
                     </div>
                 </form>
@@ -121,28 +121,9 @@
 
 {% block script %}
     $(function(){
-        function fileupload(event) {
-
-		    var $this = $(event.target)
-
-            var file = $this.get(0).files[0]
-
-            var $image = $('#avatarThumbnail')
-
-            function fileUploadCallback(data) {
-            }
-            function progress(e) {
-                var pc = parseInt(100 - (e.loaded / e.total * 100));
-                $progress.css("width", pc + '%')
-            }
-
-            $.lily.uploadFile({
-                url: '/avatar',
-                file: file,
-                callback: fileUploadCallback,
-                thumbnail: $image
-            }) 
-        }
-        $("#avatar").bind("change", fileupload)
+        $('.avatar').fileuploader({
+            url: '/avatar',
+            thumbnail: false
+        })
     })
 {% end %}

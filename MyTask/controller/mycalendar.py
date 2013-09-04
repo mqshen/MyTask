@@ -155,3 +155,16 @@ class CalendarEventHandler(BaseHandler):
         db.session.commit()
         
         self.writeSuccessResult(event)
+
+class CalendarEventModifyHandler(BaseHandler):
+    _error_message = ""
+
+    @tornado.web.authenticated
+    def post(self, teamId, eventId):
+        event = Event.query.filter_by(id= eventId).first()
+        currentUser = self.current_user
+        now = datetime.now()
+        db.session.delete(event)
+
+        db.session.commit()
+        self.writeSuccessResult()

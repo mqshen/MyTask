@@ -38,37 +38,44 @@
                 $fileObj.remove()
                 return;
 			}
-            this.$fileObj.attr("data-content", data.url)
-            this.$progress.css("width", '100%')
-            this.$fileObj.removeClass("uploading")
+            if(this.options.thumbnail) {
+                this.$fileObj.attr("data-content", data.url)
+                this.$progress.css("width", '100%')
+                this.$fileObj.removeClass("uploading")
+            }
         },
 
         fileupload: function(event) {
             this.file = this.$target.get(0).files[0]
-            var $attachmentsContainer = $('#attachments_container', this.$element)
-
             this.isImage = this.file.type.indexOf("image") > -1
-            var fileObj = '<li class="image uploading selected" data-toggle="select" name="attachment">'
-                + '<a class="remove" data-toggle="remove" href="javascript:;"><span>Remove</span></a>'
+            if(this.options.thumbnail) {
+                var $attachmentsContainer = $('#attachments_container', this.$element)
 
-            if(!this.isImage) {
-                fileObj += '<div class="icon"><img src="/static/images/filetype/file.png" class="file_icon" width="32" height="32"></div>' 
+                var fileObj = '<li class="image uploading selected" data-toggle="select" name="attachment">'
+                    + '<a class="remove" data-toggle="remove" href="javascript:;"><span>Remove</span></a>'
+
+                if(!this.isImage) {
+                    fileObj += '<div class="icon"><img src="/static/images/filetype/file.png" class="file_icon" width="32" height="32"></div>' 
+                }
+                fileObj += '<span class="name">' + this.file.name + '</span></li>'
+
+                this.$fileObj = $(fileObj)
+
+                var $progressBar = $('<div class="progress"></div>')
+                this.$progress = $('<div>')
+                $progressBar.append(this.$progress) 
+
+                this.$fileObj.append($progressBar)
+
+                this.$image = $('<img class="thumbnail">')
+                if(this.isImage)
+                    $fileObj.prepend(this.$image)
+                $attachmentsContainer.append(this.$fileObj)
             }
-            fileObj += '<span class="name">' + this.file.name + '</span></li>'
+            else {
+                this.$image = $('img' , this.$element)
+            }
 
-            this.$fileObj = $(fileObj)
-
-            var $progressBar = $('<div class="progress"></div>')
-            this.$progress = $('<div>')
-            $progressBar.append(this.$progress) 
-
-            this.$fileObj.append($progressBar)
-
-            this.$image = $('<img class="thumbnail">')
-            if(this.isImage)
-                $fileObj.prepend(this.$image)
-
-            $attachmentsContainer.append(this.$fileObj)
             this.uploadFile() 
         },
 
@@ -81,7 +88,7 @@
                     var imageReader = new FileReader();
                     imageReader.onload = (function(aFile) {
                         return function(e) {
-                            this.$image.attr("src", e.target.result)
+                            self.$image.attr("src", e.target.result)
                         };
                     })(this.file);
                     imageReader.readAsDataURL(this.file);
@@ -91,11 +98,13 @@
                 if(this.options.dataType)
                     dataType = options.dataType
 	    		// progress bar
-	    		xhr.upload.addEventListener("progress", 
-                    function(e){
-                        self.progress(e)
-                    }, 
-                    false);
+                if(this.options.thumbnail) {
+	    		    xhr.upload.addEventListener("progress", 
+                        function(e){
+                            self.progress(e)
+                        }, 
+                        false);
+                }
 
 	    		// file received/failed
 	    		xhr.onreadystatechange = function(e) {
@@ -127,6 +136,7 @@
     }
 
     $.fn.fileuploader.defaults = {
+        thumbnail: true
     }
 
     $.fn.fileuploader.Constructor = FileUploader 

@@ -172,7 +172,7 @@ class SettingHandler(BaseHandler):
         form = SettingForm(self.request.arguments, locale_code=self.locale.code)
         currentUser = self.current_user
         user = User.query.filter_by(id=currentUser.id).first()
-        if form.password.data is not None:
+        if form.password.data is not None and len(form.password.data) > 0 :
             if form.password.data != form.confirmPassword.data :
                 self.writeFailedResult()
                 self.finish()

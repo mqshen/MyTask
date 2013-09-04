@@ -10,7 +10,7 @@ class Application(tornado.web.Application):
     def __init__(self, settings):
         from controller.attachment import AttachmentHandler, AvatarHandler
         from controller.search import AutoCompleteHandler
-        from controller.mycalendar import  CalendarHandler, CalendarEventHandler
+        from controller.mycalendar import  CalendarHandler, CalendarEventHandler, CalendarEventModifyHandler
         from controller.operation import OperationHandler 
         from controller.project import ProjectHandler, ProjectFilesHandler, ProjectColorHandler, ProjectDetailHandler, \
                 ProjectAccessHandler, NewProjectHandler
@@ -22,9 +22,9 @@ class Application(tornado.web.Application):
         handlers = [
             ('/([0-9]+)', ProjectHandler),
             ('/([0-9]+)/attachment/([0-9A-Za-z]+)', AttachmentHandler),
-            ('/([0-9]+)/avatar', AvatarHandler),
             ('/([0-9]+)/calendar', CalendarHandler),
             ('/([0-9]+)/event', CalendarEventHandler),
+            ('/([0-9]+)/event/([0-9]+)/trash', CalendarEventModifyHandler),
             ('/([0-9]+)/operation', OperationHandler),
             ('/([0-9]+)/project', ProjectHandler),
             ('/([0-9]+)/project/([0-9]+)/files', ProjectFilesHandler),
@@ -47,6 +47,7 @@ class Application(tornado.web.Application):
             ('/([0-9]+)/project/([0-9]+)/message/([0-9]+)/comment/([0-9]+)', CommentDetailHandler),
             ('/([0-9]+)/people', PeopleHandler),
             ('/([0-9]+)/people/new', NewPeopleHandler),
+            ('/avatar', AvatarHandler),
             ('/avatar/([0-9A-Za-z]+)', AvatarHandler),
             ('/attachment', AttachmentHandler),
             ('/register', RegisterHandler),

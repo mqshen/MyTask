@@ -192,6 +192,7 @@
                     <p class="submit">
                         <a data-behavior="confirm" class="action_button green">保存</a>
                         or <a href="javascript:;" class="cancel" data-role="cancel" data-behavior="cancel">取消</a>
+                        <a href="javascript:;" class="image delete" data-behavior="delete"></a>
                     </p>
                 </footer>
             </div>
@@ -444,22 +445,25 @@ function newCalendarProcess(responseData, $element) {
 
 $('#calendar_list > li').calendarEditor({
     content: '#calendar_editor_singleton',
-    processResponse: calendarProcess
+    processResponse: calendarProcess,
+    deleteProcessResponse: removeEvent
 })
 
 $('#project_list > li').calendarEditor({
     content: '#project_editor_singleton',
-    processResponse: projectProcess
+    processResponse: projectProcess,
+    deleteProcessResponse: removeEvent
 })
 
 $('#new_calendar_area').calendarEditor({
     content: '#calendar_editor_singleton',
-    processResponse: newCalendarProcess
+    processResponse: newCalendarProcess,
+    deleteProcessResponse: removeEvent
 })
 
-function doEventResponse(responseData, $element, oldEvent) {
+function doEventResponse(responseData, $element, oldEvent, $eventElement) {
     var event = responseData
-    changeEvent(event, $element, oldEvent)
+    changeEvent(event, $element, oldEvent, $eventElement)
 }
 
 function getEventType(event) {
@@ -470,6 +474,7 @@ function getEventType(event) {
 
 function removeEvent(event) {
    $element.find('.event[data-id="' + event.id + '"]').remove()
+   $element.find('.row[data-id="' + event.id + '"]').remove()
 }
 
 function calculateStyle(beginDate, endDate, weekDay, nextWeekDay) {
@@ -483,10 +488,12 @@ function calculateStyle(beginDate, endDate, weekDay, nextWeekDay) {
         eventClass += 'slot_' + slot
     }
     var width = nextWeekDay.minus(beginDate)
+    var endWidth = endDate.minus(beginDate) + 1
+    width = width < endWidth ? width : endWidth
     if(width > 7) {
         width = endDate.minus(weekDay) + 1
     }
-    else {
+    else if(width !== endWidth){
         eventClass += ' wraps_next'
     }
     if(width > 7) {
@@ -531,9 +538,12 @@ function spannedOperation($target, start, end, flag) {
     }
 }
 
-function changeEvent(event, $target, oldEvent, type) {
-    if(event.startTime != undefined) {
+function changeEvent(event, $target, oldEvent, $eventElement) {
+    if(event.startTime != undefined && event.startTime.length > 0 ) {
         event.startTime = $.lily.timFormater.parse(event.startTime)
+    }
+    else {
+        event.startTime = ''
     }
     var eventType = getEventType(event)
     var oldEventType = getEventType(oldEvent)
@@ -544,12 +554,16 @@ function changeEvent(event, $target, oldEvent, type) {
     $target.attr("data-bucket", event.bucket)
     if(eventType != oldEventType) {
         removeEvent(oldEvent)
+        if($eventElement)
+            $eventElement.remove()
         appendEvent(event)
     }
     else if(eventType === 1) {
         $.lily.changeData($target, event)
     }
     else {
+        if($eventElement)
+            $eventElement.remove()
         var beginDate = $.lily.format.parseDate(event.startDate)
         var endDate = $.lily.format.parseDate(event.endDate)
 
@@ -578,7 +592,8 @@ function changeEvent(event, $target, oldEvent, type) {
                     $eventElement.calendarEditor({
                         content: '#tpl-event-popover',
                         position: 'side',
-                        processResponse: doEventResponse
+                        processResponse: doEventResponse,
+                        deleteProcessResponse: removeEvent
                     })
                     var $spanned = $weekElement.find(".events.spanned")
                     var $currentSpanned = $($spanned[0])
@@ -666,7 +681,8 @@ function addEvent($dayElement, event, type){
     $eventElement.calendarEditor({
         content: '#tpl-event-popover',
         position: 'side',
-        processResponse: doEventResponse
+        processResponse: doEventResponse,
+        deleteProcessResponse: removeEvent
     })
 }
 function addNewEvent($dayElement, event){
@@ -683,12 +699,12 @@ function addNewEvent($dayElement, event){
         content: '#tpl-event-popover',
         position: 'side',
         processResponse: function(responseData, $element, requestData) {
-            $eventElement.remove()
-            doEventResponse(responseData, $element, requestData)
+            doEventResponse(responseData, $element, requestData, $eventElement)
         },
         doCancel: function() {
             $eventElement.remove()
-        }
+        },
+        deleteProcessResponse: removeEvent
     })
     $('.popover-btn', $eventElement).click()
 }
@@ -719,7 +735,8 @@ function appendEvent(event, type) {
                 $eventElement.calendarEditor({
                     content: '#tpl-event-popover',
                     position: 'side',
-                    processResponse: doEventResponse
+                    processResponse: doEventResponse,
+                    deleteProcessResponse: removeEvent
                 })
                 var $spanned = $weekElement.find(".events.spanned")
                 var $currentSpanned = $($spanned[0])
@@ -789,10 +806,13 @@ $element.myCalendar({
 var calendar = $element.data('myCalendar')
 
 $('#invitees').autoAdd()
+
 $('.toggle_calendar_list').click(function(){
     $('#calendar_display_singleton').toggleClass('calendar_list_visible')
 })
+
 $('#event_start_time').time()
+
 $(document).on('click.bucket.data-api', '[data-behavior=toggle_bucket]', function (e) {
     var $btn = $(e.target)
     var bucket = $btn.parent().parent().attr("data-bucket")

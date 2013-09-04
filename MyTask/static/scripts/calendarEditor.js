@@ -53,6 +53,23 @@
             })
         },
 
+        remove: function() {
+            var self = this
+            var requestData = $.lily.collectRequestData(this.$content);
+            var url = this.$element.attr('data-url') + '/' + requestData.id + '/trash'
+            $.lily.ajax({url: url,
+                dataType: 'json',
+                type: 'POST',
+                processResponse: function() {
+                    if(self.options.deleteProcessResponse) {
+                        self.options.deleteProcessResponse(self.requestData)
+                        self.hide();
+                        self.$form[0].reset();
+                    }
+                }
+            })
+        },
+
         show: function(e) {
             if (this.isShown || $(e.target).hasClass("btn"))
                 return
@@ -87,6 +104,10 @@
             var that = this
             $('.action_button', this.$content).bind('click.submitCalendar', function(){
                 that.submit();
+            })
+
+            $('.delete', this.$content).bind('click.delectCalendar', function(){
+                that.remove();
             })
 
             $('.cancel', this.$content).bind('click.cancelCalendar', function(){
