@@ -73,9 +73,13 @@ class CalendarHandler(BaseHandler):
 
             now = datetime.now()
             calendar = Calendar(title=form.title.data, color=form.color.data, own_id=currentUser.id, team_id=teamId, createTime= now, users = users)
-        db.session.add(calendar)
+        try:
+            db.session.add(calendar)
 
-        db.session.commit()
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
         
         self.writeSuccessResult(calendar)
 
@@ -150,9 +154,13 @@ class CalendarEventHandler(BaseHandler):
             event = Event(title=form.title.data, description=form.description.data, startTime=form.startTime.data, 
                 startDate=form.startDate.data, endDate = form.endDate.data, project_id = project_id, calendar_id = calendar_id,
                 own_id=currentUser.id, team_id=teamId, createTime= now)
-        db.session.add(event)
+        try:
+            db.session.add(event)
 
-        db.session.commit()
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
         
         self.writeSuccessResult(event)
 
@@ -164,7 +172,11 @@ class CalendarEventModifyHandler(BaseHandler):
         event = Event.query.filter_by(id= eventId).first()
         currentUser = self.current_user
         now = datetime.now()
-        db.session.delete(event)
+        try:
+            db.session.delete(event)
 
-        db.session.commit()
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
         self.writeSuccessResult()

@@ -46,6 +46,7 @@ class Application(tornado.web.Application):
             ('/([0-9]+)/project/([0-9]+)/message/([0-9]+)/comment', CommentHandler),
             ('/([0-9]+)/project/([0-9]+)/message/([0-9]+)/comment/([0-9]+)', CommentDetailHandler),
             ('/([0-9]+)/people', PeopleHandler),
+            ('/([0-9]+)/people/([0-9]+)', PeopleDetailHandler),
             ('/([0-9]+)/people/new', NewPeopleHandler),
             ('/avatar', AvatarHandler),
             ('/avatar/([0-9A-Za-z]+)', AvatarHandler),
@@ -57,7 +58,6 @@ class Application(tornado.web.Application):
             ('/', TeamNewHandler),
             ('/team/([0-9]+)', TeamHandler),
             ('/settings', SettingHandler),
-            ('/people/([0-9]+)', PeopleDetailHandler),
             ('/join/([0-9a-z]+)', JoinHandler),
             ('/autocomplete', AutoCompleteHandler),
         ]

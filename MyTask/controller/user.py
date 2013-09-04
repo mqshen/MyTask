@@ -67,8 +67,12 @@ class RegisterHandler(BaseHandler):
 
             teamUserRel = TeamUserRel(privilege=2, member=user, team=team)
 
-            db.session.add(teamUserRel)
-            db.session.commit()
+            try:
+                db.session.add(teamUserRel)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
             self.set_secure_cookie("sid", self.session.sessionid)
             self.session["user"] = UserObj(user, team.id)
             self.redirect("/")
@@ -112,8 +116,12 @@ class LoginHandler(BaseHandler):
                 cookie.sid = self.session.sessionid
             else:
                 cookie = Cookie(user_id= currentUser.id, sid= self.session.sessionid)
-            db.session.add(cookie)
-            db.session.commit()
+            try:
+                db.session.add(cookie)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
 
             if len(currentUser.teams) == 1:
                 self.session["user"] = UserObj(currentUser, currentUser.teams[0].id)
@@ -146,8 +154,12 @@ class TeamNewHandler(BaseHandler):
         team = Team(title=form.teamTitle.data, createTime=datetime.now())
         teamUserRel = TeamUserRel(member= user, team=team, privilege=2)
 
-        db.session.add(teamUserRel)
-        db.session.commit()
+        try:
+            db.session.add(teamUserRel)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
 
         currentUser.teamId = team.id 
         self.session["user"] = currentUser
@@ -187,8 +199,12 @@ class SettingHandler(BaseHandler):
         user.email = form.email.data
         user.name = form.name.data
         user.nickName = form.nickName.data
-        db.session.add(user)
-        db.session.commit()
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
         currentUser.email = user.email
         currentUser.name = user.name
         currentUser.nickName = user.nickName
@@ -211,31 +227,35 @@ class PeopleHandler(BaseHandler):
         form = TeamAccessForm(self.request.arguments, locale_code=self.locale.code)
 
         inviteId = getSequence('team_invite_id')
-        for projectId in form.projectId.data:
-            inviteProject = InviteProject(invite_id= inviteId, project_id= projectId) 
-            db.session.add(inviteProject)
+        try:
+            for projectId in form.projectId.data:
+                inviteProject = InviteProject(invite_id= inviteId, project_id= projectId) 
+                db.session.add(inviteProject)
 
-        subject = "%s邀请您加入%s"%(currentUser.name, team.title)
-        for email in form.email.data :
-            hashCode = uuid4().hex
-            user = db.session.execute("select user.* from user, team_user_rel where id=user_id and team_id=:teamId and email=:email", 
-                    {"teamId":teamId, "email": email}).first()
-            if user is not None:
-                continue
-            inviteUser = InviteUser.query.filter_by(email= email).first()
-            if inviteUser:
-                continue
-            privilege = 0
-            if form.create.data :
-                privilege = 1
-            if form.admin.data :
-                privilege = 2
-            inviteUser = InviteUser(id= hashCode, email=email, invite_id=inviteId, team_id = teamId, privilege= privilege)
-            db.session.add(inviteUser)
-            html = self.render_string("email/invite.html", team=team, currentUser=currentUser, inviteUser=inviteUser)
-            qm.send(Email(subject= subject, text= html, adr_to= email, adr_from= options.smtp.get("user")))
+            subject = "%s邀请您加入%s"%(currentUser.name, team.title)
+            for email in form.email.data :
+                hashCode = uuid4().hex
+                user = db.session.execute("select user.* from user, team_user_rel where id=user_id and team_id=:teamId and email=:email", 
+                        {"teamId":teamId, "email": email}).first()
+                if user is not None:
+                    continue
+                inviteUser = InviteUser.query.filter_by(email= email).first()
+                if inviteUser:
+                    continue
+                privilege = 0
+                if form.create.data :
+                    privilege = 1
+                if form.admin.data :
+                    privilege = 2
+                inviteUser = InviteUser(id= hashCode, email=email, invite_id=inviteId, team_id = teamId, privilege= privilege)
+                db.session.add(inviteUser)
+                html = self.render_string("email/invite.html", team=team, currentUser=currentUser, inviteUser=inviteUser)
+                qm.send(Email(subject= subject, text= html, adr_to= email, adr_from= options.smtp.get("user")))
 
-        db.session.commit()
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
         self.writeSuccessResult(successUrl='/people')
 
 class NewPeopleHandler(BaseHandler):
@@ -250,7 +270,7 @@ class PeopleDetailHandler(BaseHandler):
         user = User.query.filter_by(id=userId).first()
         team = Team.query.filter_by(id=teamId).first()
         todoItems = TodoItem.query.filter_by(team_id=teamId, worker_id=user.id, done=0).all()
-        self.render("user/peopleDetail.html", user=user, team=team, todoItems= todoItems)
+        self.render("user/peopleDetail.html", user=user, team=team, todoItems= todoItems, teamId = teamId)
 
 
 class JoinHandler(BaseHandler):
@@ -260,13 +280,17 @@ class JoinHandler(BaseHandler):
             raise HTTPError(404)
         user = User.query.filter_by(email=inviteUser.email).first()
         if user :
-            inviteProjects = InviteProject.query.filter_by(invite_id=inviteUser.invite_id).all()
-            db.session.execute("insert into team_user_rel values(:teamId, :userId, :privilege)", 
-                    {"teamId": inviteUser.team_id, "userId": user.id, "privilege": inviteUser.privilege})
-            for inviteProject in inviteProjects:
-                db.session.execute("insert into project_user_rel values(:projectId, :userId)", {"projectId": inviteProject.project_id, "userId": user.id})
-            db.session.delete(inviteUser)
-            db.session.commit()
+            try:
+                inviteProjects = InviteProject.query.filter_by(invite_id=inviteUser.invite_id).all()
+                db.session.execute("insert into team_user_rel values(:teamId, :userId, :privilege)", 
+                        {"teamId": inviteUser.team_id, "userId": user.id, "privilege": inviteUser.privilege})
+                for inviteProject in inviteProjects:
+                    db.session.execute("insert into project_user_rel values(:projectId, :userId)", {"projectId": inviteProject.project_id, "userId": user.id})
+                db.session.delete(inviteUser)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
 
             self.session["user"] = UserObj(user, inviteUser.team_id)
             self.redirect("/")
@@ -283,15 +307,18 @@ class JoinHandler(BaseHandler):
                            form.password.data)).encode('utf-8'))
         password_md5 = m.hexdigest()
         user = User(email= inviteUser.email, name= form.name.data, password= password_md5, nickName=form.name.data, avatar="default")
-        db.session.add(user)
-        db.session.flush()
-        db.session.execute("insert into team_user_rel values(:teamId, :userId, :privilege)", 
-                    {"teamId": inviteUser.team_id, "userId": user.id, "privilege": inviteUser.privilege})
-        for inviteProject in inviteProjects:
-            db.session.execute("insert into project_user_rel values(:projectId, :userId)", {"projectId": inviteProject.project_id, "userId": user.id})
-        db.session.delete(inviteUser)
-        db.session.commit()
-
+        try:
+            db.session.add(user)
+            db.session.flush()
+            db.session.execute("insert into team_user_rel values(:teamId, :userId, :privilege)", 
+                        {"teamId": inviteUser.team_id, "userId": user.id, "privilege": inviteUser.privilege})
+            for inviteProject in inviteProjects:
+                db.session.execute("insert into project_user_rel values(:projectId, :userId)", {"projectId": inviteProject.project_id, "userId": user.id})
+            db.session.delete(inviteUser)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
         self.session["user"] = UserObj(user, inviteUser.team_id)
         self.redirect("/")
 

@@ -120,8 +120,12 @@ class AvatarHandler(BaseHandler):
             
             user = User.query.filter_by(id=currentUser.id).first()
             user.avatar= fileName 
-            db.session.add(user)
-            db.session.commit()
+            try:
+                db.session.add(user)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
             currentUser.avatar = user.avatar
             self.session["user"] = currentUser
 
@@ -230,7 +234,11 @@ class AttachmentHandler(BaseHandler):
 
             attachment = Attachment(url= fileName, name= filename, contentType= contentType, width= width, height= height,
                     fileType= fileType, own_id=currentUser.id, createTime=datetime.datetime.now())
-            db.session.add(attachment)
-            db.session.commit()
+            try:
+                db.session.add(attachment)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
 
             self.writeSuccessResult(attachment)

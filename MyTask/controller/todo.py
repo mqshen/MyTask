@@ -48,16 +48,20 @@ class TodoListHandler(BaseHandler):
             now = datetime.now()
             todoList = TodoList(title=form.title.data, 
                 own_id=currentUser.id, project_id= projectId, team_id=teamId, createTime= now)
-            db.session.add(todoList)
+            try:
+                db.session.add(todoList)
 
-            db.session.flush()
+                db.session.flush()
 
-            url = '/project/%s/todolist/%d'%(projectId, todoList.id)
-            operation = Operation(own_id = currentUser.id, createTime= now, operation_type=0, target_type=3,
-                target_id=todoList.id, title= todoList.title, team_id= teamId, project_id= projectId, url= url)
-            db.session.add(operation)
+                url = '/project/%s/todolist/%d'%(projectId, todoList.id)
+                operation = Operation(own_id = currentUser.id, createTime= now, operation_type=0, target_type=3,
+                    target_id=todoList.id, title= todoList.title, team_id= teamId, project_id= projectId, url= url)
+                db.session.add(operation)
 
-            db.session.commit()
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
             self.writeSuccessResult(todoList)
 
 class TodoListDetailHandler(BaseHandler):
@@ -77,8 +81,12 @@ class TodoListDetailHandler(BaseHandler):
             todoList = TodoList.query.filter_by(id=todoListId).first()
             if todoList is not None:
                 todoList.title = form.title.data
-                db.session.add(todoList)
-                db.session.commit()
+                try:
+                    db.session.add(todoList)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    raise
                 self.writeSuccessResult(todoList)
 
 class TodoListCommentHandler(BaseHandler):
@@ -104,15 +112,19 @@ class TodoListCommentHandler(BaseHandler):
                     attachment.team_id = teamId
                     todoComment.attachments.append(attachment)
 
-            db.session.add(todoComment)
-            db.session.flush()
+            try:
+                db.session.add(todoComment)
+                db.session.flush()
 
-            operation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=1,
-                target_id=todolistId, title= "", digest= "", team_id= teamId, project_id= projectId, url= url)
+                operation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=1,
+                    target_id=todolistId, title= "", digest= "", team_id= teamId, project_id= projectId, url= url)
 
-            db.session.add(operation)
+                db.session.add(operation)
 
-            db.session.commit()
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
             send_message(currentUser.id, teamId, 2, 3, todoComment)
 
             self.writeSuccessResult(todoComment)
@@ -140,9 +152,13 @@ class TodoItemHandler(BaseHandler):
             project = Project.query.filter_by(id=projectId).with_lockmode("update").first()
             project.todoNum = project.todoNum + 1
             
-            db.session.add(project)
+            try:
+                db.session.add(project)
 
-            db.session.commit()
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
             worker = None
             if todoItem.worker_id is not None:
                 worker = User.query.filter_by(id=todoItem.worker_id).first()
@@ -172,8 +188,12 @@ class TodoItemDetailHandler(BaseHandler):
                 if len(form.description.data) > 0 :
                     todoItem.description = form.description.data
                     
-                db.session.add(todoItem)
-                db.session.commit()
+                try:
+                    db.session.add(todoItem)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    raise
                 worker = None
                 if todoItem.worker_id is not None:
                     worker = User.query.filter_by(id=todoItem.worker_id).first()
@@ -193,8 +213,12 @@ class TodoItemModifyHandler(BaseHandler):
             url = '/project/todolist/%s/todoitem/%d'%(todoListId, todoItem.id)
             myOperation = Operation(own_id = currentUser.id, createTime= now, operation_type=3, target_type=4,
                 target_id=todoItem.id, title= todoItem.description, team_id= teamId, project_id= projectId, url= url)
-            db.session.add(myOperation)
-            db.session.commit()
+            try:
+                db.session.add(myOperation)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
             self.writeSuccessResult()
             return
 
@@ -204,7 +228,15 @@ class TodoItemModifyHandler(BaseHandler):
                 target_id=todoItem.id, title= todoItem.description, team_id= teamId, project_id= projectId, url= url)
             db.session.add(myOperation)
             todoItem.done = 0
-            db.session.add(todoItem)
+            try:
+                db.session.add(todoItem)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
+
+            self.writeSuccessResult(todoItem)
+            return
         elif operation == "done" :
             url = '/project/todolist/%s/todoitem/%d'%(todoListId, todoItem.id)
             myOperation = Operation(own_id = currentUser.id, createTime= now, operation_type=9, target_type=4,
@@ -214,10 +246,14 @@ class TodoItemModifyHandler(BaseHandler):
             todoItem.worker_id = currentUser.id
             todoItem.deadline = now
             todoItem.done = 1
-            db.session.add(todoItem)
+            try:
+                db.session.add(todoItem)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
+            self.writeSuccessResult(todoItem)
 
-        db.session.commit()
-        self.writeSuccessResult(todoItem)
 
 class TodoItemCommentHandler(BaseHandler):
     @tornado.web.authenticated
@@ -241,15 +277,19 @@ class TodoItemCommentHandler(BaseHandler):
                     attachment.team_id = teamId
                     todoComment.attachments.append(attachment)
 
-            db.session.add(todoComment)
-            db.session.flush()
+            try:
+                db.session.add(todoComment)
+                db.session.flush()
 
-            operation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=1,
-                target_id=todoitemId, title= "", digest= "", team_id= teamId, project_id= projectId, url= url)
+                operation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=1,
+                    target_id=todoitemId, title= "", digest= "", team_id= teamId, project_id= projectId, url= url)
 
-            db.session.add(operation)
+                db.session.add(operation)
 
-            db.session.commit()
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
             send_message(currentUser.id, teamId, 2, 4, todoComment)
 
             self.writeSuccessResult(todoComment)
@@ -262,12 +302,16 @@ class TodoListModifyHandler(BaseHandler):
         todoList = TodoList.query.filter_by(id=todoListId).first()
         currentUser = self.current_user
         now = datetime.now()
-        db.session.delete(todoList)
+        try:
+            db.session.delete(todoList)
 
-        url = '/%s/project/todolist/%s'%(teamId, todoListId )
-        myOperation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=4,
-            target_id=todoList.id, title= todoList.description, team_id= teamId, project_id= projectId, url= url)
-        db.session.add(myOperation)
-        db.session.commit()
+            url = '/%s/project/todolist/%s'%(teamId, todoListId )
+            myOperation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=4,
+                target_id=todoList.id, title= todoList.description, team_id= teamId, project_id= projectId, url= url)
+            db.session.add(myOperation)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
         self.writeSuccessResult()
 

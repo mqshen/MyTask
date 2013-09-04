@@ -65,19 +65,23 @@ class ProjectHandler(BaseHandler):
         now = datetime.now()
         project = Project(title=form.name.data, description=form.description.data, 
                 own_id=currentUser.id, team_id=teamId, createTime= now, users = users)
-        db.session.add(project)
-        db.session.flush()
-        needRepository = 0
+        try:
+            db.session.add(project)
+            db.session.flush()
+            needRepository = 0
 
 
-        url = "/project/%d"%project.id
-        operation = Operation(own_id = currentUser.id, createTime= now, operation_type=0, target_type=0, 
-                target_id=project.id, title= project.title, team_id= teamId, project_id= project.id, url= url)
+            url = "/project/%d"%project.id
+            operation = Operation(own_id = currentUser.id, createTime= now, operation_type=0, target_type=0, 
+                    target_id=project.id, title= project.title, team_id= teamId, project_id= project.id, url= url)
 
-        db.session.add(operation)
+            db.session.add(operation)
 
 
-        db.session.commit()
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
         
         currentUser.projects.append(project.id)
         self.session["user"] = currentUser
@@ -123,13 +127,17 @@ class ProjectAccessHandler(BaseHandler):
     @core.web.authenticatedProject
     def post(self, projectId):
         form = ProjectAccessForm(self.request.arguments, locale_code=self.locale.code)
-        if(form.operation.data == "add"):
-            db.session.execute("insert into project_user_rel values(:project_id, :user_id)", {"project_id":projectId, "user_id":form.userId.data})
-        else:
-            db.session.execute("delete from project_user_rel where project_id= :project_id and user_id = :user_id", 
-                    {"project_id":projectId, "user_id":form.userId.data})
+        try:
+            if(form.operation.data == "add"):
+                db.session.execute("insert into project_user_rel values(:project_id, :user_id)", {"project_id":projectId, "user_id":form.userId.data})
+            else:
+                db.session.execute("delete from project_user_rel where project_id= :project_id and user_id = :user_id", 
+                        {"project_id":projectId, "user_id":form.userId.data})
 
-        db.session.commit()
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
 
         self.writeSuccessResult(successUrl='/')
 
@@ -148,27 +156,31 @@ class ProjectFilesHandler(BaseHandler):
         project = Project.query.filter_by(id= projectId).with_lockmode("update").first()
         files = []
         fileNames = []
-        for fileUrl in form.attachment.data:
-            attachment = Attachment.query.filter_by(url = fileUrl).first()
-            attachment.project_id = projectId
-            files.append(attachment)
-            fileNames.append(attachment.name)
-            db.session.add(attachment)
+        try:
+            for fileUrl in form.attachment.data:
+                attachment = Attachment.query.filter_by(url = fileUrl).first()
+                attachment.project_id = projectId
+                files.append(attachment)
+                fileNames.append(attachment.name)
+                db.session.add(attachment)
 
-        project.fileNum = project.fileNum + len(files)
+            project.fileNum = project.fileNum + len(files)
 
-        now = datetime.now()
+            now = datetime.now()
 
-        url = "/project/%s/files"%(project.id)
-        title = ','.join(fileNames)
-        title = title[:30]
-        currentUser = self.current_user
-        operation = Operation(own_id = currentUser.id, createTime= now, operation_type=11, target_type=6,
-            target_id= project.id, title= title, team_id= teamId, project_id= project.id, url= url)
-        db.session.add(operation)
+            url = "/project/%s/files"%(project.id)
+            title = ','.join(fileNames)
+            title = title[:30]
+            currentUser = self.current_user
+            operation = Operation(own_id = currentUser.id, createTime= now, operation_type=11, target_type=6,
+                target_id= project.id, title= title, team_id= teamId, project_id= project.id, url= url)
+            db.session.add(operation)
 
-        db.session.add(project)
-        db.session.commit()
+            db.session.add(project)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
 
         self.writeSuccessResult(files= files)
         
@@ -189,7 +201,11 @@ class ProjectColorHandler(BaseHandler):
 
         project.color = form.color.data
 
-        db.session.add(project)
-        db.session.commit()
+        try:
+            db.session.add(project)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
 
         self.writeSuccessResult(project)

@@ -58,21 +58,25 @@ class MessageHandler(BaseHandler):
                 if attachment is not None:
                     message.attachments.append(attachment)
 
-            db.session.add(message)
-            db.session.flush()
-            messageId = message.id
+            try:
+                db.session.add(message)
+                db.session.flush()
+                messageId = message.id
 
-            url = "/project/%s/message/%d"%(projectId, message.id)
-            operation = Operation(own_id = currentUser.id, createTime= now, operation_type=1, target_type=1,
-                target_id=messageId, title= message.title, team_id= teamId, project_id= projectId, url= url)
-            db.session.add(operation)
+                url = "/project/%s/message/%d"%(projectId, message.id)
+                operation = Operation(own_id = currentUser.id, createTime= now, operation_type=1, target_type=1,
+                    target_id=messageId, title= message.title, team_id= teamId, project_id= projectId, url= url)
+                db.session.add(operation)
 
-            project = Project.query.filter_by(id=projectId).with_lockmode("update").first()
-            project.discussionNum = project.discussionNum + 1
-            
-            db.session.add(project)
+                project = Project.query.filter_by(id=projectId).with_lockmode("update").first()
+                project.discussionNum = project.discussionNum + 1
+                
+                db.session.add(project)
 
-            db.session.commit()
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
 
             try:
                 documentId = 'message%d'%messageId
@@ -133,20 +137,24 @@ class MessageDetailHandler(BaseHandler):
         operation = Operation(own_id = currentUser.id, createTime= now, operation_type=4, target_type=1,
             target_id=messageId, title= message.title, team_id= teamId, project_id= projectId, url= url)
 
-        db.session.add(operation)
+        try:
+            db.session.add(operation)
 
-        for url in form.attachmentDel.data:
-            for attachment in message.attachments:
-                if attachment.url == url:
-                    message.attachments.remove(attachment)
+            for url in form.attachmentDel.data:
+                for attachment in message.attachments:
+                    if attachment.url == url:
+                        message.attachments.remove(attachment)
 
-        for attachment in form.attachment.data:
-            attachment = Attachment.query.filter_by(url=attachment).first()
-            if attachment is not None:
-                message.attachments.append(attachment)
-                
-        db.session.add(message)
-        db.session.commit()
+            for attachment in form.attachment.data:
+                attachment = Attachment.query.filter_by(url=attachment).first()
+                if attachment is not None:
+                    message.attachments.append(attachment)
+                    
+            db.session.add(message)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
         self.writeSuccessResult(message)
 
 class CommentDetailHandler(BaseHandler):
@@ -174,20 +182,24 @@ class CommentDetailHandler(BaseHandler):
         operation = Operation(own_id = currentUser.id, createTime= now, operation_type=4, target_type=2,
             target_id=messageId, title= message.title, digest=comment.content, team_id= teamId, project_id= projectId, url= url)
 
-        db.session.add(operation)
+        try:
+            db.session.add(operation)
 
-        for attachment in form.attachment.data:
-            attachment = Attachment.query.filter_by(url=attachment).first()
-            if attachment is not None:
-                meeesage.attachments.append(attachment)
-                
-        for url in form.attachmentDel.data:
-            for attachment in message.attachments:
-                if attachment.url == url:
-                    comment.attachments.remove(attachment)
+            for attachment in form.attachment.data:
+                attachment = Attachment.query.filter_by(url=attachment).first()
+                if attachment is not None:
+                    meeesage.attachments.append(attachment)
+                    
+            for url in form.attachmentDel.data:
+                for attachment in message.attachments:
+                    if attachment.url == url:
+                        comment.attachments.remove(attachment)
 
-        db.session.add(comment)
-        db.session.commit()
+            db.session.add(comment)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
         self.writeSuccessResult(comment)
 
 class CommentHandler(BaseHandler):
@@ -207,25 +219,29 @@ class CommentHandler(BaseHandler):
                 if attachment is not None:
                     comment.attachments.append(attachment)
 
-            db.session.add(comment)
-            db.session.flush()
-            commentId = comment.id
-            digest = html2text(form.content.data)
-            digest = digest[:100]
+            try:
+                db.session.add(comment)
+                db.session.flush()
+                commentId = comment.id
+                digest = html2text(form.content.data)
+                digest = digest[:100]
 
-            message.comment_num = message.comment_num + 1
-            message.comment_digest = digest
+                message.comment_num = message.comment_num + 1
+                message.comment_digest = digest
 
-            db.session.add(message)
+                db.session.add(message)
 
-            url = "/project/%s/message/%s/comment/%d"%(projectId, messageId, commentId)
+                url = "/project/%s/message/%s/comment/%d"%(projectId, messageId, commentId)
 
-            operation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=1,
-                target_id=messageId, title= message.title, digest= digest, team_id= teamId, project_id= projectId, url= url)
+                operation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=1,
+                    target_id=messageId, title= message.title, digest= digest, team_id= teamId, project_id= projectId, url= url)
 
-            db.session.add(operation)
+                db.session.add(operation)
 
-            db.session.commit()
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
             send_message(currentUser.id, teamId, 2, 1, comment)
 
             self.writeSuccessResult(comment)
