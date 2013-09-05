@@ -257,11 +257,10 @@ class TodoItemModifyHandler(BaseHandler):
 
 class TodoItemCommentHandler(BaseHandler):
     @tornado.web.authenticated
-    def post(self, projectId, todolistId, todoitemId):
+    def post(self, teamId, projectId, todolistId, todoitemId):
         form = CommentForm(self.request.arguments, locale_code=self.locale.code)
         if form.validate():
             currentUser = self.current_user
-            teamId = currentUser.teamId
             now = datetime.now()
             todoComment = TodoComment(content=form.content.data, todoitem_id=todoitemId,
                 own_id=currentUser.id, project_id= projectId, team_id=teamId, createTime= now, attachments=[])

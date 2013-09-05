@@ -19,6 +19,8 @@ class Application(tornado.web.Application):
         from controller.topic import MessageHandler, MessageDetailHandler, NewMessageHandler, CommentHandler, CommentDetailHandler
         from controller.user import RegisterHandler, LoginHandler, SignOutHandler, TeamNewHandler, TeamHandler, SettingHandler, \
                 PeopleHandler, NewPeopleHandler, PeopleDetailHandler, JoinHandler
+        from controller.calendarfeed import CalendarFeedHandler, CalendarFeedPortalHandler
+
         handlers = [
             ('/([0-9]+)', ProjectHandler),
             ('/([0-9]+)/attachment/([0-9A-Za-z]+)', AttachmentHandler),
@@ -48,6 +50,8 @@ class Application(tornado.web.Application):
             ('/([0-9]+)/people', PeopleHandler),
             ('/([0-9]+)/people/([0-9]+)', PeopleDetailHandler),
             ('/([0-9]+)/people/new', NewPeopleHandler),
+            ('/([0-9]+)/calendar_feeds', CalendarFeedPortalHandler),
+            ('/([0-9]+)/calendar_feeds.ics', CalendarFeedHandler),
             ('/avatar', AvatarHandler),
             ('/avatar/([0-9A-Za-z]+)', AvatarHandler),
             ('/attachment', AttachmentHandler),

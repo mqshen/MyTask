@@ -2351,6 +2351,9 @@ font-weight: normal;
 -webkit-font-smoothing: antialiased;
 text-align: center;
 }
+div.calendar_display div.left>aside section.calendar_feeds {
+margin-top: 30px;
+}
 div.popover footer p.submit a.image.delete {
 float: right;
 margin-top: -3px;

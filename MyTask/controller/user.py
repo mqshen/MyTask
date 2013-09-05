@@ -12,7 +12,7 @@ from tornado.web import RequestHandler
 from tornado.web import HTTPError
 import hashlib
 from core.BaseHandler import BaseHandler 
-from forms import Form, TextField, ListField, BooleanField
+from forms import Form, TextField, ListField, BooleanField, validators
 from core.database import db
 from core.quemail import QueMail, Email
 from core.util import getSequence 
@@ -21,8 +21,8 @@ from uuid import uuid4
 from datetime import datetime
 
 class SigninForm(Form):
-    email = TextField('email')
-    password = TextField('password')
+    email = TextField('email', [validators.required(), validators.email()])
+    password = TextField('password', [validators.required()])
 
 class RegisterForm(Form):
     email = TextField('email')
@@ -46,7 +46,7 @@ class JoinForm(Form):
 
 
 class RegisterHandler(BaseHandler):
-    _error_message = "用户名已存在"
+    _error_message = "Áî®Êà∑ÂêçÂ∑≤Â≠òÂú®"
     def get(self):
         self.rawRender("register.html")
 
@@ -106,31 +106,33 @@ class LoginHandler(BaseHandler):
             password_md5 = m.hexdigest()
             print(password_md5)
             currentUser = User.query.filter_by(email=form.email.data, password=password_md5).first()
-        if currentUser is None:
-            self.render("login.html", form = form, errorMessage = self._error_message)
+            if currentUser is None:
+                self.render("login.html", form = form, error_message = "用户名或密码错误！")
+            else:
+                self.set_secure_cookie("sid", self.session.sessionid)
+    
+                cookie = Cookie.query.filter_by(user_id = currentUser.id).first()
+                if cookie:
+                    cookie.sid = self.session.sessionid
+                else:
+                    cookie = Cookie(user_id= currentUser.id, sid= self.session.sessionid)
+                try:
+                    db.session.add(cookie)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    raise
+    
+                if len(currentUser.teams) == 1:
+                    self.session["user"] = UserObj(currentUser, currentUser.teams[0].id)
+                    self.redirect("/")
+                else:
+                    self.session["user"] = UserObj(currentUser)
+                    self.session._save()
+                    self.rawRender("teamSelect.html", currentUser=currentUser)
         else:
-            self.set_secure_cookie("sid", self.session.sessionid)
-
-            cookie = Cookie.query.filter_by(user_id = currentUser.id).first()
-            if cookie:
-                cookie.sid = self.session.sessionid
-            else:
-                cookie = Cookie(user_id= currentUser.id, sid= self.session.sessionid)
-            try:
-                db.session.add(cookie)
-                db.session.commit()
-            except:
-                db.session.rollback()
-                raise
-
-            if len(currentUser.teams) == 1:
-                self.session["user"] = UserObj(currentUser, currentUser.teams[0].id)
-                self.redirect("/")
-            else:
-                self.session["user"] = UserObj(currentUser)
-                self.session._save()
-                self.rawRender("teamSelect.html", currentUser=currentUser)
-
+            self.render("login.html", form = form)
+            
 class TeamHandler(BaseHandler):
     @tornado.web.authenticated
     @core.web.authenticatedTeam
@@ -232,7 +234,7 @@ class PeopleHandler(BaseHandler):
                 inviteProject = InviteProject(invite_id= inviteId, project_id= projectId) 
                 db.session.add(inviteProject)
 
-            subject = "%s邀请您加入%s"%(currentUser.name, team.title)
+            subject = "%sÈÇÄËØ∑ÊÇ®Âä†ÂÖ•%s"%(currentUser.name, team.title)
             for email in form.email.data :
                 hashCode = uuid4().hex
                 user = db.session.execute("select user.* from user, team_user_rel where id=user_id and team_id=:teamId and email=:email", 

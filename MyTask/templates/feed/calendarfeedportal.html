@@ -1,0 +1,54 @@
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+
+{% block body%}
+    <div class="container stack_container" style="width: 960px;">
+        <div class="panel sheet project active blank_slate inactive">
+            <header>
+                <h1><a data-restore-position="" href="/{{teamId}}/calendar">日历</a></h1>
+            </header>
+            <div class="panel sheet calendar_feeds has_sidebar" style="margin-left: 20px; margin-bottom: -20px;">
+                <header>
+                  <h1>通过iCalendar格式订阅到日历</h1>
+                </header>
+
+                <div class="sheet_body">
+                  <p>如果使用
+                  <p>If you use Apple iCal, Google Calendar, or another program that supports the iCalendar format, you can use the addresses below to subscribe to Basecamp calendars. You can see events in Basecamp calendars, but you'll need to use Basecamp to add or edit events.</p>
+                  
+                  <table>
+                    <tbody>
+                      <tr>
+                        <th>All calendars</th>
+                        <td><a class="decorated" href="webcal://basecamp.com/2376309/calendar_feeds.ics?token=V0xBWktIRVlFTTkvZGllR0d4QlJGUT09LS1RUXBwTjJ5TUhrY2lwU2VyOW1rcG1nPT0%3D--a17eca9234c2b9ac850c4f1cd2e6136d6106efba-5545628">Subscription link</a></td>
+                      </tr>
+
+                        <tr>
+                          <th><span class="swatch" style="background-color:#000099;"></span> General</th>
+                          <td><a class="decorated" href="webcal://basecamp.com/2376309/calendar_feeds/c640268.ics?token=bDFEM3JrT2JkcjY5dml1THBLSkFoZz09LS1yc0w5cTM0UGZoMVJlVyswMFhRUk5BPT0%3D--63c4bd727e3627193b015ad3728e0c22419f9f3c-5545628">Subscription link</a></td>
+                        </tr>
+                        <tr>
+                          <th><span class="swatch" style="background-color:#ff9c00;"></span> Name the project</th>
+                          <td><a class="decorated" href="webcal://basecamp.com/2376309/calendar_feeds/p3736390.ics?token=YUFMTHQ0MGpjMUJrM3pXdldKTDl4QT09LS1jZTFnd01TYmZ6UkFYQ1JxMk5TM2ZnPT0%3D--ba1810ec84bc3db578c70bd1286c8a546884d772-5545628">Subscription link</a></td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+                <aside>
+                  <h5>Please note:</h5>
+                  <p>iCalendar addresses are not password-protected. If a subscription falls into the wrong hands, you have to change your password to completely clear out the subscription and start with a new address.</p>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% end %}
+
+{% block script %}
+$(function(){
+})
+
+{% end %}

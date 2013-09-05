@@ -20,26 +20,26 @@ font-size: 40px;
 }
 .auth-form {
     width: 400px;
-    margin: 80px auto;
+    margin: 60px auto;
 }
 .auth-form form {
 border-radius: 4px;
 box-shadow: 0 1px 3px rgba(0,0,0,0.075);
 }
 .auth-form-header {
-position: relative;
-padding: 10px 20px;
-margin: 0;
-color: #fff;
-text-shadow: 0 -1px 0 rgba(0,0,0,0.5);
-background-color: #6c8393;
-background-image: -moz-linear-gradient(#7f95a5, #6c8393);
-background-image: -webkit-linear-gradient(#7f95a5, #6c8393);
-background-image: linear-gradient(#7f95a5, #6c8393);
-background-repeat: repeat-x;
-border: 1px solid #6e8290;
-border-bottom-color: #586873;
-border-radius: 4px 4px 0 0;
+	position: relative;
+	padding: 10px 20px;
+	margin: 0;
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.5);
+	background-color: #6c8393;
+	background-image: -moz-linear-gradient(#7f95a5, #6c8393);
+	background-image: -webkit-linear-gradient(#7f95a5, #6c8393);
+	background-image: linear-gradient(#7f95a5, #6c8393);
+	background-repeat: repeat-x;
+	border: 1px solid #6e8290;
+	border-bottom-color: #586873;
+	border-radius: 4px 4px 0 0;
 }
 .auth-form-header h1 {
 font-size: 16px;
@@ -64,4 +64,39 @@ width: 100%;
 }
 .a {
 color: #4183c4;
+}
+.flash-messages {
+	margin-top: 20px;
+}
+.container {
+width: 980px;
+margin-left: auto;
+margin-right: auto;
+padding: 0 10px;
+}
+.flash, .flash-global {
+position: relative;
+border: 1px solid #97c1da;
+color: #264c72;
+background-color: #d0e3ef;
+background-image: -moz-linear-gradient(#d8ebf8, #d0e3ef);
+background-image: -webkit-linear-gradient(#d8ebf8, #d0e3ef);
+background-image: linear-gradient(#d8ebf8, #d0e3ef);
+background-repeat: repeat-x;
+text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.flash.flash-error, .flash-global.flash-error {
+color: #911;
+background-color: #efd0d0;
+background-image: -moz-linear-gradient(#f8d8d8, #efd0d0);
+background-image: -webkit-linear-gradient(#f8d8d8, #efd0d0);
+background-image: linear-gradient(#f8d8d8, #efd0d0);
+background-repeat: repeat-x;
+border-color: #da9797;
+}
+.flash {
+padding: 15px;
+border-radius: 3px;
+box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }

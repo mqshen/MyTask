@@ -20,6 +20,13 @@
     </ul>
 </div>
 <div id="logon">
+	<div class="flash-messages container">
+		{% if (globals().get('form', False) and form.errors) or globals().get('error_message', False) %}
+		<div class="flash flash-error">
+			<span class="octicon octicon-remove-close close"></span> 用户名或密码错误.
+		</div>
+		{% end %}
+	</div>
     <div class="auth-form" id="login">
         <form accept-charset="UTF-8" action="/login" method="post">
 			{% module xsrf_form_html() %}

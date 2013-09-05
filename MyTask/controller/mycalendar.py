@@ -98,7 +98,7 @@ class CalendarEventHandler(BaseHandler):
                     or_(and_(Event.startDate >= form.start_date.data, Event.startDate <= form.end_date.data),
                         and_(Event.endDate >= form.start_date.data, Event.endDate <= form.end_date.data))
                 ).all()
-        print(project_events)
+
         calendar_events = Event.query.join(Event.calendar).\
                 join(Project.users).\
                 filter(User.id == currentUser.id, Calendar.team_id == teamId,
