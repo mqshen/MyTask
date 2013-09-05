@@ -14,31 +14,43 @@
                 </header>
 
                 <div class="sheet_body">
-                  <p>如果使用
-                  <p>If you use Apple iCal, Google Calendar, or another program that supports the iCalendar format, you can use the addresses below to subscribe to Basecamp calendars. You can see events in Basecamp calendars, but you'll need to use Basecamp to add or edit events.</p>
-                  
-                  <table>
-                    <tbody>
-                      <tr>
-                        <th>All calendars</th>
-                        <td><a class="decorated" href="webcal://basecamp.com/2376309/calendar_feeds.ics?token=V0xBWktIRVlFTTkvZGllR0d4QlJGUT09LS1RUXBwTjJ5TUhrY2lwU2VyOW1rcG1nPT0%3D--a17eca9234c2b9ac850c4f1cd2e6136d6106efba-5545628">Subscription link</a></td>
-                      </tr>
+                    <p style="margin: 0 0 19px;">
+                        使用Apple iCal, Google Calendar 或其它支持iCalendar格式的软件，就可以订阅下面的连接。
+                        可是查看MyTask的日历，但是需要使用MyTask来添加或编辑事件。
+                    </p>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>全部日历</th>
+                                <td>
+                                    <a class="decorated" href="webcal://{{options.domain}}/{{teamId}}/calendar_feeds.ics?token={{ generateToken("all", user) }}&userId={{user.id}}">
+                                    	订阅
+                                    </a>
+                                </td>
+                            </tr>
+                            {% for calendar in calendars %}
+                            <tr>
+                                <th><span class="swatch" style="background-color:#{{calendar.color}};"></span>{{calendar.title}}</th>
+                                <td>
+                                    <a class="decorated" href="webcal://{{options.domain}}/{{teamId}}/calendar_feeds/c{{calendar.id}}.ics?token={{ generateToken(calendar.title, user) }}&userId={{user.id}}">订阅</a>
+                                </td>
+                            </tr>
+                            {% end %}
 
-                        <tr>
-                          <th><span class="swatch" style="background-color:#000099;"></span> General</th>
-                          <td><a class="decorated" href="webcal://basecamp.com/2376309/calendar_feeds/c640268.ics?token=bDFEM3JrT2JkcjY5dml1THBLSkFoZz09LS1yc0w5cTM0UGZoMVJlVyswMFhRUk5BPT0%3D--63c4bd727e3627193b015ad3728e0c22419f9f3c-5545628">Subscription link</a></td>
-                        </tr>
-                        <tr>
-                          <th><span class="swatch" style="background-color:#ff9c00;"></span> Name the project</th>
-                          <td><a class="decorated" href="webcal://basecamp.com/2376309/calendar_feeds/p3736390.ics?token=YUFMTHQ0MGpjMUJrM3pXdldKTDl4QT09LS1jZTFnd01TYmZ6UkFYQ1JxMk5TM2ZnPT0%3D--ba1810ec84bc3db578c70bd1286c8a546884d772-5545628">Subscription link</a></td>
-                        </tr>
-                    </tbody>
-                  </table>
+                            {% for project in projects %}
+                            <tr>
+                                <th><span class="swatch" style="background-color:#{{project.color}};"></span>{{project.title}}</th>
+                                <td>
+                                    <a class="decorated" href="webcal://{{options.domain}}/{{teamId}}/calendar_feeds/p{{project.id}}.ics?token={{ generateToken(project.title, user) }}&userId={{user.id}}">订阅</a>
+                                </td>
+                            </tr>
+                            {% end %}
+                        </tbody>
+                    </table>
                 </div>
-                
                 <aside>
-                  <h5>Please note:</h5>
-                  <p>iCalendar addresses are not password-protected. If a subscription falls into the wrong hands, you have to change your password to completely clear out the subscription and start with a new address.</p>
+                    <h5>注意事项:</h5>
+                    <p>iCalendar 地址安全没有通过密码保证. 如果您的地址泄漏, 您就需要通过修改您的密码来使之前的地址失效。</p>
                 </aside>
             </div>
         </div>

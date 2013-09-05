@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+CALSCALE:GREGORIAN
+PRODID:-//mqshen//Next//EN
+X-WR-CALNAME:ssss : MyTask的所有日历
+X-WR-TIMEZONE:Asia/Shanghai
+VERSION:2.0
+{% for event in calendar.events %}
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:{{event.startDate.strftime("%Y%m%d")}}
+DTEND;VALUE=DATE:{{event.endDate.strftime("%Y%m%d")}}
+SUMMARY:{{event.title}}
+UID:51507660-bef6-4e0d-b033-46e054b5b00d
+LAST-MODIFIED:{{event.createTime}}
+SEQUENCE:{{event.id}}
+END:VEVENT
+{% end %}
+
+
+END:VCALENDAR

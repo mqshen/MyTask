@@ -3408,3 +3408,34 @@ div.calendar_display div.sheet div.calendar_jump.balloon dd a.selected {
 color: #fff;
 background-color: #222;
 }
+div.sheet.has_sidebar>header h1 {
+border-bottom: 1px solid #e5e5e5;
+padding-bottom: 10px;
+}
+div.sheet.calendar_feeds table {
+width: 100%;
+}
+div.sheet.calendar_feeds table th, div.sheet.calendar_feeds table td {
+text-align: left;
+padding: 10px 10px 10px 0;
+border-bottom: 1px solid #e5e5e5;
+}
+div.sheet.calendar_feeds table td:last-of-type {
+padding-right: 10px;
+text-align: right;
+white-space: nowrap;
+}
+div.sheet.calendar_feeds table .swatch {
+height: 14px;
+width: 16px;
+display: inline-block;
+border: 2px solid #fff;
+vertical-align: middle;
+margin: -2px 2px 0 0;
+-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.4);
+-moz-box-shadow: 0 0 2px rgba(0,0,0,0.4);
+box-shadow: 0 0 2px rgba(0,0,0,0.4);
+border-radius: 4px;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+}

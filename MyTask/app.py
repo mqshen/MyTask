@@ -3,6 +3,7 @@ import tornado.web
 import os.path
 import redis
 from core.session import RedisSessionStore
+from core import ui_methods
 from tornado.options import options
 from core.quemail import QueMail
 
@@ -19,7 +20,7 @@ class Application(tornado.web.Application):
         from controller.topic import MessageHandler, MessageDetailHandler, NewMessageHandler, CommentHandler, CommentDetailHandler
         from controller.user import RegisterHandler, LoginHandler, SignOutHandler, TeamNewHandler, TeamHandler, SettingHandler, \
                 PeopleHandler, NewPeopleHandler, PeopleDetailHandler, JoinHandler
-        from controller.calendarfeed import CalendarFeedHandler, CalendarFeedPortalHandler
+        from controller.calendarfeed import CalendarFeedHandler, CalendarFeedPortalHandler, CalendarItemFeedHandler
 
         handlers = [
             ('/([0-9]+)', ProjectHandler),
@@ -52,6 +53,7 @@ class Application(tornado.web.Application):
             ('/([0-9]+)/people/new', NewPeopleHandler),
             ('/([0-9]+)/calendar_feeds', CalendarFeedPortalHandler),
             ('/([0-9]+)/calendar_feeds.ics', CalendarFeedHandler),
+            ('/([0-9]+)/calendar_feeds/([cp][0-9]+).ics', CalendarItemFeedHandler),
             ('/avatar', AvatarHandler),
             ('/avatar/([0-9A-Za-z]+)', AvatarHandler),
             ('/attachment', AttachmentHandler),
@@ -103,6 +105,7 @@ def main():
         cookie_secret = "__TODO:_Generate_your_own_random_value_here__",
         template_path = os.path.join(os.path.dirname(__file__), options.templatesPath),
         static_path = os.path.join(os.path.dirname(__file__), options.staticPath),
+        ui_methods = ui_methods,
         xsrf_cookies = False,
         autoescape = None,
         debug = True,
