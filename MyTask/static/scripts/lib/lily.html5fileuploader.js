@@ -69,7 +69,7 @@
 
                 this.$image = $('<img class="thumbnail">')
                 if(this.isImage)
-                    $fileObj.prepend(this.$image)
+                    this.$fileObj.prepend(this.$image)
                 $attachmentsContainer.append(this.$fileObj)
             }
             else {

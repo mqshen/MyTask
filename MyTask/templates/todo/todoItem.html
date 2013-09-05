@@ -139,7 +139,7 @@
                                                                     <figure class="thumbnail proportinal">
                                                                         <a href="/attachment/{{attachment.url}}" target="_blank">
                                                                             <div class="background" style="height: 174px; width: 262px;">
-                                                                                <img alt="" class="thumbnail editable" src="/attachment/{{attachment.url}}" 
+                                                                                <img alt="" class="thumbnail editable" src="/{{teamId}}/attachment/{{attachment.url}}" 
                                                                                 data-type="image" data-content="{{attachment.url}}" data-width="{{attachment.width}}"
                                                                                     data-append="#attachments_container" data-height="{{attachment.height}}">
                                                                             </div>
@@ -344,9 +344,9 @@ $(function(){
                     var image = '<td class="occupied">'
                         + '<article class="image">'
                         + '<figure class="thumbnail proportinal">'
-                        + '<a href="/attachment/' + attachment.url + '" target="_blank">'
+                        + '<a href="{{teamId}}/attachment/' + attachment.url + '" target="_blank">'
                         + '<div class="background" style="height: 174px; width: 262px;">'
-                        + '<img alt="" class="thumbnail editable" src="/attachment/' + attachment.url
+                        + '<img alt="" class="thumbnail editable" src="/{{teamId}}/attachment/' + attachment.url
                         + '" data-type="image" data-append="#attachments_container" data-content="' + attachment.url + '" '
                         + 'data-width="' + attachment.width + '" data-height="' + attachment.height + '">'
                         + '</div>'

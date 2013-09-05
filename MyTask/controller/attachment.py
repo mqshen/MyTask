@@ -151,7 +151,7 @@ class AttachmentHandler(BaseHandler):
         self.get(path, include_body=False)
     
     @tornado.web.authenticated
-    def get(self, avatarUrl, include_body=True):
+    def get(self, teamId, avatarUrl, include_body=True):
         url = avatarUrl
         if len(url) > 32 :
             url = url[:-6]
