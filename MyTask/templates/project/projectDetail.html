@@ -344,7 +344,7 @@
                                             <figure class="thumbnail proportinal">
                                                 <a href="/{{teamId}}/attachment/{{file.url}}" target="_blank">
                                                     {% if file.fileType == "0" %}
-                                                    <img alt="" class="thumbnail " src="/attachment/{{file.url}}" 
+                                                    <img alt="" class="thumbnail " src="/{{teamId}}/attachment/{{file.url}}" 
                                                         data-type="image" data-content="{{file.url}}" data-width="{{file.width}}"
                                                         data-append="#attachments_container" data-height="{{file.height}}">
                                                     {% else %}
@@ -600,18 +600,18 @@ $(function(){
             console.log(data)
             var imageStr
             if(data.fileType == '0')
-                imageStr = '<img alt="" class="thumbnail editable" src="/attachment/' + data.url + '" data-type="image" data-content="' 
+                imageStr = '<img alt="" class="thumbnail editable" src="/{{teamId}}/attachment/' + data.url + '" data-type="image" data-content="' 
                     + data.url + '" data-width="' + data.width + '" data-append="#attachments_container" data-height="' + data.height + '">'
             else
                 imageStr = '<img alt="" class="" src="/static/images/filetype/' + data.icon + '.png">'
             var $fileObj = $('<article class="attachment">'
                 + '<table><tbody><tr><td class="icon"><figure class="thumbnail proportinal">'
-                + '<a href="/attachment/' + data.url + '" target="_blank">'
+                + '<a href="/{{teamId}}/attachment/' + data.url + '" target="_blank">'
                 + imageStr 
                 + '</a></figure></td><td class="text"><h3 class="filename">' + data.name
                 + '</h3><div class="authorship"><p class="meta"><span class="creator">由 ' + data.own.name + ' 在</span>'
                 + '<time class="timeago" data-time="' + data.createTime + '"></time><span>上传</span>'
-                + '</p><p class="actions"><a data-stacker="false" href="/attachment/' + data.url + 'target=" _blank"="">下载</a>'
+                + '</p><p class="actions"><a data-stacker="false" href="/{{teamId}}/attachment/' + data.url + 'target=" _blank"="">下载</a>'
                 + '</p></div></td></tr></tbody></table></article>')
             $fileContainer.prepend($fileObj)
         }

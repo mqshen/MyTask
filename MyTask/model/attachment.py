@@ -28,5 +28,5 @@ class Attachment(db.Model):
 
     @hybrid_property
     def icon(self):
-        if self.fileType == 0:
+        if self.fileType == '1':
             return options.allowDocumentFileType[self.contentType]

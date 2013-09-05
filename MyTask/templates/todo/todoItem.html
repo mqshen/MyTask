@@ -137,7 +137,7 @@
                                                             <td class="occupied">
                                                                 <article class="image">
                                                                     <figure class="thumbnail proportinal">
-                                                                        <a href="/attachment/{{attachment.url}}" target="_blank">
+                                                                        <a href="/{{teamId}}/attachment/{{attachment.url}}" target="_blank">
                                                                             <div class="background" style="height: 174px; width: 262px;">
                                                                                 <img alt="" class="thumbnail editable" src="/{{teamId}}/attachment/{{attachment.url}}" 
                                                                                 data-type="image" data-content="{{attachment.url}}" data-width="{{attachment.width}}"
@@ -158,8 +158,8 @@
                                                 {% for attachment in [attachment for attachment in comment.attachments 
                                                     if attachment.fileType != '0'] %}
                                                     <li>
-                                                        <a href="/attachment/{{attachment.url}}" target="_blank">
-                                                            <img src="{{static_url("images/document.png")}}" class="editable"
+                                                        <a href="/{{teamId}}/attachment/{{attachment.url}}" target="_blank">
+                                                            <img src="/static/images/filetype/{{attachment.icon}}_small.png" class="editable"
                                                                 data-type="file" data-content="{{attachment.url}}" 
                                                                 data-append="#attachments_container" data-content="{{attachment.url}}">
                                                             <span>{{attachment.name}}</span>
