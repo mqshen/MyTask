@@ -53,12 +53,13 @@ class TodoListHandler(BaseHandler):
 
                 db.session.flush()
 
-                url = '/project/%s/todolist/%d'%(projectId, todoList.id)
-                operation = Operation(own_id = currentUser.id, createTime= now, operation_type=0, target_type=3,
-                    target_id=todoList.id, title= todoList.title, team_id= teamId, project_id= projectId, url= url)
+                digest = self.render_string("logs/todolist.html", teamId = teamId, operation = 0, project_id = projectId, todolist = todoList)
+                operation = Operation(own_id = currentUser.id, createTime= now, target_type=3,
+                    target_id=todoList.id, title= todoList.title, team_id= teamId, project_id= projectId, digest = digest)
                 db.session.add(operation)
 
                 db.session.commit()
+
             except:
                 db.session.rollback()
                 raise
@@ -98,12 +99,11 @@ class TodoListCommentHandler(BaseHandler):
         if form.validate():
             currentUser = self.current_user
             now = datetime.now()
+            todolist = TodoList.query.filter_by(id=todolistId).first()
             todoComment = TodoListComment(content=form.content.data, todolist_id=todolistId,
                 own_id=currentUser.id, project_id= projectId, team_id=teamId, createTime= now, attachments=[])
             todCommentId = todoComment.id
 
-
-            url = "/%s/project/%s/todolist/%s/"%(teamId, projectId, todolistId)
 
             for attachment in form.attachment.data:
                 attachment = Attachment.query.filter_by(url=attachment).first()
@@ -116,8 +116,10 @@ class TodoListCommentHandler(BaseHandler):
                 db.session.add(todoComment)
                 db.session.flush()
 
-                operation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=1,
-                    target_id=todolistId, title= "", digest= "", team_id= teamId, project_id= projectId, url= url)
+                digest = self.render_string("logs/todolistcomment.html", teamId = teamId, operation = 2, project_id = projectId, todolist = todolist, todoComment = todoComment)
+
+                operation = Operation(own_id = currentUser.id, createTime= now, target_type=1,
+                    target_id=todolistId, title= "", digest= digest, team_id= teamId, project_id= projectId)
 
                 db.session.add(operation)
 
@@ -144,9 +146,9 @@ class TodoItemHandler(BaseHandler):
             db.session.add(todoItem)
             db.session.flush()
 
-            url = '/project/%s/todolist/%s/todoitem/%d'%(projectId, todoListId, todoItem.id)
-            operation = Operation(own_id = currentUser.id, createTime= now, operation_type=0, target_type=4,
-                target_id=todoItem.id, title= todoItem.description, team_id= teamId, project_id= projectId, url= url)
+            digest = self.render_string("logs/todoitem.html", teamId = teamId, operation = 0, project_id = projectId, todoItem = todoItem , todolist_id = todoListId)
+            operation = Operation(own_id = currentUser.id, createTime= now, target_type=4,
+                target_id=todoItem.id, team_id= teamId, project_id= projectId, digest = digest )
             db.session.add(operation)
 
             project = Project.query.filter_by(id=projectId).with_lockmode("update").first()
@@ -184,19 +186,25 @@ class TodoItemDetailHandler(BaseHandler):
             todoItem = TodoItem.query.filter_by(id=todoItemId).first()
             if todoItem is not None:
                 todoItem.worker_id = form.workerId.data
+                if todoItem.worker_id is not None:
+                    worker = User.query.filter_by(id=todoItem.worker_id).first()
                 todoItem.deadline = form.deadLine.data
                 if len(form.description.data) > 0 :
                     todoItem.description = form.description.data
-                    
+                now = datetime.now()
                 try:
                     db.session.add(todoItem)
+                    digest = self.render_string("logs/todoitemassign.html", teamId = teamId, operation = 12, project_id = projectId, todolist_id = todoListId, todoItem = todoItem, worker = worker)
+                    operation = Operation(own_id = currentUser.id, createTime= now, target_type=4,
+                        target_id=todoItemId, digest= digest, team_id= teamId, project_id= projectId )
+
+                    db.session.add(operation)
+
                     db.session.commit()
                 except:
                     db.session.rollback()
                     raise
                 worker = None
-                if todoItem.worker_id is not None:
-                    worker = User.query.filter_by(id=todoItem.worker_id).first()
                 self.writeSuccessResult(todoItem, worker=worker)
 
 class TodoItemModifyHandler(BaseHandler):
@@ -210,9 +218,9 @@ class TodoItemModifyHandler(BaseHandler):
         if operation == "trash" :
             db.session.delete(todoItem)
 
-            url = '/project/todolist/%s/todoitem/%d'%(todoListId, todoItem.id)
+            digest = self.render_string("logs/todoitem.html", teamId = teamId, operation = 3, project_id = projectId, todolist_id = todoListId, todoItem = todoItem)
             myOperation = Operation(own_id = currentUser.id, createTime= now, operation_type=3, target_type=4,
-                target_id=todoItem.id, title= todoItem.description, team_id= teamId, project_id= projectId, url= url)
+                target_id=todoItem.id, title= todoItem.description, team_id= teamId, project_id= projectId, digest = digest)
             try:
                 db.session.add(myOperation)
                 db.session.commit()
@@ -223,9 +231,9 @@ class TodoItemModifyHandler(BaseHandler):
             return
 
         elif operation == "undone" :
-            url = '/project/todolist/%s/todoitem/%d'%(todoListId, todoItem.id)
+            digest = self.render_string("logs/todoitem.html", teamId = teamId, operation = 10, project_id = projectId, todolist_id = todoListId, todoItem = todoItem)
             myOperation = Operation(own_id = currentUser.id, createTime= now, operation_type=10, target_type=4,
-                target_id=todoItem.id, title= todoItem.description, team_id= teamId, project_id= projectId, url= url)
+                target_id=todoItem.id, title= todoItem.description, team_id= teamId, project_id= projectId, digest = digest)
             db.session.add(myOperation)
             todoItem.done = 0
             try:
@@ -238,9 +246,9 @@ class TodoItemModifyHandler(BaseHandler):
             self.writeSuccessResult(todoItem)
             return
         elif operation == "done" :
-            url = '/project/todolist/%s/todoitem/%d'%(todoListId, todoItem.id)
+            digest = self.render_string("logs/todoitem.html", teamId = teamId, operation = 9, project_id = projectId, todolist_id = todoListId, todoItem = todoItem)
             myOperation = Operation(own_id = currentUser.id, createTime= now, operation_type=9, target_type=4,
-                target_id=todoItem.id, title= todoItem.description, team_id= teamId, project_id= projectId, url= url)
+                target_id=todoItem.id, title= todoItem.description, team_id= teamId, project_id= projectId, digest = digest)
             db.session.add(myOperation)
 
             todoItem.worker_id = currentUser.id
@@ -262,12 +270,10 @@ class TodoItemCommentHandler(BaseHandler):
         if form.validate():
             currentUser = self.current_user
             now = datetime.now()
+            todoItem = TodoItem.query.filter_by(id=todoitemId).first()
             todoComment = TodoComment(content=form.content.data, todoitem_id=todoitemId,
                 own_id=currentUser.id, project_id= projectId, team_id=teamId, createTime= now, attachments=[])
             todCommentId = todoComment.id
-
-
-            url = "/project/%s/todolist/%s/todoitem/%s"%(projectId, todolistId, todoitemId)
 
             for attachment in form.attachment.data:
                 attachment = Attachment.query.filter_by(url=attachment).first()
@@ -280,8 +286,9 @@ class TodoItemCommentHandler(BaseHandler):
                 db.session.add(todoComment)
                 db.session.flush()
 
+                digest = self.render_string("logs/todoitemcomment.html", teamId = teamId, operation = 2, project_id = projectId, todolist_id = todolistId, todoComment = todoComment, todoItem = todoItem)
                 operation = Operation(own_id = currentUser.id, createTime= now, operation_type=2, target_type=1,
-                    target_id=todoitemId, title= "", digest= "", team_id= teamId, project_id= projectId, url= url)
+                    target_id=todoitemId, digest= digest, team_id= teamId, project_id= projectId )
 
                 db.session.add(operation)
 

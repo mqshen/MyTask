@@ -1,0 +1,9 @@
+<span class="in_timeline">
+    {{ getOperationDisplay(operation) }} 任务
+    <a class="decorated" data-default-stack="true" href="/{{teamId}}/project/{{project_id}}/todolist/{{todolist_id}}">
+    {{todoItem.description}}
+    </a>
+    <div class="excerpt">
+        <div class="in_timeline">{{todoComment.content}}</div>
+    </div>
+</span>

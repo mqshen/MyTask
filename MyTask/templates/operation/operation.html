@@ -73,12 +73,7 @@ function callback(responseData) {
             + '<span class="creator" data-creator-id="4061968">'
             + operation.own.name
             + '</span>'
-            + '<span class="in_timeline">'
-            + $.lily.param.getDisplay("OPERATION_TYPE", operation.operation_type) 
-            + $.lily.param.getDisplay("TARGET_TYPE", operation.target_type)
-            + '<span class="suffix">:</span> '
-            + '<a class="decorated" href="' + operation.url + '">' + operation.title+ '</a>'
-            + '</span>'
+            + operation.digest
             + '</div>'
             + '</article>'
             + '</div>'

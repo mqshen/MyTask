@@ -1,0 +1,15 @@
+<span class="in_timeline">
+    {{ getOperationDisplay(operation) }} 任务 
+    <a class="decorated" data-default-stack="true" href="/{{teamId}}/project/{{project_id}}/todolist/{{todolist_id}}/todoitem/{{todoItem.id}}">
+    {{todoItem.description}}
+    </a>
+    给
+    {% if todoItem.worker %}
+    {{ todoItem.worker.name }}
+    {% end %}
+    {% if todoItem.deadline  %}
+    截至日期
+    <span class="suffix">:</span>
+    {{todoItem.deadline.strftime("%Y-%m-%d")}}
+    {% end %}
+</span>
