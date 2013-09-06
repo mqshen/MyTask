@@ -494,6 +494,7 @@ CREATE INDEX `index4` ON `myTaskDB`.`event` (`endDate` ASC);
 CREATE INDEX `fk_event_user1_idx` ON `myTaskDB`.`event` (`own_id` ASC);
 
 
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
