@@ -767,8 +767,6 @@ function queryEvents(startDate, endDate) {
             }
             var color = calendarColor['Project:' + todoItem.project_id]
             var description = todoItem.description
-            if(description.length > 7 )
-                description = description.substring(0, 7) + '...'
             var checkFlag = ''
             if(todoItem.done)
                 checkFlag = 'checked'

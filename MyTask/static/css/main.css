@@ -3439,3 +3439,40 @@ border-radius: 4px;
 -webkit-border-radius: 4px;
 -moz-border-radius: 4px;
 }
+div.sheet section.event_stream{
+padding: 0 45px 20px 30px;
+font-size: 12px;
+font-weight: bold;
+color: #1c5c76;
+}
+div.sheet section.event_stream:hover{
+text-decoration: underline;
+}
+section.history article.event {
+    margin: 10px;
+    font-size: 12px;
+}
+section.history article.event div.time {
+    float: left;
+line-height: 1.2em;
+}
+section.history article.event>div.avatar {
+padding: 12px 0 0 0;
+width: 50px;
+float: left;
+}
+section.history article.event>div.action {
+color: black;
+font-size: 12px;
+line-height: 1.2em;
+margin-left: 75px;
+word-wrap: break-word;
+font-weight: bold;
+}
+section.history div.project:after, section.history article.event:after {
+content: ".";
+display: block;
+height: 0;
+clear: both;
+visibility: hidden;
+}

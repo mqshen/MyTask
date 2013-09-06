@@ -12,7 +12,7 @@ class Application(tornado.web.Application):
         from controller.attachment import AttachmentHandler, AvatarHandler
         from controller.search import AutoCompleteHandler
         from controller.mycalendar import  CalendarHandler, CalendarEventHandler, CalendarEventModifyHandler
-        from controller.operation import OperationHandler 
+        from controller.operation import OperationHandler, TodoItemLogHandler
         from controller.project import ProjectHandler, ProjectFilesHandler, ProjectColorHandler, ProjectDetailHandler, \
                 ProjectAccessHandler, NewProjectHandler
         from controller.todo import TodoListHandler, TodoListDetailHandler, TodoItemHandler, TodoItemDetailHandler, \
@@ -41,6 +41,7 @@ class Application(tornado.web.Application):
             ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/comment', TodoListCommentHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/todoitem', TodoItemHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/todoitem/([0-9]+)', TodoItemDetailHandler),
+            ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/todoitem/([0-9]+)/log', TodoItemLogHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/todoitem/([0-9]+)/(done|undone|trash)', TodoItemModifyHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)/todoitem/([0-9]+)/comment', TodoItemCommentHandler),
             ('/([0-9]+)/project/([0-9]+)/message', MessageHandler),

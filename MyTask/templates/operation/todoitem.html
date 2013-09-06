@@ -1,0 +1,95 @@
+
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+
+{% block body%}
+    {% set url = '/%s/project/%s/todolist/%s/todoitem/%d'%(teamId, project.id, todolist.id, todoItem.id) %}
+    <div class="container stack_container" style="width: 960px;">
+        <div class="panel sheet project active blank_slate inactive">
+            <header>
+                <h1><a data-restore-position="" href="/{{teamId}}/project/{{project.id}}">{{project.title}}</a></h1>
+            </header>
+            <div class="panel sheet todo" style="margin-left: 20px; margin-bottom: -20px;">
+                <header>
+                    <h1 style="display: none;">To-do item</h1>
+                    <p>
+                        <a data-replace-sheet="true" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}">
+                            {{todolist.title}}
+                        </a>
+                    </p>
+                </header>
+                <div class="sheet_body">
+                    <section class="perma has_tools">
+                        <article class="todolist">
+                            <ul>
+                                <li class="todo show editable_container" data-behavior="has_hover_content" 
+                                    href="{{url}}" data-target-class="new_comment">
+                                    <div>
+                                        <span class="wrapper">
+                                            <input disabled
+                                            name="todo_complete" data-toggle="post" type="checkbox" {% if todoItem.done == 1 %} checked="true" {% end %} value="1">
+                                            <span class="content" >
+                                                {{ todoItem.description }}
+                                            </span>
+                                            <form action="/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
+                                                data-remote="true" id="edit_todo_41824572" method="post" data-type="html">
+                                                <span style="position:relative">
+                                                    <span class="pill has_balloon blank showing exclusively_expanded expanded"
+                                                        data-hovercontent-strategy="visibility">
+                                                        <a class="popover-btn" href="javascript:;"
+                                                            data-content="#tpl-todo-popover">
+                                                            <span name="worker.name" class="echo"> 
+                                                            {% if todoItem.worker is None %}
+                                                                未分配
+                                                                <input type="hidden" data-toggle="remote" name="workerId">
+                                                            {% else %}
+                                                                {{todoItem.worker.name}}
+                                                                <input type="hidden" data-toggle="remote" name="workerId" value="{{todoItem.worker.id}}">
+                                                            {% end %}
+                                                            </span>
+                                                            <span class="separator"> · </span>
+                                                            <time name="deadlineDate" class="echo">
+                                                            {% if todoItem.deadline is None %}
+                                                                无截止日期
+                                                                <input type="hidden" data-toggle="remote" name="deadLine" value="">
+                                                            {% else %}
+                                                                {{todoItem.deadline.strftime("%Y-%m-%d")}}
+                                                                <input type="hidden" data-toggle="remote" name="deadLine" 
+                                                                    value="{{todoItem.deadline.strftime("%Y-%m-%d %H:%M:%S")}}">
+                                                            {% end %}
+                                                            </time>
+                                                        </a>
+                                                    </span>
+                                                </span>
+                                            </form>
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        <article>
+                        <section class="history">
+                            <h4>操作日志</h4>
+                        {% for operation in operations %}
+                            <article class="event chiral " data-side="left">
+                                <div class="time">
+                                    <span class="time_only">
+                                        <time data-local-time="" datetime="" style="">  {{ operation.createTime.strftime("%m-%d %H:%M")}} </time>
+                                    </span>
+                                </div>
+                                <div class="action">
+                                    <span class="creator" data-creator-id="">
+                                        {{operation.own.name}}
+                                    </span>
+                                    {{operation.digest}}
+                                </div>
+                            </article>
+                        {% end %}
+                        </section>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
