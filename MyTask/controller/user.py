@@ -25,10 +25,10 @@ class SigninForm(Form):
     password = TextField('password', [validators.required()])
 
 class RegisterForm(Form):
-    email = TextField('email')
-    name = TextField('name')
-    teamTitle = TextField('teamTitle')
-    password = TextField('password')
+    email = TextField('email', [validators.required(), validators.email()])
+    name = TextField('name', [validators.required()])
+    teamTitle = TextField('teamTitle', [validators.required()])
+    password = TextField('password', [validators.required()])
 
 class TeamForm(Form):
     teamTitle = TextField('teamTitle')
@@ -76,6 +76,7 @@ class RegisterHandler(BaseHandler):
             self.set_secure_cookie("sid", self.session.sessionid)
             self.session["user"] = UserObj(user, team.id)
             self.redirect("/")
+        self.rawRender("register.html", form = form)
 
 class LoginHandler(BaseHandler):
     _error_message = "email or password incorrect!"

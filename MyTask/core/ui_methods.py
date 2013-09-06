@@ -33,3 +33,14 @@ def generateToken(handler, calendarName, user):
 def getOperationDisplay(handler, operation):
     return OPERATION_TYPE[operation]
     
+def hasError(handler, form, name) :
+    if form and form.errors and name in form.errors :
+        return "error shake"
+    return ""
+
+def formValue(handler, form, name) :
+    if form and form.errors and name in form.errors :
+        return ""
+    if form and form[name].data:
+        return form[name].data
+    return ""

@@ -30,19 +30,23 @@
                 <label for="login_field">
                     用户名
                 </label>
-                <input autofocus="autofocus" class="input-block" id="login_field" name="name" tabindex="1" type="text">
+                <input autofocus="autofocus" class="input-block {{ hasError(globals().get('form'), "name")}}" 
+                    id="login_field" name="name" tabindex="1" type="text" value="{{ formValue(globals().get('form'), "name")}}">
                 <label for="login_field">
                     团队名称
                 </label>
-                <input class="input-block" id="login_field" name="teamTitle" tabindex="2" type="text">
+                <input class="input-block {{ hasError(globals().get('form'), "teamTitle")}}" 
+                    id="login_field" name="teamTitle" tabindex="2" type="text" value="{{ formValue(globals().get('form'), "teamTitle")}}">
                 <label for="login_field">
                   Email
                 </label>
-                <input class="input-block" id="login_field" name="email" tabindex="3" type="email">
+                <input class="input-block {{ hasError(globals().get('form'), "email")}}" 
+                    id="login_field" name="email" tabindex="3" type="email" value="{{ formValue(globals().get('form'), "email")}}">
                 <label for="password">
                     密码
                 </label>
-                <input autocomplete="disabled" class="input-block" id="password" name="password" tabindex="4" type="password">
+                <input autocomplete="disabled" class="input-block {{ hasError(globals().get('form'), "password")}}" 
+                    id="password" name="password" tabindex="4" type="password" >
                 <input class="button" name="commit" tabindex="3" type="submit" value="注册">
           </div>
         </form>
