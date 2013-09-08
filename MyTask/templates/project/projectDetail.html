@@ -13,6 +13,12 @@
                             {{len(project.users)}}个项目成员
                         </span>
                     </a>
+                    <a href="/{{teamId}}/project/{{project.id}}/graphs">
+                        <span class="link">统计信息</span><br>
+                        <span class="detail">
+                            项目统计信息
+                        </span>
+                    </a>
                     {% if project.repository == 1 %}
                     <a href="/git/{{project.team_id}}/{{project.repositoryName}}">
                         <span class="link">Git</span><br>

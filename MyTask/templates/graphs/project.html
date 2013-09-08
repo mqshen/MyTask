@@ -1,0 +1,367 @@
+{% extends "../base.html" %}
+
+{% block title %}MyTask{% end %}
+{% block headArea %}
+<link rel="stylesheet" href="{{ static_url("css/graphs.css")}}" type="text/css"/>
+{% end %}
+
+{% block body%}
+    <div class="container stack_container" style="width: 960px;">
+        <div class="panel sheet project active blank_slate inactive">
+            <header>
+                <h1><a data-restore-position="" href="/{{teamId}}/project/{{project.id}}">{{project.title}}</a></h1>
+            </header>
+            <div class="panel sheet todo" style="margin-left: 20px; margin-bottom: -20px;">
+                <header>
+                    <p>
+                    </p>
+                </header>
+                <div class="sheet_body" >
+                    <h3 >讨论:</h3>
+                    <div id= "message_graph">
+                    </div>
+                    <div id= "message_week_graph">
+                    </div>
+                    <h3 >新增任务:</h3>
+                    <div id= "todo_graph">
+                    </div>
+                    <h3 >完成任务:</h3>
+                    <div id= "donetodo_graph">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% end %}
+{% block baseScript %} 
+{% end %}
+
+{% block includeScript %} 
+<script src="{{ static_url("scripts/lib/d3.min.js")}}" type="text/javascript"></script>
+{% end %}
+{% block script %}
+function getData() {
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 900 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .tickFormat(function(date) {
+        if(date.getDate() == 1)
+            return date.getMonth() + 1 + '月'
+        return d3.time.format("%e")(date)
+    });
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var svg = d3.select("#message_graph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("messagedata", function(error, responseData) {
+    var data = responseData.projectData
+    data.forEach(function(d) {
+        d.add_date = parseDate(d.add_date);
+    });
+
+    x.domain(data.map(function(d) { return d.add_date; }));
+    y.domain([0, d3.max(data, function(d) { return d.total_number; })]);
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("");
+
+    svg.selectAll("path")
+        .attr("stroke-width" , 1)
+
+    svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return x(d.add_date); })
+        .attr("width", x.rangeBand())
+        .attr("y", function(d) { return y(d.total_number); })
+        .attr("height", function(d) { return height - y(d.total_number); })
+        .text("ss");
+
+});
+
+
+}
+
+function getTodoData() {
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 900 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+var x = d3.time.scale()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .tickFormat(function(date) {
+        if(date.getDate() == 1)
+            return date.getMonth() + 1 + '月'
+        return d3.time.format("%e")(date)
+    });
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var line = d3.svg.line()
+    .x(function(d) { return x(d.add_date); })
+    .y(function(d) { return y(d.total_number); })
+    .interpolate("cardinal");
+
+var svg = d3.select("#donetodo_graph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("tododata", function(error, responseData) {
+    var data = responseData.projectData
+    data.forEach(function(d) {
+        d.add_date = parseDate(d.add_date );
+    });
+
+  //x.domain(d3.extent(data, function(d) { return d.add_date; }));
+  //y.domain(d3.extent(data, function(d) { return d.total_number; }));
+    x.domain(d3.extent(data, function(d) { return d.add_date; }));
+    y.domain([0, d3.max(data, function(d) { return d.total_number; }) + 2]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+/*
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+*/
+  svg.append("path")
+      .datum(data)
+      .attr("class", "area")
+      .attr("d", line);
+
+    var points = svg.selectAll(".point")
+        .data(data)
+        .enter().append("g")
+        .attr("class", "dot")
+        .attr("transform", function(d) { return "translate(" + x(d.add_date) + "," + y(d.total_number) + ")"})
+    
+    points.append("svg:circle")
+        .attr("r", function(d, i) { return 4 })
+
+    points.append("text")
+        .attr("dy" , -10)
+        .attr("dx" , -3)
+        .text(function(data) {
+            return data.total_number
+        })
+});
+}
+
+function getTododoneData() {
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 900 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+var x = d3.time.scale()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .tickFormat(function(date) {
+        if(date.getDate() == 1)
+            return date.getMonth() + 1 + '月'
+        return d3.time.format("%e")(date)
+    });
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var line = d3.svg.line()
+    .x(function(d) { return x(d.add_date); })
+    .y(function(d) { return y(d.total_number); })
+    .interpolate("cardinal");
+
+var svg = d3.select("#todo_graph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("tododonedata", function(error, responseData) {
+    var data = responseData.projectData
+    data.forEach(function(d) {
+        d.add_date = parseDate(d.add_date );
+    });
+
+  //x.domain(d3.extent(data, function(d) { return d.add_date; }));
+  //y.domain(d3.extent(data, function(d) { return d.total_number; }));
+    x.domain(d3.extent(data, function(d) { return d.add_date; }));
+    y.domain([0, d3.max(data, function(d) { return d.total_number; }) + 2]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+/*
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+*/
+  svg.append("path")
+      .datum(data)
+      .attr("class", "area")
+      .attr("d", line);
+
+    var points = svg.selectAll(".point")
+        .data(data)
+        .enter().append("g")
+        .attr("class", "dot")
+        .attr("transform", function(d) { return "translate(" + x(d.add_date) + "," + y(d.total_number) + ")"})
+    
+    points.append("svg:circle")
+        .attr("r", function(d, i) { return 4 })
+
+    points.append("text")
+        .attr("dy" , -10)
+        .attr("dx" , -3)
+        .text(function(data) {
+            return data.total_number
+        })
+});
+}
+
+function getWeekData(){
+var weekArray = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"] 
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 900 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format("%d-%b-%y").parse;
+
+
+//var x = d3.scale.ordinal()
+//    .rangeRoundBands([0, width], .1);
+
+var x = d3.scale.linear()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .tickFormat(function(weekday) {
+        return weekArray[weekday]
+    });
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var area = d3.svg.line()
+    .x(function(d) { return x(d.add_weekday); })
+    .y(function(d) { return y(d.total_number); })
+    .interpolate("cardinal")
+
+var svg = d3.select("#message_week_graph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("messageweekdata", function(error, responseData) {
+    var data = responseData.projectData
+
+    x.domain(d3.extent(data, function(d) { return d.add_weekday; }));
+    y.domain([0, d3.max(data, function(d) { return d.total_number; }) + 5]);
+
+    svg.append("path")
+        .datum(data)
+        .attr("class", "area")
+        .attr("d", area);
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+
+    var points = svg.selectAll(".point")
+        .data(data)
+        .enter().append("g")
+        .attr("class", "dot")
+        .attr("transform", function(d) { return "translate(" + x(d.add_weekday) + "," + y(d.total_number) + ")"})
+    
+    points.append("svg:circle")
+        .attr("r", function(d, i) { return 4 })
+
+    points.append("text")
+        .attr("dy" , -10)
+        .text(function(data) {
+            return data.total_number
+        })
+       
+
+});
+}
+
+
+getData();
+getTodoData();
+getTododoneData();
+{% end %}

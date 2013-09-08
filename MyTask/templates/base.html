@@ -10,6 +10,8 @@
                 -webkit-tap-highlight-color: rgba(0,0,0,0);
             }
         </style>
+        {% block headArea %} 
+        {% end %}
     </head>
     <body class="{% block bodyClass %}{% end %}">
         <header>
@@ -42,7 +44,10 @@
         </div>
         <div class="footer">
         </div>
+
     <script src="{{ static_url("scripts/lib/jquery.js")}}" type="text/javascript"></script>
+    <script src="{{ static_url("scripts/lib/lily.autoComplete.js")}}" type="text/javascript"></script>
+{% block baseScript %} 
     <script src="{{ static_url("scripts/lib/jsrender.js")}}" type="text/javascript"></script>
     <script src="{{ static_url("scripts/lib/lily.core.js")}}" type="text/javascript"></script>
     <script src="{{ static_url("scripts/lib/lily.button.js")}}" type="text/javascript"></script>
@@ -61,8 +66,8 @@
     <script src="{{ static_url("scripts/lib/lily.imageView.js")}}" type="text/javascript"></script>
     <script src="{{ static_url("scripts/lib/lily.autoAdd.js")}}" type="text/javascript"></script>
     <script src="{{ static_url("scripts/lib/lily.timeago.js")}}" type="text/javascript"></script>
-    <script src="{{ static_url("scripts/lib/lily.autoComplete.js")}}" type="text/javascript"></script>
     <script src="{{ static_url("scripts/myCalendar.js")}}" type="text/javascript"></script>
+{% end %}
 
 {% block includeScript %} 
 {% end %}
@@ -73,7 +78,7 @@
     <script type="text/javascript">
 $(function(){
 $(document).on('click.hidewindow.data-api', function (e) {
-    if($.lily.lastWindow) {
+    if($.lily && $.lily.lastWindow) {
         $.lily.lastWindow.hide()
         $.lily.lastWindow = null
     }
