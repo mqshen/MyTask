@@ -1,19 +1,40 @@
-.axis path, .axis line {
+.axis line {
 fill: none;
 stroke: #000;
 shape-rendering: crispEdges;
+}
+.axis path {
+display: none;
+}
+.y.axis line {
+stroke: #ddd;
 }
 .bar {
 fill: steelblue;
 }
 .area {
-fill: none;
-stroke: #1db34f;
-stroke-width: 3;
+fill: #1db34f;
+stroke: none;
+fill-opacity: 0.5;
 }
 
-.dot {
+.greenpoint {
 fill: #1db34f;
 stroke: #16873c;
 stroke-width: 2px;
+}
+.redpoint {
+fill: red;
+stroke: red;
+stroke-width: 2px;
+}
+.redline {
+fill: none;
+stroke: red; 
+stroke-width: 3;
+}
+.greenline {
+fill: none;
+stroke: #1db34f;
+stroke-width: 3;
 }

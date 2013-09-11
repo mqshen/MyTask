@@ -17,6 +17,14 @@ class ProjectData(db.Model):
     add_date = Column(Date, primary_key=True)
     total_number = Column(Integer)
 
+class ProjectUserData(db.Model):
+    eagerRelation = ['own']
+    __tablename__ = 'message_user_data'
+    project_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True) 
+    add_date = Column(Date, primary_key=True)
+    total_number = Column(Integer)
+
 class ProjectWeekData(db.Model):
     __tablename__ = 'message_week_data'
     project_id = Column(Integer, primary_key=True)

@@ -1,7 +1,7 @@
 from model.mycalendar import Calendar, Event
 from model.operation import Operation
 from model.project import Project 
-from model.mygraphs import ProjectData, ProjectWeekData, TodoData
+from model.mygraphs import ProjectData, ProjectWeekData, TodoData, ProjectUserData
 from model.todo import TodoList, TodoItem
 from model.user import Team, User
 import logging
@@ -27,6 +27,8 @@ class ProjectDataHandler(BaseHandler):
     def get(self, teamId, projectId, dataType):
         if dataType == 'messagedata':
             projectData = ProjectData.query.filter(ProjectData.project_id == projectId).all()
+        elif dataType == 'messageuserdata':
+            projectData = ProjectUserData.query.filter_by(project_id = projectId).order_by(ProjectUserData.user_id).all()
         elif dataType == 'messageweekdata':
             projectData = ProjectWeekData.query.filter(ProjectData.project_id == projectId).all()
         elif dataType == 'tododata':
