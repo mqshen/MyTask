@@ -13,7 +13,7 @@ import tornado
 from tornado.options import options
 from tornado.web import RequestHandler
 from core.BaseHandler import BaseHandler 
-from forms import Form, TextField, ListField, IntField, DateTimeField
+from forms import Form, TextField, ListField, IntField, DateTimeField, DateField
 from datetime import datetime
 from core.database import db
 from websocket.urls import send_message
@@ -27,7 +27,7 @@ class CommentForm(Form):
 class TodoItemForm(Form):
     description = TextField('description')
     workerId = IntField('workerId')
-    deadLine = DateTimeField("deadLine")
+    deadLine = DateField("deadLine")
 
 class TodoListForm(Form):
     title = TextField('title')
@@ -252,7 +252,7 @@ class TodoItemModifyHandler(BaseHandler):
             db.session.add(myOperation)
 
             todoItem.worker_id = currentUser.id
-            todoItem.deadline = now
+            todoItem.deadline = now.date()
             todoItem.done = 1
             try:
                 db.session.add(todoItem)
