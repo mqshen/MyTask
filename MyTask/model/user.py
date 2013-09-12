@@ -49,6 +49,7 @@ class User(db.Model):
     todoItems = relationship("TodoItem", primaryjoin="User.id == TodoItem.worker_id", backref="worker")
     ownedAttachment = relationship("Attachment", backref="own")
     ownedMessageData = relationship("ProjectUserData", backref="own")
+    ownedTodoData = relationship("TodoUserData", backref="own")
 
 class Cookie(db.Model):
     __tablename__ = 'user_cookie'

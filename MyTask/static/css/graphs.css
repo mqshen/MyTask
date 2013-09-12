@@ -38,3 +38,102 @@ fill: none;
 stroke: #1db34f;
 stroke-width: 3;
 }
+.tint-box {
+border-radius: 6px;
+background: #f3f3f3;
+position: relative;
+margin-bottom: 10px;
+}
+.contrib-data {
+margin: 0 0 2px 0;
+list-style: none;
+padding: 0;
+}
+.clearfix:before, .clearfix:after {
+content: " ";
+display: table;
+}
+#contributors .person {
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+float: left;
+width: 440px;
+border-radius: 2px;
+margin: 5px;
+border: 1px solid #ddd;
+}
+#contributors .person:nth-child(even) {
+margin-right: 0;
+margin-left: 0;
+}
+#contributors .person:nth-child(odd) {
+margin-left: 0;
+}
+#contributors .person h3 {
+margin: 0;
+border-bottom: 1px solid #eee;
+padding: 10px;
+line-height: 100%;
+}
+#contributors .person .avatar {
+width: 30px;
+height: 30px;
+border-radius: 3px;
+float: left;
+border: 1px solid #bbb;
+margin-right: 5px;
+}
+#contributors .person .rank {
+display: inline-block;
+float: right;
+font-size: 12px;
+color: #bbb;
+}
+#contributors .person .aname {
+font-weight: bold;
+}
+#contributors .person h3:before, #contributors .person h3:after {
+content: " ";
+display: table;
+}
+#contributors .person h3:after {
+clear: both;
+}
+#contributors .person .spark {
+display: block;
+background: #f7f7f7;
+}
+.tabnav {
+margin: 0 0 15px 0;
+border-bottom: 1px solid #ddd;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+.tabnav .tabnav-tabs {
+display: inline-block;
+}
+.tabnav .tabnav-tabs>li {
+display: inline-block;
+margin-bottom: -1px;
+}
+.tabnav-tab.selected {
+border-color: #ddd;
+border-radius: 3px 3px 0 0;
+background-color: #fff;
+color: #333;
+}
+.tabnav-tab {
+display: inline-block;
+padding: 8px 12px 7px;
+border: 1px solid transparent;
+border-bottom: 0;
+font-size: 14px;
+line-height: 20px;
+color: #666;
+text-decoration: none;
+}
+ul, ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}

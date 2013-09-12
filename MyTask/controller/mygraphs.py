@@ -1,7 +1,7 @@
 from model.mycalendar import Calendar, Event
 from model.operation import Operation
 from model.project import Project 
-from model.mygraphs import ProjectData, ProjectWeekData, TodoData, ProjectUserData
+from model.mygraphs import ProjectData, ProjectWeekData, TodoData, ProjectUserData, TodoUserData
 from model.todo import TodoList, TodoItem
 from model.user import Team, User
 import logging
@@ -32,8 +32,15 @@ class ProjectDataHandler(BaseHandler):
         elif dataType == 'messageweekdata':
             projectData = ProjectWeekData.query.filter(ProjectData.project_id == projectId).all()
         elif dataType == 'tododata':
-            projectData = TodoData.query.filter_by(project_id = projectId, done = 0).all()
+            projectData = TodoData.query.filter_by(project_id = projectId).all()
         else:
-            projectData = TodoData.query.filter_by(project_id = projectId, done = 1).all()
+            projectData = TodoUserData.query.filter_by(project_id = projectId).all()
 
         self.writeSuccessResult(projectData = projectData )
+
+class ProjectTodoGraphsHandler(BaseHandler):
+    @tornado.web.authenticated
+    @core.web.authenticatedProject
+    def get(self, teamId, projectId):
+        project = Project.query.filter_by(id=projectId).first()
+        self.render("graphs/todo.html", teamId = teamId, project = project)

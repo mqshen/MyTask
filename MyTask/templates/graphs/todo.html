@@ -20,16 +20,16 @@
                     <div class="tabnav">
                         <ul class="tabnav-tabs" data-pjax="">
                             <li>
-                                <a class="selected js-selected-navigation-item tabnav-tab" 
+                                <a class="js-selected-navigation-item tabnav-tab" 
                                     href="graphs">讨论</a>
                             </li>
                             <li>
-                                <a class="js-selected-navigation-item tabnav-tab" 
+                                <a class="selected js-selected-navigation-item tabnav-tab" 
                                     href="todographs">任务</a>
                             </li>
                         </ul>
                     </div>
-                    <h3 >讨论:</h3>
+                    <h3 >任务:</h3>
                     <div id= "message_graph" class="tint-box">
                     </div>
                     <div id="contributors" >
@@ -87,7 +87,7 @@ function getData() {
         .attr("width", width )
         .attr("height", height )
     
-    d3.json("messagedata", function(error, responseData) {
+    d3.json("toddata", function(error, responseData) {
         var data = responseData.projectData
         data.forEach(function(d) {
             d.add_date = parseDate(d.add_date);
@@ -142,7 +142,7 @@ function getUserData() {
         .y1(function(d) { return y(d.total_number); })
         .interpolate("cardinal");
     
-    d3.json("messageuserdata", function(error, responseData) {
+    d3.json("todouserdata", function(error, responseData) {
         var data = responseData.projectData
         var lastUserId = data[0].user_id
         var svg, userData = []; 

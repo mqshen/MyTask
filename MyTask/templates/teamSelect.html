@@ -6,9 +6,17 @@
 	    <link rel="stylesheet" href="{{ static_url("css/main.css")}}" type="text/css"/>
         <style>
             html > body {
-                background: #f5efe6 url("static/images/paper.png");
+                background: #f5efe6 url("static/images/wallpapers/paper.jpg");
                 height: 100%;
             }
+            .liner {
+                -webkit-box-shadow: 0 0 6px rgba(0,0,0,0.3);
+                -moz-box-shadow: 0 0 6px rgba(0,0,0,0.3);
+                box-shadow: 0 0 6px rgba(0,0,0,0.3);
+                -webkit-border-radius: 8px;
+                -moz-border-radius: 3px;
+                border-radius: 8px;
+            }   
         </style>
     </head>
     <body class="users">
@@ -21,7 +29,7 @@
                     <div class="product drag_container reorder_container">
                         <div class="liner">
                             <div class="header drag_target">
-                                <div class="liner">
+                                <div >
                                     <div class="name">
                                         选择一个团队
                                     </div>
