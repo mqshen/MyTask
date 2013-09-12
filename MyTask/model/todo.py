@@ -4,7 +4,7 @@ Created on Feb 4, 2013
 @author: GoldRatio
 '''
 from core.database import db
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Table, Text
+from sqlalchemy import Column, Integer, String, DateTime, Date, Boolean, ForeignKey, Table, Text
 from sqlalchemy.orm import relationship
 from .attachment import Attachment
 
@@ -32,7 +32,7 @@ class TodoItem(db.Model):
     worker_id = Column(Integer, ForeignKey('user.id'))
     project_id = Column(Integer, ForeignKey('project.id'))
     team_id = Column(Integer, ForeignKey('team.id'))
-    deadline = Column(DateTime)
+    deadline = Column(Date)
     done = Column(Integer, default=0)
     createTime = Column(DateTime)
 
