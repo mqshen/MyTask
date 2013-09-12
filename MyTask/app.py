@@ -37,7 +37,7 @@ class Application(tornado.web.Application):
             ('/([0-9]+)/project/([0-9]+)/access', ProjectAccessHandler),
             ('/([0-9]+)/project/([0-9]+)/graphs', ProjectGraphsHandler),
             ('/([0-9]+)/project/([0-9]+)/todographs', ProjectTodoGraphsHandler),
-            ('/([0-9]+)/project/([0-9]+)/([a-z]+)', ProjectDataHandler),
+            ('/([0-9]+)/project/([0-9]+)/(messagedata|messageuserdata|tododata|todouserdata)', ProjectDataHandler),
             ('/([0-9]+)/project/new', NewProjectHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist', TodoListHandler),
             ('/([0-9]+)/project/([0-9]+)/todolist/([0-9]+)', TodoListDetailHandler),

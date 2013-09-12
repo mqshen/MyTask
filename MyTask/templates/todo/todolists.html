@@ -81,7 +81,7 @@
                                                     <form action="/{{teamId}}/project/{{project.id}}/todo/{{todoItem.id}}" class="edit_todo editable" 
                                                         data-remote="true" id="edit_todo_41824572" method="post" data-type="html">
                                                         <span style="position:relative">
-                                                            <span class="pill has_balloon blank showing exclusively_expanded expanded{% if todoItem.deadline is not None %} {% if todoItem.deadline.date() < date.today() %} delay {% end %}{% if todoItem.deadline.date() == date.today() %} current {% end %}{% end %}"
+                                                            <span class="pill has_balloon blank showing exclusively_expanded expanded{% if todoItem.deadline is not None %} {% if todoItem.deadline < date.today() %} delay {% end %}{% if todoItem.deadline == date.today() %} current {% end %}{% end %}"
                                                                 data-toggle="popover" data-content="#tpl-todo-popover"
                                                                 data-hovercontent-strategy="visibility">
                                                                 <a class="popover-btn data-toggle="popover" 
