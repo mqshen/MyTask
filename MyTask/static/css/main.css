@@ -2967,10 +2967,15 @@ box-shadow: 0 0 2px rgba(0,0,0,0.4);
 -moz-border-radius: 4px;
 border-radius: 4px;
 }
-div.calendar_editor div.balloon, div.project_editor div.balloon {
+div.calendar_editor div.balloon, 
+div.project_editor div.balloon {
 width: 220px;
 left: 0;
 top: 24px;
+position: relative;
+}
+#project_editor_singleton.project_editor div.balloon {
+    top: 0px;
 }
 div.calendar_display div.balloon header {
 border-bottom: 1px solid #dedede;
@@ -3193,6 +3198,7 @@ right: 14px;
 .popover.top_right_side .arrow {
 border-color: transparent transparent #ccc transparent;
 top: -23px;
+z-index: 1001
 }
 .popover.top_right_side .arrow+.arrow {
 border-color: transparent transparent #f7f7f7 transparent;
@@ -3340,6 +3346,7 @@ top: -24px;
 }
 div.calendar_display div.sheet div.calendar_jump.balloon .arrow+.arrow {
 border-color: transparent transparent #fff transparent;
+margin-top: 2px;
 }
 div.calendar_display div.sheet div.calendar_jump.balloon td.nav {
 width: 1%;
