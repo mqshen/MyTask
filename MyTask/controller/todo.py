@@ -206,6 +206,8 @@ class TodoItemDetailHandler(BaseHandler):
                     raise
                 worker = None
                 self.writeSuccessResult(todoItem, worker=worker)
+        else:
+            self.writeSuccessResult()
 
 class TodoItemModifyHandler(BaseHandler):
     _error_message = ""
