@@ -186,6 +186,7 @@ class TodoItemDetailHandler(BaseHandler):
             todoItem = TodoItem.query.filter_by(id=todoItemId).first()
             if todoItem is not None:
                 todoItem.worker_id = form.workerId.data
+                worker = None
                 if todoItem.worker_id is not None:
                     worker = User.query.filter_by(id=todoItem.worker_id).first()
                 todoItem.deadline = form.deadLine.data
