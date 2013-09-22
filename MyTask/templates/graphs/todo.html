@@ -95,7 +95,7 @@ function getData() {
     var area = d3.svg.area()
         .x(function(d) { return x(d.add_date); })
         .y0(height)
-        .y1(function(d) { console.log(d.total_number); return y(d.total_number); })
+        .y1(function(d) { return y(d.total_number); })
     
     var svg = d3.select("#message_graph").append("svg")
         .attr("width", width + margin.left + margin.right)

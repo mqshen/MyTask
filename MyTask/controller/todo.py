@@ -186,16 +186,20 @@ class TodoItemDetailHandler(BaseHandler):
             todoItem = TodoItem.query.filter_by(id=todoItemId).first()
             if todoItem is not None:
                 todoItem.worker_id = form.workerId.data
-                worker = None
                 if todoItem.worker_id is not None:
                     worker = User.query.filter_by(id=todoItem.worker_id).first()
+                else:
+                    worker = None
                 todoItem.deadline = form.deadLine.data
                 if len(form.description.data) > 0 :
                     todoItem.description = form.description.data
                 now = datetime.now()
                 try:
                     db.session.add(todoItem)
-                    digest = self.render_string("logs/todoitemassign.html", teamId = teamId, operation = 12, project_id = projectId, todolist_id = todoListId, todoItem = todoItem, worker = worker)
+
+                    digest = self.render_string("logs/todoitemassign.html", teamId = teamId, operation = 12, 
+                            project_id = projectId, todolist_id = todoListId, todoItem = todoItem, worker = worker)
+
                     operation = Operation(own_id = currentUser.id, createTime= now, target_type=4,
                         target_id=todoItemId, digest= digest, team_id= teamId, project_id= projectId )
 
@@ -205,7 +209,6 @@ class TodoItemDetailHandler(BaseHandler):
                 except:
                     db.session.rollback()
                     raise
-                worker = None
                 self.writeSuccessResult(todoItem, worker=worker)
         else:
             self.writeSuccessResult()
