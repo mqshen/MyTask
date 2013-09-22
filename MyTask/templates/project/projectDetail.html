@@ -435,13 +435,13 @@ $(function(){
         }
         var workerId = that.$content.find("select").val()
         var workerName = that.$content.find("select").find("option:selected").text()
-        that.$element.find('input[name=deadLine]').val($.lily.format.formatDate(date, 'yyyy-mm-dd 23:59:59'));
+        that.$element.find('input[name=deadLine]').val($.lily.format.formatDate(date, 'yyyy-mm-dd'));
         that.$element.find('input[name=workerId]').val(workerId);
     	if(that.$element.attr("data-remote") == "true") {
     		that.hide()
     		var url = that.$element.attr("href");
     		var requestData = $.lily.collectRequestData(that.$element);
-    		requestData[that.$element.attr("data-date-name")] = $.lily.format.formatDate(date, 'yyyy-mm-dd 23:59:59')
+    		requestData[that.$element.attr("data-date-name")] = $.lily.format.formatDate(date, 'yyyy-mm-dd')
     		$.lily.showWait(that.$element);
     		$.lily.ajax({url: url,
     			dataType: 'json',
