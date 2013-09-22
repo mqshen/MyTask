@@ -131,7 +131,7 @@
                         </header>
                     </article>
                     <ul class="todolists ui-sortable" id="todolists_container">
-                        {% for todolist in todolists %}
+                        {% for todolist in project.undone_todo_lists%}
                          <li data-sortable-type="todolist" id="sortable_todolist" >
                             <article class="todolist">
                                 <header class="collapsed_content editable_container " data-behavior="has_hover_content"
@@ -152,7 +152,7 @@
                                     <!-- <p><em>{{ todolist.description}}</em></p> -->
                                 </header>
                                 <ul class="todos">
-                                    {% for todoItem in [ todoItem for todoItem in todolist.todoItems if todoItem.done == 0]%}
+                                    {% for todoItem in todolist.undoneTodoItems %}
                                     <li class="todo show editable_container" data-behavior="has_hover_content" 
                                         href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}">
                                         <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
@@ -257,6 +257,7 @@
 
                                 <ul class="completed truncated" style="display: block;">  
                                     {% for todoItem in [ todoItem for todoItem in todolist.todoItems if todoItem.done == 1]%}
+                                    <!--
                                     <li class="todo show" id="todo_41824572">
                                         <div class="nubbin" style="display: none; left: -45px;" data-behavior="hover_content">
                                             <div class="spacer"></div>
@@ -301,12 +302,24 @@
                                             </span>
                                         </div>
                                     </li>
+                                    -->
                                     {% end %}
                                 </ul>
                             </article>
                         </li>
                         {% end %}
                     </ul>
+                    <div class="more_lists">
+                        <p class="completed">
+                        已完成{{project.done_todoitem_num}}个任务</a>
+                        </p>
+                        <p class="completed">
+                            已完成的任务列表: 
+                            {% for todolist in project.done_todo_lists%}
+                            <a class="decorated" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}">{{todolist.title}}</a>, 
+                            {% end %}
+                        </p>
+                    </div>
                 </section>
                 <section class="attachments">
                     <header class="has_buttons">

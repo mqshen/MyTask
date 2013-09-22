@@ -23,6 +23,19 @@ class TodoList(db.Model):
     todoItems = relationship("TodoItem", backref="todolist")
     comments = relationship("TodoListComment", backref="todolist")
 
+    @property
+    def doneTodoItems(self):
+        return [ item for item in self.todoItems if item.done == 1 ]
+
+    @property
+    def undoneTodoItems(self):
+        return [ item for item in self.todoItems if item.done == 0 ]
+
+    @property
+    def done(self):
+        return len(self.doneTodoItems) > 0 and len(self.undoneTodoItems) == 0
+
+
 class TodoItem(db.Model):
     eagerRelation = ['worker']
     id = Column(Integer, primary_key=True)

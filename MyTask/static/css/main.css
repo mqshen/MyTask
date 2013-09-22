@@ -3483,3 +3483,11 @@ height: 0;
 clear: both;
 visibility: hidden;
 }
+div.sheet.project>div.sheet_body div.more_lists {
+margin: 20px 0;
+color: #333;
+}
+div.sheet.project>div.sheet_body div.more_lists p.completed {
+font-size: 12px;
+line-height: 1.4;
+}

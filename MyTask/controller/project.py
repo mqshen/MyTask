@@ -106,11 +106,11 @@ class ProjectDetailHandler(BaseHandler):
     def get(self, teamId, projectId):
         project = Project.query.filter_by(id=projectId).first()
         messages = Message.query.filter_by(project_id=projectId).order_by(Message.createTime).limit(5).all()
-        todolists = TodoList.query.filter_by(project_id=projectId).all()
+
         from model.attachment import Attachment
         files = Attachment.query.filter_by(project_id=projectId).order_by(Attachment.createTime.desc()).limit(5).all()
 
-        self.render("project/projectDetail.html", project= project, messages= messages, todolists= todolists, files= files, teamId=teamId)
+        self.render("project/projectDetail.html", project= project, messages= messages, todolists= project.todolists, files= files, teamId=teamId)
 
 
 class ProjectAccessHandler(BaseHandler):

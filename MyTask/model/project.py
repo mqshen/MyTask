@@ -43,3 +43,21 @@ class Project(db.Model):
     def recentlyOperation(self):
         operations = Operation.query.filter_by(project_id= self.id).order_by(Operation.createTime.desc()).limit(3).all()
         return operations 
+
+    @property
+    def done_todolist_num(self):
+        return len([todolist for todolist in self.todolists if todolist.done == 1])
+
+    
+    @property
+    def done_todoitem_num(self):
+        return len([todoitem for todoitem in self.todoItems if todoitem.done == 1])
+
+    @property
+    def done_todo_lists(self):
+        return [ item for item in self.todolists if item.done ]
+
+    @property
+    def undone_todo_lists(self):
+        return [ item for item in self.todolists if not item.done  ]
+
