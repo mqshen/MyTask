@@ -1,0 +1,160 @@
+html {
+    overflow-y: scroll;
+}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+body {
+    font-family: "ProximaNova","Helvetica Neue",helvetica,arial,sans-serif;
+    font-size: 15px;
+    line-height: 21px;
+    margin: 0 40px 40px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    >header {
+        text-align: center;
+        margin: 0 auto 10px auto;
+        zoom: 1;
+        >nav {
+            zoom: 1;
+            clear: both;
+            position: relative;
+            padding: 29px 0 20px 0;
+            margin: 0 auto;
+            max-width: 1040px;
+            min-width: 985px;
+            &:after {
+                content: ".";
+                display: block;
+                height: 0;
+                clear: both;
+                visibility: hidden;
+            }
+        }
+        div.logo {
+            position: absolute;
+            top: 23px;
+            font-size: 40px;
+        }
+        div.global_links {
+            text-align: left;
+            position: absolute;
+            left: 150px;
+            border-left: 1px solid #ded7c8;
+            top: 34px;
+            padding-left: 5px;
+            text-shadow: 0 1px #fff;
+            text-rendering: optimizeLegibility;
+             a {
+                color: #7d7a75;
+                font-size: 14px;
+                text-align: left;
+                display: inline-block;
+                width: 67px;
+                padding: 0;
+                text-align: center;
+                -webkit-transition: color 0.2s;
+                -moz-transition: color 0.2s;
+                transition: color 0.2s;
+            }
+            a.topnav_everyone {
+                margin-left: 5px;
+                padding-left: 8px;
+                border-left: 1px solid #ded7c8;
+            }
+        }
+        div.current_user {
+            position: absolute;
+            right: 23px;
+            top: 4px;
+            li {
+                text-align: left;
+                font-size: 11px;
+                line-height: 15px;
+                color: #7d7a75;
+                text-shadow: 0 1px 1px #fff;
+                display: inline-block;
+                vertical-align: middle;
+                margin: 0 0 0 4px;
+            }
+        }
+        div.jumpto {
+            width: 320px;
+            float: right;
+            margin: -1px 7px 0 0;
+            position: relative;
+            z-index: 999;
+            input[type=text] {
+                position: relative;
+                z-index: 2;
+                width: 90%;
+                font-family: inherit;
+                font-size: 14px;
+                border: none;
+                outline: none;
+                background: #fff url(../images/search.png) no-repeat 10px center;
+                padding: 8px 10px 8px 28px;
+                color: #444;
+                -webkit-appearance: none;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+                -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.3);
+                -moz-box-shadow: 0 0 4px rgba(0,0,0,0.3);
+                box-shadow: 0 0 4px rgba(0,0,0,0.3);
+            }
+        }
+    }
+    &.topnav_root a.topnav_root, 
+    &.topnav_timeline a.topnav_timeline, 
+    &.topnav_me a.topnav_me, 
+    &.topnav_everything a.topnav_everything, 
+    &.topnav_calendar a.topnav_calendar, 
+    &.topnav_everyone a.topnav_everyone {
+        font-weight: bold;
+        color: #000;
+    }
+}
+div.workspace {
+    >div.container {
+        margin: 0 auto;
+        width: 960px;
+    }
+    >div.stack_container div.sheet {
+        width: 100%;
+        display: inline-block;
+    }
+}
+img.avatar {
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+}
+.clear, 
+footer, 
+header {
+    clear: both;
+}
+section.details {
+    margin-top: 5px;
+    input {
+        display: block;
+        width: 100%;
+        padding: 5px 10px;
+        border: 0;
+        border-bottom: 1px dotted #ccc;
+        margin-bottom: 5px;
+        -webkit-appearance: none;
+        border-radius: 0px;
+        box-shadow: none;
+    }
+}
+form .submit {
+    clear: both;
+    font-size: 13px;
+    min-height: 18px;
+    vertical-align: baseline;
+    margin: 10px 0 0;
+}

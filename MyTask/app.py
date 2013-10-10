@@ -6,6 +6,7 @@ from core.session import RedisSessionStore
 from core import ui_methods
 from tornado.options import options
 from core.quemail import QueMail
+from core.StaticFileHandler import StaticFileHandler
 
 class Application(tornado.web.Application):
     def __init__(self, settings):
@@ -103,6 +104,7 @@ def main():
     options.define('salt')
     options.define('domain')
     options.define('jsonFilter', type=set)
+    options.define('assets_path')
 
     options.parse_config_file("conf/config.conf")
 
@@ -110,11 +112,13 @@ def main():
         cookie_secret = "__TODO:_Generate_your_own_random_value_here__",
         template_path = os.path.join(os.path.dirname(__file__), options.templatesPath),
         static_path = os.path.join(os.path.dirname(__file__), options.staticPath),
+        assets_path = os.path.join(os.path.dirname(__file__), options.assets_path),
         ui_methods = ui_methods,
         xsrf_cookies = False,
         autoescape = None,
         debug = True,
         login_url = options.login_url,
+        static_handler_class = StaticFileHandler
     )
     app = Application(settings)
     app.listen(options.port)

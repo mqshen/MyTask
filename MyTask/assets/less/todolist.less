@@ -1,0 +1,127 @@
+article.todolist {
+    header h3 {
+        font-size: 15px;
+        margin-bottom: 0;
+        >a {
+            color: #1c5c76;
+            text-decoration: underline;
+        }
+    }
+    &.expanded {
+        &.new header.expanded_content {
+            margin-bottom: 30px;
+            margin-top: 3px;
+        }
+        header.expanded_content header {
+            padding: 0;
+            border: none;
+            box-shadow: none;
+            h3 {
+                border-bottom: none;
+                margin-left: -1px;
+                padding-left: 0;
+                padding-bottom: 5px;
+            }
+            input {
+                padding: 5px 0;
+                border-bottom: 1px dotted #b3b3b3;
+            }
+        }
+    }
+    >ul {
+        position: relative;
+        list-style: none;
+        margin: 0 0 0 7px;
+        min-height: 6px;
+        >li {
+            margin-top: 5px;
+            padding-left: 19px;
+            line-height: 20px;
+            padding-right: 110px;
+            clear: both;
+            word-wrap: break-word;
+            >div>span.wrapper {
+                position: relative;
+                margin-left: -19px;
+                padding-left: 20px;
+                >input[type=checkbox] {
+                    margin-left: -20px;
+                    margin-right: 2px;
+                    vertical-align: top;
+                    margin-top: 3px;
+                    font-size: larger;
+                }
+            }
+            form {
+                display: inline;
+                >textarea {
+                    width: 460px;
+                    margin: 0px 5px 0px 2px;
+                    line-height: 17px;
+                    height: 18px;
+                    padding: 0;
+                    -webkit-appearance: none;
+                    outline: none;
+                    border: none;
+                    border-bottom: 1px dotted #b3b3b3;
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+}
+ul.todolists {
+    margin-top: 8px;
+    position: relative;
+    >li {
+        margin: -10px 0 10px 0;
+        padding: 10px 0 10px 0;
+    }
+}
+div.nubbin {
+    display: none;
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: left;
+    padding: 0 0 0 5px;
+    margin: -1px 0 0;
+    min-width: 40px;
+    background: #fff;
+    -webkit-border-top-left-radius: 20px;
+    -webkit-border-bottom-left-radius: 20px;
+    -moz-border-radius-topleft: 20px;
+    -moz-border-radius-bottomleft: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    -webkit-box-shadow: -1px 0 1px rgba(0,0,0,0.2);
+    -moz-box-shadow: -1px 0 1px rgba(0,0,0,0.2);
+    box-shadow: -1px 0 1px rgba(0,0,0,0.2);
+    >div.spacer {
+        width: 10px;
+        display: inline-block;
+        margin: -1px 0;
+        height: 25px;
+        background: #fff;
+        float: right;
+    }
+    >a {
+        float: left;
+        vertical-align: top;
+        margin: 0 1px;
+        padding: 2px 2px 1px;
+        text-decoration: none;
+        &.image {
+            height: 0;
+            padding: 22px 4px 0;
+            overflow: hidden;
+            background-repeat: no-repeat;
+            background-position: center center;
+            &.delete {
+                width: 10px;
+                background-image: url(../images/trash.gif);
+            }
+        }
+    }
+}
