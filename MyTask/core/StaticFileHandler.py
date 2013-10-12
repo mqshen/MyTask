@@ -32,7 +32,7 @@ from tornado import stack_context
 from tornado import template
 from tornado.escape import utf8, _unicode
 from tornado.util import bytes_type, import_object, ObjectDict, raise_exc_info, unicode_type
-from tornado.web import RequestHandler
+from tornado.web import RequestHandler, HTTPError
 
 try:
     from io import BytesIO  # python 3

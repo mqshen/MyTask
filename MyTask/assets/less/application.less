@@ -3,6 +3,10 @@
 @import "project";
 @import "todolist";
 @import "message";
+@import "calendar";
+@import "operation";
+@import "people";
+
 
 a {
     text-decoration: none;
@@ -135,8 +139,31 @@ div.sheet {
             margin: 0 -20px -30px 20px;
         }
     }
+    &.has_sidebar {
+        >div.sheet_body {
+            display: inline-block;
+            vertical-align: top;
+            width: 645px;
+            padding-right: 0;
+        }
+        >aside {
+            display: inline-block;
+            vertical-align: top;
+            width: 200px;
+            padding: 0 0 20px 40px;
+            text-align: left;
+            font-size: 13px;
+            >p {
+                margin-bottom: 10px;
+            }
+            select {
+                width: 70%;
+            }
+        }
+    }
     >header {
         margin: 30px 30px 20px 30px;
+        position: relative;
         h1 {
             font-size: 18px;
             line-height: 18px;
@@ -161,6 +188,12 @@ div.sheet {
             padding-bottom: 0;
             border: none !important;
         }
+    }
+    section.event_stream {
+        padding: 0 45px 20px 30px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #1c5c76;
     }
 }
 a.decorated {
@@ -292,5 +325,57 @@ aside.tools {
     zoom: 1;
 }
 div.prompt {
+    cursor: pointer;
+}
+.balloon {
+    white-space: normal;
+    position: absolute;
+    top: -30px;
+    background: #fff;
+    padding: 8px 12px 8px;
+    width: 154px;
+    z-index: 1000;
+    border: 1px solid #bbb;
+    font-size: 13px;
+    line-height: 15px;
+    vertical-align: baseline;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 1px 12px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0 1px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 12px rgba(0,0,0,0.3);
+    &.top_left_side .arrow {
+        border-color: transparent transparent #ccc transparent;
+        top: -24px;
+    }
+}
+.arrow {
+    font-size: 0;
+    line-height: 0;
+    width: 0;
+    border-style: solid;
+    border-width: 12px;
+}
+.popover {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    z-index: 2000;
+}
+.wait {
+    min-width: 14px;
+    background: url(../images/dots-white.gif) no-repeat left center !important;
+    text-indent: -9999px;
+    border: none;
+    padding: 0px 15px 0px 15px;
+    display: block;
+}
+table tr th {
+    vertical-align: top;
+    padding-top: 10px;
+    min-width: 65px;
+}
+button {
     cursor: pointer;
 }

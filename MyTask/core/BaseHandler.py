@@ -3,6 +3,7 @@ from core.session import Session
 
 from core.escape import json_encode
 from core.util import serialize
+from core.UIModule import UIModule
 from model.user import User
 from core.database import db
 
@@ -13,6 +14,9 @@ class BaseHandler(tornado.web.RequestHandler):
     
     def __init__(self, application, request, **kwargs):
         super(BaseHandler, self).__init__(application, request, **kwargs)
+        self._active_modules = {
+            'uimodle' : UIModule(self),
+        }
 
     def write_error(self, status_code, **kwargs):
         super().render("error/error_default.html")

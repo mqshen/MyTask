@@ -36,10 +36,13 @@ class ProjectFilesForm(Form):
 
 class ProjectHandler(BaseHandler):
     _error_message = "项目已存在"
+    
 
     @tornado.web.authenticated
     def get(self, teamId):
         currentUser = self.current_user
+        currentUser.teamId = teamId 
+        self.session["user"] = currentUser
         projects = Project.query.join(Project.users).filter(User.id==currentUser.id, Project.team_id==teamId).all()
         self.render("project/project.html", projects= projects, teamId = teamId)
 

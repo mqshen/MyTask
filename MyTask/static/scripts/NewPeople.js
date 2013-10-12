@@ -1,0 +1,3 @@
+$(function(){
+    $('#invitees').autoAdd()
+})

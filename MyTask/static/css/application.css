@@ -806,6 +806,14 @@ div.nubbin > a.image.delete {
   width: 10px;
   background-image: url(../images/trash.gif);
 }
+div.sheet > header > p {
+  font-size: 13px;
+  color: #777;
+}
+div.sheet > header > p a {
+  color: #1c5c76;
+  text-decoration: underline;
+}
 div.sheet.message.new > div.sheet_body {
   padding: 0;
 }
@@ -1069,6 +1077,654 @@ div.edit_mode input {
   line-height: 30px;
   font-weight: normal;
 }
+div.calendar_container {
+  width: 100% !important;
+}
+div.calendar_display div.left {
+  position: relative;
+  width: 280px;
+  padding-top: 20px;
+}
+div.calendar_display div.left > aside {
+  width: 260px;
+  -webkit-transition: padding-top 150ms ease-in-out, opacity 150ms ease-in-out;
+  padding-top: 100px;
+  opacity: 0;
+}
+div.calendar_display div.left > aside div.new_calendar_event {
+  float: right;
+}
+div.calendar_display div.left > aside div.new_calendar_event > a {
+  font-size: 11px;
+}
+div.calendar_display div.left > aside section.calendars > h4 {
+  margin: 0 0 12px 0;
+  color: #7d7a75;
+  font-size: 16px;
+  font-weight: normal;
+  border-bottom: 1px solid #dcd9d3;
+  padding-bottom: 3px;
+}
+div.calendar_display div.left > aside section.calendars > ul li {
+  position: relative;
+  margin: 5px 0;
+  font-size: 13px;
+  padding-left: 27px;
+  line-height: 17px;
+}
+div.calendar_display div.left > aside section.calendars > ul li > a {
+  vertical-align: top;
+  display: inline-block;
+  word-break: break-all;
+  word-wrap: break-word;
+  color: #1c5c76;
+  text-decoration: underline;
+}
+div.calendar_display div.left > aside section.calendar_feeds {
+  margin-top: 30px;
+}
+div.calendar_display div.right {
+  -webkit-transition: left 300ms ease-in-out;
+  left: 0;
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  padding-bottom: 40px;
+}
+div.calendar_display button.toggle_calendar_list.hide {
+  display: none;
+}
+div.calendar_display button.toggle_calendar_list.show {
+  display: block;
+}
+div.calendar_display div.sheet {
+  padding: 20px;
+  display: block !important;
+  width: auto !important;
+}
+div.calendar_display.calendar_list_visible div.right {
+  left: 300px;
+}
+div.calendar_display.calendar_list_visible div.left > aside {
+  -webkit-transition: padding-top 150ms 150ms ease-in-out, opacity 150ms 150ms ease-in-out;
+  padding-top: 0;
+  opacity: 1;
+}
+div.calendar_display.calendar_list_visible button.toggle_calendar_list.show {
+  display: none;
+}
+div.calendar_display.calendar_list_visible button.toggle_calendar_list.hide {
+  display: block;
+}
+div.calendar_display div.sheet nav {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+div.calendar_display div.sheet button.prev {
+  border-radius: 5px 0 0 5px;
+  -webkit-border-radius: 5px 0 0 5px;
+  -moz-border-radius: 5px 0 0 5px;
+  border-right: none;
+}
+div.calendar_display div.sheet button.next {
+  border-radius: 0 5px 5px 0;
+  -webkit-border-radius: 0 5px 5px 0;
+  -moz-border-radius: 0 5px 5px 0;
+  margin: -1px 10px 0px -4px;
+}
+div.calendar_display div.sheet > header h1 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+}
+div.calendar_display div.sheet > header h1 > a {
+  display: inline-block;
+  padding: 0 25px;
+  white-space: nowrap;
+  position: relative;
+  color: #1c5c76;
+  text-decoration: underline;
+}
+div.calendar_display div.sheet div.position_reference {
+  height: 1px;
+  width: 1px;
+  margin: -1px auto 0 auto;
+  position: relative;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon {
+  top: 12px;
+  left: -282px;
+  width: 560px;
+  padding: 20px 0 15px 0;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon .arrow {
+  left: 270px;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon td {
+  width: 98%;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon td.nav {
+  width: 1%;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon dl {
+  float: left;
+  margin-bottom: 3px;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon dt,
+div.calendar_display div.sheet div.calendar_jump.balloon dd {
+  float: left;
+  margin: 0 1px;
+  font-size: 14px;
+}
+div.calendar_display div.sheet div.calendar_jump.balloon dd a {
+  float: left;
+  display: block;
+  padding: 2px 4px 4px 4px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+}
+div.calendar_display div.days_of_week {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+div.calendar_display div.days_of_week div.days {
+  display: table-row;
+}
+div.calendar_display div.days_of_week div.days div.day {
+  display: table-cell;
+  width: 14.28571%;
+  text-align: center;
+  font-size: 11px;
+  padding: 0 0 3px 0;
+  color: #666;
+}
+div.calendar_display div.week {
+  position: relative;
+}
+div.calendar_display div.week div.events {
+  width: 100%;
+}
+div.calendar_display div.week div.events.spanned {
+  position: absolute;
+  top: 24px;
+  height: 0;
+}
+div.calendar_display div.week div.dates_wrapper {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+div.calendar_display div.week div.dates {
+  display: table-row;
+}
+div.calendar_display div.week div.dates div.date {
+  display: table-cell;
+  overflow: hidden;
+  width: 14.28571%;
+  border-right: 1px solid #dcd9d3;
+  border-top: 1px solid #dcd9d3;
+  height: 90px;
+  margin: 0;
+  padding: 0 0 10px 0;
+  line-height: normal;
+}
+div.calendar_display div.week div.dates div.date.current_month div.day {
+  color: #666;
+}
+div.calendar_display div.week div.dates div.date.today {
+  background: #ffc;
+}
+div.calendar_display div.week div.dates div.date div.day {
+  font-size: 11px;
+  text-align: right;
+  color: #dcd9d3;
+  height: 18px;
+  padding: 6px 8px 0 0;
+}
+div.calendar_display div.week div.dates div.date div.events.spanned {
+  position: relative;
+  top: auto;
+  height: auto;
+  zoom: 1;
+}
+div.calendar_display div.week div.dates div.date div.todos > div.todo {
+  text-indent: 0;
+  padding-left: 27px;
+}
+div.calendar_display div.week div.dates div.date div.todos > div.todo > span.wrapper {
+  margin-left: -19px;
+  position: relative;
+}
+div.calendar_display div.week div.dates div.date div.todos > div.todo > span.wrapper > input[type=checkbox] {
+  vertical-align: baseline;
+  margin: 0 2px 0 0;
+  padding: 0;
+  display: inline-block;
+}
+div.calendar_display div.week div.dates div.date div.event {
+  padding: 0 8px 0 15px;
+  text-indent: -7px;
+  overflow: hidden;
+}
+div.calendar_display div.week div.dates div.date div.event span.event {
+  font-size: 12px;
+  cursor: pointer;
+}
+div.calendar_display div.week div.event {
+  min-height: 16px;
+  line-height: 13px;
+  word-break: break-word;
+}
+div.calendar_display .swatch {
+  display: inline-block;
+  margin: 0 3px -4px -27px;
+  border: 2px solid #fff;
+  vertical-align: baseline;
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+div.calendar_display .swatch > a {
+  display: block;
+  padding: 0;
+  height: 14px;
+  width: 16px;
+}
+div.calendar_display .swatch > a.selected {
+  background: transparent url(../images/swatch_checkmark.png) no-repeat center center;
+}
+section.global_activity {
+  margin: 20px auto 0;
+  text-shadow: 0 1px #fff;
+}
+section.global_activity h1 {
+  font-weight: normal;
+  text-align: center;
+  margin-bottom: 20px;
+}
+section.stream {
+  color: #777;
+}
+section.stream div.day {
+  width: 100px;
+  margin-left: 423px;
+  color: black;
+}
+section.stream div.day a {
+  display: block;
+  width: 98px;
+  height: 94px;
+  background: white;
+  font-weight: bold;
+  border: 7px solid #dcd9d3;
+  text-decoration: none;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+}
+section.stream div.day a > span {
+  display: table-cell;
+  width: 98px;
+  height: 97px;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 16px;
+  font-size: 17px;
+}
+section.stream div.day a > span > span {
+  text-decoration: underline;
+}
+section.stream div.day a > span time {
+  display: block;
+  font-weight: normal;
+  font-size: 11px;
+  color: #bbb;
+}
+section.stream div.project {
+  zoom: 1;
+  font-size: 15px;
+  width: 475px;
+  word-wrap: break-word;
+  color: black;
+  font-weight: bold;
+  border-bottom: 7px solid #dcd9d3;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+section.stream div.project.left {
+  border-right: 7px solid #dcd9d3;
+}
+section.stream div.project.right {
+  padding-left: 10px;
+  border-left: 7px solid #dcd9d3;
+  margin-left: 475px;
+}
+section.stream div.project > a {
+  color: #1c5c76;
+  text-decoration: underline;
+}
+section.stream article.event {
+  zoom: 1;
+  font-size: 15px;
+  width: 475px;
+  word-wrap: break-word;
+}
+section.stream article.event > div.time {
+  width: 60px;
+  padding: 12px 10px 0;
+  color: #aa9c84;
+  font-size: 13px;
+}
+section.stream article.event.left {
+  border-right: 7px solid #dcd9d3;
+}
+section.stream article.event.left div.action {
+  padding-right: 15px;
+}
+section.stream article.event.left div.time {
+  float: right;
+  text-align: right;
+}
+section.stream article.event.right {
+  border-left: 7px solid #dcd9d3;
+  margin-left: 475px;
+}
+section.stream article.event.right div.time {
+  float: left;
+}
+section.stream article.event > div.avatar {
+  padding: 12px 0 0 0;
+  width: 50px;
+  float: left;
+}
+section.stream article.event > div.action {
+  padding: 12px;
+  color: black;
+  font-size: 15px;
+  line-height: 1.2em;
+  width: 320px;
+  margin-left: 50px;
+  word-wrap: break-word;
+  font-weight: bold;
+}
+section.stream div.project:after,
+section.stream article.event:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+div.panel.global_invite div.step {
+  background: white;
+  width: 85px;
+  height: 85px;
+  margin: 0 auto;
+  color: brown;
+  border: 7px solid #dcd9d3;
+  -webkit-border-radius: 80px 80px 80px 0;
+  -moz-border-radius: 80px 80px 80px 0;
+  border-radius: 80px 80px 80px 0;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+div.panel.global_invite div.step span {
+  font-size: 16px;
+  width: 85px;
+  height: 85px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+div.panel.global_invite div.row div.vertical {
+  width: 0;
+  height: 40px;
+  border-left: 7px solid #dcd9d3;
+  margin: 0 auto;
+}
+div.panel.global_invite div.row section {
+  background: white;
+  width: 50%;
+  margin: 0 auto;
+  padding: 25px 25px 10px;
+  border: 7px solid #dcd9d3;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+div.panel.global_invite div.row section.invite {
+  padding-bottom: 25px;
+}
+div.panel.global_invite div.row section.done {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+div.panel.global_invite div.row section.done p {
+  color: #777;
+}
+div.panel.global_invite div.row section > header > h1 {
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+div.panel.global_invite div.row p {
+  margin-bottom: 3px;
+  line-height: 16px;
+}
+div.panel.global_invite div.row button[data-toggle="submit"] {
+  margin: 0 auto 10px;
+  padding: 10px 30px;
+  font-size: 24px;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  background-color: #8fc857;
+  background-image: -moz-linear-gradient(#8fc857, #5c9425);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8fc857), to(#5c9425));
+  background-image: -webkit-linear-gradient(#8fc857, #5c9425);
+  background-image: -ms-linear-gradient(#8fc857, #5c9425);
+  background-image: linear-gradient(#8fc857, #5c9425);
+  border: 1px solid #561;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+div.panel.global_invite table th {
+  min-width: 14px;
+  text-align: left;
+  vertical-align: top;
+  line-height: 16px;
+  padding-bottom: 9px;
+}
+div.panel.global_invite table th input[type=checkbox] {
+  font-size: medium;
+}
+div.panel.people_index section.people {
+  margin-bottom: 30px;
+}
+div.panel.people_index section.people.cards article.person {
+  width: 140px;
+  float: left;
+  margin: 0 62px 15px 0;
+  padding-bottom: 10px;
+  text-align: center;
+  word-wrap: break-word;
+}
+div.panel.people_index section.people.cards article.person h3 {
+  font-size: 16px;
+  line-height: 19px;
+  margin-bottom: 0;
+  margin-top: 0px;
+  color: #1c5c76;
+  text-decoration: underline;
+}
+div.panel.people_index nav.people_nav a {
+  width: 83px;
+  height: 98px;
+  margin-top: -6px;
+  background-repeat: no-repeat;
+  background-image: url(../images/people_buttons.png);
+}
+div.panel.people_index nav.people_nav a > span {
+  left: -11px;
+  bottom: 0;
+  width: 102px;
+}
+div.panel.home_tab > nav a > span {
+  position: absolute;
+  display: block;
+  text-align: center;
+  line-height: 14px;
+  color: #1c5c76;
+  text-decoration: underline;
+}
+section.invite {
+  font-size: 14px;
+  line-height: 19px;
+  padding: 0px 30px 20px 0px;
+  margin-bottom: 20px;
+}
+section.invite div.invitees {
+  margin-bottom: 20px;
+}
+section.invite div.invitee.field {
+  position: relative;
+  margin: 0px;
+  border: 0px;
+  height: 30px;
+}
+section.invite div.invitee.field div.icon {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 25px;
+  height: 25px;
+  background: 0px 0px url(../images/invitee_field_icons.png) no-repeat;
+}
+section.invite div.invitee.field div.input {
+  position: absolute;
+  left: 30px;
+  bottom: 0px;
+  right: 0px;
+  border-bottom: 1px dotted #bbb;
+}
+section.invite div.invitee.field input {
+  display: block;
+  position: absolute !important;
+  background: transparent !important;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  border: 0;
+  font-size: 14px;
+  line-height: 25px;
+  padding: 3px 0px 2px !important;
+  height: 30px;
+  outline: none;
+  color: #000;
+}
+div.sheet.person.overview > header.person {
+  margin: 0;
+  padding: 20px 30px 10px !important;
+  background: rgba(0, 0, 0, 0.04);
+  text-shadow: 1px 1px #fff;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+  zoom: 1;
+}
+div.sheet.person.overview > header.person:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+div.sheet.person.overview > header.person figure {
+  float: left;
+  margin-bottom: 0;
+  margin-right: 20px;
+}
+div.sheet.person.overview > header.person h2 {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 26px;
+  color: #000;
+  margin: 10px 0 0;
+  border: 0;
+}
+div.sheet.person.overview > header.person h3 {
+  font-size: 16px;
+  font-weight: normal;
+}
+div.sheet.person.overview > div.sheet_body {
+  margin-top: 30px;
+}
+div.sheet.person.overview > div.sheet_body section {
+  padding: 0 0 30px 0;
+  position: relative;
+}
+div.sheet.person.overview > div.sheet_body section > header.left {
+  height: auto;
+  margin-left: 0;
+  margin-bottom: 12px;
+  border: 0 !important;
+}
+div.sheet.person.overview > div.sheet_body section > header.left h1 {
+  color: brown;
+  font-weight: normal;
+  font-size: 18px;
+}
+article.today_todo {
+  padding: 10px;
+  position: relative;
+  min-height: 60px;
+  background: #fcf6c0;
+  margin-bottom: 10px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+article.today_todo h5 {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 116px;
+  height: 75px;
+  padding: 0;
+  overflow: hidden;
+  background: url("../images/member-todo-today.png") no-repeat left top;
+  color: #a39c68;
+  text-indent: -999px;
+  opacity: .5;
+}
+article.today_todo div.nubbin {
+  background: #fcf6c0;
+}
+article.today_todo div.nubbin > div.spacer {
+  background: #fcf6c0;
+}
 a {
   text-decoration: none;
   margin: 0;
@@ -1201,8 +1857,29 @@ div.sheet.inactive > header {
 div.sheet.inactive div.sheet {
   margin: 0 -20px -30px 20px;
 }
+div.sheet.has_sidebar > div.sheet_body {
+  display: inline-block;
+  vertical-align: top;
+  width: 645px;
+  padding-right: 0;
+}
+div.sheet.has_sidebar > aside {
+  display: inline-block;
+  vertical-align: top;
+  width: 200px;
+  padding: 0 0 20px 40px;
+  text-align: left;
+  font-size: 13px;
+}
+div.sheet.has_sidebar > aside > p {
+  margin-bottom: 10px;
+}
+div.sheet.has_sidebar > aside select {
+  width: 70%;
+}
 div.sheet > header {
   margin: 30px 30px 20px 30px;
+  position: relative;
 }
 div.sheet > header h1 {
   font-size: 18px;
@@ -1227,6 +1904,12 @@ div.sheet div.sheet_body > section > header.has_buttons h1 {
   padding-right: 15px;
   padding-bottom: 0;
   border: none !important;
+}
+div.sheet section.event_stream {
+  padding: 0 45px 20px 30px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #1c5c76;
 }
 a.decorated {
   color: #1c5c76;
@@ -1356,5 +2039,57 @@ aside.tools > .tool a {
   zoom: 1;
 }
 div.prompt {
+  cursor: pointer;
+}
+.balloon {
+  white-space: normal;
+  position: absolute;
+  top: -30px;
+  background: #fff;
+  padding: 8px 12px 8px;
+  width: 154px;
+  z-index: 1000;
+  border: 1px solid #bbb;
+  font-size: 13px;
+  line-height: 15px;
+  vertical-align: baseline;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+}
+.balloon.top_left_side .arrow {
+  border-color: transparent transparent #ccc transparent;
+  top: -24px;
+}
+.arrow {
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  border-style: solid;
+  border-width: 12px;
+}
+.popover {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  z-index: 2000;
+}
+.wait {
+  min-width: 14px;
+  background: url(../images/dots-white.gif) no-repeat left center !important;
+  text-indent: -9999px;
+  border: none;
+  padding: 0px 15px 0px 15px;
+  display: block;
+}
+table tr th {
+  vertical-align: top;
+  padding-top: 10px;
+  min-width: 65px;
+}
+button {
   cursor: pointer;
 }

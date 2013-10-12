@@ -7,6 +7,7 @@ from core import ui_methods
 from tornado.options import options
 from core.quemail import QueMail
 from core.StaticFileHandler import StaticFileHandler
+from core.UIModule import UIModule
 
 class Application(tornado.web.Application):
     def __init__(self, settings):
@@ -107,6 +108,9 @@ def main():
     options.define('assets_path')
 
     options.parse_config_file("conf/config.conf")
+    ui_modules = {
+        'uimodle' : UIModule,
+    }
 
     settings = dict(
         cookie_secret = "__TODO:_Generate_your_own_random_value_here__",
@@ -118,7 +122,8 @@ def main():
         autoescape = None,
         debug = True,
         login_url = options.login_url,
-        static_handler_class = StaticFileHandler
+        static_handler_class = StaticFileHandler,
+        ui_modules = ui_modules,
     )
     app = Application(settings)
     app.listen(options.port)
