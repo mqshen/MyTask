@@ -20,7 +20,7 @@
 	}
 
     Stacker.DEFAULTS = {
-        el: '<div class="container stack_container" style="width: 960px;"></div>'
+        el: '<div class="container stack_container" style="width: 960px;"><div class="panel stub sheet loading" ></div></div>'
     }
 
 	Stacker.prototype.load = function () {
@@ -41,7 +41,7 @@
                 if (!self.canBeReplaced()) 
                     return;
                 return r === 200 || r === 304 ? 
-                    self.handleSuccessResponse(r, n) : 
+                    self.handleSuccessResponse(r, n):
                     r > 0 && self.handleErrorResponse(r, n), 
                     self.status = r
             }
@@ -119,7 +119,7 @@
     Stacker.prototype.matchLinkClickEvent = function (e) {
         var t = $(e.target);
         t = t.is('a') ? t : t.closest('a');
-        if(t.attr("data-behavior") == "cancel") 
+        if(t.attr("data-behavior") == "cancel" || t.attr("href") == "javascript:;" || t.attr("href") == "#" ) 
             return false;
         return this.isSameOrigin(t) && this.isStandardClick(e);
     } 
