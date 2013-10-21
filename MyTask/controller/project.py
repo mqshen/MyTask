@@ -43,6 +43,7 @@ class ProjectHandler(BaseHandler):
         currentUser = self.current_user
         currentUser.teamId = teamId 
         self.session["user"] = currentUser
+        print(currentUser)
         projects = Project.query.join(Project.users).filter(User.id==currentUser.id, Project.team_id==teamId).all()
         self.render("project/project.html", projects= projects, teamId = teamId)
 

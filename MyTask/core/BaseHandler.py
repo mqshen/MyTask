@@ -1,4 +1,7 @@
 import tornado.web
+from tornado import escape
+from tornado.escape import utf8
+from tornado.util import bytes_type, unicode_type
 from core.session import Session
 
 from core.escape import json_encode
@@ -6,6 +9,7 @@ from core.util import serialize
 from core.UIModule import UIModule
 from model.user import User
 from core.database import db
+
 
 
 successJson = {"returnCode": "000000"}
@@ -38,9 +42,97 @@ class BaseHandler(tornado.web.RequestHandler):
     def rawRender(self, templateName, **kwargs):
         super().render(templateName, **kwargs)
 
-    def render(self, templateName, **kwargs):
+    def render(self, template_name, **kwargs):
+        """Renders the template with the given arguments as the response."""
         currentUser = self.current_user
-        super().render(templateName, currentUser=currentUser, **kwargs)
+        from_workspace_str = self.get_argument("from_workspace", default="0", strip=False)
+        from_workspace = from_workspace_str == "1"
+        html = self.render_string(template_name, currentUser=currentUser, from_workspace = from_workspace, **kwargs)
+        if from_workspace :
+            self.finish(html)
+
+        # Insert the additional JS and CSS added by the modules on the page
+        js_embed = []
+        js_files = []
+        css_embed = []
+        css_files = []
+        html_heads = []
+        html_bodies = []
+        for module in getattr(self, "_active_modules", {}).values():
+            embed_part = module.embedded_javascript()
+            if embed_part:
+                js_embed.append(utf8(embed_part))
+            file_part = module.javascript_files()
+            if file_part:
+                if isinstance(file_part, (unicode_type, bytes_type)):
+                    js_files.append(file_part)
+                else:
+                    js_files.extend(file_part)
+            embed_part = module.embedded_css()
+            if embed_part:
+                css_embed.append(utf8(embed_part))
+            file_part = module.css_files()
+            if file_part:
+                if isinstance(file_part, (unicode_type, bytes_type)):
+                    css_files.append(file_part)
+                else:
+                    css_files.extend(file_part)
+            head_part = module.html_head()
+            if head_part:
+                html_heads.append(utf8(head_part))
+            body_part = module.html_body()
+            if body_part:
+                html_bodies.append(utf8(body_part))
+
+        def is_absolute(path):
+            return any(path.startswith(x) for x in ["/", "http:", "https:"])
+        if js_files:
+            # Maintain order of JavaScript files given by modules
+            paths = []
+            unique_paths = set()
+            for path in js_files:
+                if not is_absolute(path):
+                    path = self.static_url(path)
+                if path not in unique_paths:
+                    paths.append(path)
+                    unique_paths.add(path)
+            js = ''.join('<script src="' + escape.xhtml_escape(p) +
+                         '" type="text/javascript"></script>'
+                         for p in paths)
+            sloc = html.rindex(b'</body>')
+            html = html[:sloc] + utf8(js) + b'\n' + html[sloc:]
+        if js_embed:
+            js = b'<script type="text/javascript">\n//<![CDATA[\n' + \
+                b'\n'.join(js_embed) + b'\n//]]>\n</script>'
+            sloc = html.rindex(b'</body>')
+            html = html[:sloc] + js + b'\n' + html[sloc:]
+        if css_files:
+            paths = []
+            unique_paths = set()
+            for path in css_files:
+                if not is_absolute(path):
+                    path = self.static_url(path)
+                if path not in unique_paths:
+                    paths.append(path)
+                    unique_paths.add(path)
+            css = ''.join('<link href="' + escape.xhtml_escape(p) + '" '
+                          'type="text/css" rel="stylesheet"/>'
+                          for p in paths)
+            hloc = html.index(b'</head>')
+            html = html[:hloc] + utf8(css) + b'\n' + html[hloc:]
+        if css_embed:
+            css = b'<style type="text/css">\n' + b'\n'.join(css_embed) + \
+                b'\n</style>'
+            hloc = html.index(b'</head>')
+            html = html[:hloc] + css + b'\n' + html[hloc:]
+        if html_heads:
+            hloc = html.index(b'</head>')
+            html = html[:hloc] + b''.join(html_heads) + b'\n' + html[hloc:]
+        if html_bodies:
+            hloc = html.index(b'</body>')
+            html = html[:hloc] + b''.join(html_bodies) + b'\n' + html[hloc:]
+        self.finish(html)
+
     
     def writeSuccessResult(self, model=None, **kwargs):
         result = None

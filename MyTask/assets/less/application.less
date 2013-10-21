@@ -6,6 +6,9 @@
 @import "calendar";
 @import "operation";
 @import "people";
+@import "popover";
+@import "datepicker";
+
 
 
 a {
@@ -371,10 +374,16 @@ div.prompt {
     padding: 0px 15px 0px 15px;
     display: block;
 }
-table tr th {
-    vertical-align: top;
-    padding-top: 10px;
-    min-width: 65px;
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: inherit;
+    font: 100%;
+    tr th {
+        vertical-align: top;
+        padding-top: 10px;
+        min-width: 65px;
+    }
 }
 button {
     cursor: pointer;

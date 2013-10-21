@@ -629,6 +629,13 @@ div.sheet.project section.grouped_by_date article > table > tbody > tr > td.icon
   text-align: right;
   width: 120px;
 }
+table.inbox tr + tr td {
+  border-top: 1px solid #ececec;
+}
+table.inbox a {
+  padding: 0;
+  display: block;
+}
 table.inbox td {
   font-size: 14px;
   padding: 4px 0;
@@ -656,6 +663,10 @@ table.inbox td.what {
   line-height: 18px;
   padding-bottom: 0;
   padding-top: 6px;
+}
+table.inbox td.what strong {
+  color: #1c5c76;
+  text-decoration: underline;
 }
 table.inbox td.what > a {
   overflow: hidden;
@@ -1725,6 +1736,195 @@ article.today_todo div.nubbin {
 article.today_todo div.nubbin > div.spacer {
   background: #fcf6c0;
 }
+.popover .popover-content {
+  padding: 10px 15px;
+  background: #fff;
+  border: 1px solid #ddd;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+}
+.popover select {
+  display: block;
+  margin: 4px 0px 6px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.popover h3 {
+  font-size: 12px;
+  color: #000000;
+  line-height: 1;
+  padding: 5px 0 5px 0;
+  border-bottom: 1px solid #dddddd;
+  font-weight: bold;
+}
+.popover .popover-arrow {
+  width: 10px;
+  height: 12px;
+  background: url(../images/popover-arrow.png) no-repeat 0 0;
+  position: absolute;
+}
+.popover .popover-buttons {
+  margin: 10px 0 5px 0;
+  *zoom: 1;
+}
+.popover .popover-buttons:before,
+.popover .popover-buttons:after {
+  display: table;
+  content: "";
+}
+.popover .popover-buttons:after {
+  clear: both;
+}
+.popover .popover-buttons button {
+  float: left;
+  padding: 6px 10px;
+}
+.popover .popover-buttons a {
+  display: block;
+  float: left;
+  color: #666666;
+  line-height: 32px;
+  font-size: 12px;
+  margin: 0 0 0 10px;
+}
+.popover .popover-buttons a:hover {
+  color: #0066aa;
+}
+.popover.direction-right-bottom .popover-arrow {
+  background-position: 0 -20px;
+  top: 15px;
+  left: -9px;
+}
+.popover.direction-right-top .popover-arrow {
+  background-position: 0 -20px;
+  bottom: 15px;
+  left: -9px;
+}
+.popover.direction-top-right .popover-arrow {
+  background-position: 0 -20px;
+  bottom: 15px;
+  left: -9px;
+}
+.popover.direction-bottom-right .popover-arrow {
+  background-position: 0 -20px;
+  top: 15px;
+  left: -9px;
+}
+.popover.direction-top-left .popover-arrow {
+  background-position: 0 -31px;
+  bottom: 15px;
+  right: -9px;
+}
+.popover.direction-bottom-left .popover-arrow {
+  background-position: 0 -31px;
+  top: 15px;
+  right: -9px;
+}
+.no-due-date {
+  font-size: 12px;
+  text-align: center;
+}
+.backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000000;
+}
+.backdrop,
+.backdrop.fade.in {
+  opacity: 0.1;
+  filter: alpha(opacity = 10);
+}
+.datepicker {
+  font-size: 12px;
+}
+.lily-calendar-head {
+  position: relative;
+}
+.lily-calendar-head a {
+  position: absolute;
+  width: 9px;
+  height: 7px;
+  margin: 6px 0px 0px 0px;
+}
+.lily-calendar-head .prev {
+  left: 0px;
+  background: url('../images/arrow-prev.png') no-repeat;
+}
+.lily-calendar-head .next {
+  right: 0px;
+  background: url('../images/arrow-next.png') no-repeat;
+}
+.lily-calendar-head .prev:hover,
+.lily-calendar-head .next:hover {
+  opacity: 0.5;
+}
+.lily-datepicker-title {
+  width: 100%;
+  float: left;
+  height: 21px;
+  text-align: center;
+  line-height: 21px;
+}
+.lily-calendar-area {
+  position: relative;
+  height: 21px;
+}
+.lily-week-area {
+  position: relative;
+  width: 100%;
+}
+.lily-week-head {
+  width: 100%;
+  text-align: center;
+  border-spacing: 1px;
+}
+.lily-week-head td {
+  width: 14%;
+  font-size: 12px;
+}
+.lily-days-table {
+  width: 100%;
+  text-align: center;
+  border-spacing: 0px;
+  border-color: black;
+  margin-top: 5px;
+}
+.lily-days-table td {
+  padding: 0px;
+  width: 14%;
+  cursor: pointer;
+  font-size: 12px;
+  border-bottom: 2px solid #fff;
+}
+.lily-days-table .today {
+  color: white;
+  background-color: #0f769f;
+}
+.off-month {
+  background: #ffffff;
+  color: #cccccc;
+  cursor: default;
+  opacity: 0.6;
+}
+.on-month {
+  background: #E0E8F6;
+  color: #333333;
+  -webkit-text-shadow: 0 1px 0 #fff;
+  -moz-text-shadow: 0 1px 0 #fff;
+  text-shadow: 0 1px 0 #fff;
+}
+.on-month:hover {
+  background: #cbe0ff;
+}
 a {
   text-decoration: none;
   margin: 0;
@@ -2084,6 +2284,12 @@ div.prompt {
   border: none;
   padding: 0px 15px 0px 15px;
   display: block;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: inherit;
+  font: 100%;
 }
 table tr th {
   vertical-align: top;

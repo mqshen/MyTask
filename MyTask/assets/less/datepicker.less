@@ -1,0 +1,98 @@
+.datepicker {
+    font-size: 12px;
+}
+
+.lily-calendar-head {
+	position: relative;
+    a {
+    	position: absolute;
+    	width: 9px;
+    	height: 7px;
+    	margin: 6px 0px 0px 0px;
+    }
+    .prev {
+    	left: 0px;
+    	background: url('../images/arrow-prev.png') no-repeat;
+    }
+    
+    .next {
+    	right: 0px;
+    	background: url('../images/arrow-next.png') no-repeat;
+    }
+    .prev:hover,
+    .next:hover {
+    	opacity: 0.5;
+    }
+}
+
+
+.lily-datepicker-title {
+	width: 100%;
+	float: left;
+	height: 21px;
+	text-align: center;
+	line-height: 21px;
+}
+
+.lily-calendar-area {
+	position: relative;
+	height: 21px;
+}
+
+.lily-week-area {
+	position: relative;
+	width: 100%;
+}
+
+.lily-week-head {
+	width: 100%;
+	text-align: center;
+	border-spacing: 1px;
+    td {
+    	width: 14%;
+        font-size: 12px;
+    }
+}
+
+
+.lily-days-table {
+	width: 100%;
+	text-align: center;
+	border-spacing: 0px;
+	border-color: black;
+	margin-top: 5px;
+    td {
+        padding: 0px;
+    	width: 14%;
+    	cursor: pointer;
+        font-size: 12px;
+        border-bottom: 2px solid #fff;
+    }
+    .today {
+    	color: white;
+    	background-color: #0f769f;
+    }
+}
+
+
+
+
+.off-month {
+	background: #ffffff;
+	color: #cccccc;
+	cursor: default;
+	opacity: 0.6;
+}
+
+.on-month {
+	background: #E0E8F6;
+	color: #333333;
+	-webkit-text-shadow: 0 1px 0 #fff;
+	-moz-text-shadow: 0 1px 0 #fff;
+	text-shadow: 0 1px 0 #fff;
+    &:hover {
+    	background: #cbe0ff;
+    }
+}
+
+

@@ -1,4 +1,7 @@
 {% from tornado.options import options %}
+{% if from_workspace %}
+    {% block body %} fill by every page{% end %}
+{% else %}
 <!DOCTYPE html>
 <html>
 	<head>
@@ -47,3 +50,4 @@
 
     </body>
 </html>
+{% end %}

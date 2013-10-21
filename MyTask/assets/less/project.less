@@ -320,57 +320,70 @@ div.sheet.project {
         }
     }
 }
-table.inbox td {
-    font-size: 14px;
-    padding: 4px 0;
-    vertical-align: top;
-    &.avatar {
-        min-width: 40px;
-        width: 40px;
+table.inbox {
+    tr+tr td {
+        border-top: 1px solid #ececec;
     }
-    &.who {
-        width: 1%;
-        white-space: nowrap;
-        text-align: left;
-        a {
-            padding: 5px 14px 5px 0;
-            display: block;
+    a {
+        padding: 0;
+        display: block;
+    }
+    td {
+        font-size: 14px;
+        padding: 4px 0;
+        vertical-align: top;
+        &.avatar {
+            min-width: 40px;
+            width: 40px;
+        }
+        &.who {
+            width: 1%;
             white-space: nowrap;
-            max-width: 120px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            text-align: left;
+            a {
+                padding: 5px 14px 5px 0;
+                display: block;
+                white-space: nowrap;
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
-    }
-    &.what {
-        max-width: 460px;
-        line-height: 18px;
-        padding-bottom: 0;
-        padding-top: 6px;
-        >a {
-            overflow: hidden;
-            position: relative;
-            max-height: 30px;
-            padding: 5px 0;
-            margin-bottom: 8px;
+        &.what {
+            max-width: 460px;
+            line-height: 18px;
+            padding-bottom: 0;
+            padding-top: 6px;
+            strong {
+                color: #1c5c76;
+                text-decoration: underline;
+            }
+            >a {
+                overflow: hidden;
+                position: relative;
+                max-height: 30px;
+                padding: 5px 0;
+                margin-bottom: 8px;
+            }
+            span.excerpt {
+                color: #666;
+            }
         }
-        span.excerpt {
-            color: #666;
+        &.when {
+            width: 1%;
+            white-space: nowrap;
+            text-align: right;
+            a {
+                padding: 5px 0 5px 30px;
+                color: #aa9c84;
+            }
         }
-    }
-    &.when {
-        width: 1%;
-        white-space: nowrap;
-        text-align: right;
-        a {
-            padding: 5px 0 5px 30px;
-            color: #aa9c84;
-        }
-    }
-    &.comments {
-        border: none;
-        padding-top: 8px;
-         span.pill.comments {
-            margin: 0 0 0 10px;
+        &.comments {
+            border: none;
+            padding-top: 8px;
+             span.pill.comments {
+                margin: 0 0 0 10px;
+            }
         }
     }
 }
