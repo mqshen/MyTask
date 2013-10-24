@@ -110,12 +110,14 @@
             }
             this.path = t.attr("href");
             this.load(); 
+            e.preventDefault(); 
+            e.stopPropagation();
         }
         else if(this.needGoBack(e)){
             this.popstate();
+            e.preventDefault(); 
+            e.stopPropagation();
         }
-        e.preventDefault(); 
-        e.stopPropagation();
     } 
 
     Stacker.prototype.matchLinkClickEvent = function (e) {
