@@ -74,7 +74,7 @@ class Application(tornado.web.Application):
             ('/join/([0-9a-z]+)', JoinHandler),
             ('/autocomplete', AutoCompleteHandler),
         ]
-        pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+        pool = redis.ConnectionPool(host=options.redis.get("host"), port=options.redis.get("port"), db=0)
         r = redis.Redis(connection_pool=pool)
         self.session_store = RedisSessionStore(r)
         tornado.web.Application.__init__(self, handlers, **settings)
@@ -97,6 +97,7 @@ def main():
     options.define('repositoryPath')
     options.define('debug', type=bool)
     options.define('cache_enabled', type=bool)
+    options.define('redis', type=dict)
     options.define('smtp', type=dict)
     options.define('sqlalchemy_engine')
     options.define('sqlalchemy_kwargs', type=dict)

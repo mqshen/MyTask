@@ -205,6 +205,9 @@ div.workspace > div.stack_container div.sheet {
   width: 100%;
   display: inline-block;
 }
+div.sheet.inactive {
+  border: 1px solid #e6e5e5;
+}
 img.avatar {
   -webkit-border-radius: 100px;
   -moz-border-radius: 100px;

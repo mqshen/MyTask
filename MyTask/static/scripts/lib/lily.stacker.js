@@ -20,7 +20,9 @@
 	}
 
     Stacker.DEFAULTS = {
-        el: '<div class="container stack_container" style="width: 960px;"><div class="panel stub sheet loading" ></div></div>'
+        el: '<div class="container stack_container" style="width: 960px;"><div class="panel stub sheet loading" ></div></div>',
+        notFound: '<div class="panel sheet error not_found" style="width: 960px;"><header><h1>Oops!</h1>  </header>  <div class="sheet_body">    <h2>We can\'t find that page</h2>    <p>The link you clicked doesn\'t look quite right. Check to make <br>sure the spelling, capitalization, etc. are exactly right.</p>    <p><a href="#" onclick="history.back(); return false" class="button">&larr; Back to the previous page</a></p>  </div></div>',
+        internalError: '<div class="panel sheet error internal_server_error" style="width: 960px;"><header><h1>Oops! Something isn\'t working.</h1>  </header>  <div class="sheet_body"><h2>This is our fault, not yours. We\'re sorry.</h2><p>It\'s likely this is a temporary glitch that will be fixed within <br>a few minutes. If you continue to see this error:</p><ul><li><a href="#" class="decorated">Tell us about this problem</a></li>      </ul></div>'
     }
 
 	Stacker.prototype.load = function () {
@@ -88,9 +90,9 @@
     Stacker.prototype.handleErrorResponse = function (e, t) {
         var n;
         return e === 404 ? 
-            n = JST["stacker/templates/404"] : 
-            n = JST["stacker/templates/500"], 
-            this.replace('') 
+            n = this.options.notFound : 
+            n = this.options.internalError ,
+            this.replace(n) 
     } 
 
 
@@ -109,7 +111,7 @@
             this.path = t.attr("href");
             this.load(); 
         }
-        else {
+        else if(this.needGoBack(e)){
             this.popstate();
         }
         e.preventDefault(); 
@@ -122,6 +124,13 @@
         if(t.attr("data-behavior") == "cancel" || t.attr("href") == "javascript:;" || t.attr("href") == "#" ) 
             return false;
         return this.isSameOrigin(t) && this.isStandardClick(e);
+    } 
+
+    Stacker.prototype.needGoBack = function (e) {
+        var t = $(e.target);
+        t = t.is('a') ? t : t.closest('a');
+        if(t.attr("data-behavior") == "cancel" )
+            return true;
     } 
 
     Stacker.prototype.isSameOrigin = function (e) {
