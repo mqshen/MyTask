@@ -76,7 +76,6 @@
     }
     
     Stacker.prototype.statechange = function(e) {
-        consoel.log("statechange");
         e.preventDefault(); 
     }
 

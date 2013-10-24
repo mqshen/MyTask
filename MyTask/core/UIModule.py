@@ -39,6 +39,7 @@ class UIModule(tornado.web.UIModule):
             "scripts/lib/lily.imageView.js",
             "scripts/lib/lily.autoAdd.js",
             "scripts/lib/lily.timeago.js",
+            "scripts/lib/lily.validator.js",
             "scripts/lib/lily.stacker.js",
             "scripts/myCalendar.js",
             "scripts/application.js",
