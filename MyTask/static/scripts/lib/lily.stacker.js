@@ -16,7 +16,6 @@
         $(window).bind('popstate', function(e) { self.popstate(e)});  
         this.path = window.location.pathname;
         this.html = this.$element.find('.container')[0];
-        console.log(this.html);
 	}
 
     Stacker.DEFAULTS = {

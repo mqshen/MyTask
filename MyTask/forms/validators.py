@@ -115,6 +115,13 @@ class Length(object):
 
             raise ValidationError(self.message % dict(min=self.min, max=self.max))
 
+    def get_validate_str(self):
+        validate_str = ''
+        if self.max != -1:
+            validate_str += 'maxLength:%d' % self.max
+        if self.min != -1:
+            validate_str += 'minLength:%d' % self.min
+        return validate_str
 
 class NumberRange(object):
     """
@@ -191,6 +198,9 @@ class Required(object):
             field.errors[:] = []
             raise StopValidation(self.message)
 
+    def get_validate_str(self):
+        return 'require:true'
+
 
 class Regexp(object):
     """
@@ -218,6 +228,9 @@ class Regexp(object):
 
             raise ValidationError(self.message)
 
+    def get_validate_str(self):
+        return 'require:true'
+
 
 class Email(Regexp):
     """
@@ -237,6 +250,9 @@ class Email(Regexp):
 
         super(Email, self).__call__(form, field)
 
+    def get_validate_str(self):
+        return 'dateType:email'
+
 
 class IPAddress(Regexp):
     """
@@ -253,6 +269,9 @@ class IPAddress(Regexp):
             self.message = field.gettext(u('Invalid IP address.'))
 
         super(IPAddress, self).__call__(form, field)
+
+    def get_validate_str(self):
+        return 'dataType:email'
 
 
 class URL(Regexp):

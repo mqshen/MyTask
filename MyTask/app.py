@@ -83,6 +83,11 @@ class Application(tornado.web.Application):
         qm.init(options.smtp.get("host"), options.smtp.get("user"), options.smtp.get("password"))
         qm.start()
 
+        from tornado import locale
+        language_path = os.path.join(os.path.dirname(__file__), "i18n")
+        locale.load_translations(language_path)
+        locale.set_default_locale(options.locale)
+
     def __del__(self):
         qm = QueMail.get_instance()
         qm.end()
@@ -90,6 +95,7 @@ class Application(tornado.web.Application):
 def main():
     options.define('templatesPath')
     options.define('staticPath')
+    options.define('locale')
     options.define('port', type=int)
     options.define('login_url')
     options.define('attachmentPath')

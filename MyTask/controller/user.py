@@ -12,7 +12,7 @@ from tornado.web import RequestHandler
 from tornado.web import HTTPError
 import hashlib
 from core.BaseHandler import BaseHandler 
-from forms import Form, TextField, ListField, BooleanField, validators
+from forms import Form, TextField, EmailField, PasswordField, ListField, BooleanField, validators
 from core.database import db
 from core.quemail import QueMail, Email
 from core.util import getSequence 
@@ -21,8 +21,8 @@ from uuid import uuid4
 from datetime import datetime
 
 class SigninForm(Form):
-    email = TextField('email', [validators.required(), validators.email()])
-    password = TextField('password', [validators.required()])
+    email = EmailField('email', [validators.required(), validators.email()])
+    password = PasswordField('password', [validators.required()])
 
 class RegisterForm(Form):
     email = TextField('email', [validators.required(), validators.email()])
@@ -95,7 +95,8 @@ class LoginHandler(BaseHandler):
                 self.session._save()
                 self.rawRender("teamSelect.html", currentUser=currentUser, nextUrl=nextUrl)
             return
-        self.rawRender("login.html", nextUrl=nextUrl)
+        form = SigninForm(self.request.arguments, locale_code=self.locale.code)
+        self.rawRender("login.html", nextUrl=nextUrl, form = form)
 
     def post(self):
         form = SigninForm(self.request.arguments, locale_code=self.locale.code)
@@ -334,3 +335,4 @@ class SignOutHandler(BaseHandler):
     def post(self):
         self.session.clear()
         self.redirect("/")
+    email = TextField('邮', [validators.required(), validators.email()])

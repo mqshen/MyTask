@@ -5,10 +5,11 @@ import sys
 import time
 
 from forms.validators import StopValidation, u, unicode, next
+from forms import widgets
 from datetime import datetime
 
 __all__ = (
-    'TextField', 'ListField', 'FileField', 'IntField', 'DateField', 'BooleanField', 'DateTimeField', 'TimeField'
+    'TextField', 'ListField', 'FileField', 'IntField', 'DateField', 'BooleanField', 'DateTimeField', 'TimeField', 'EmailField', 'PasswordField'
 )
 
 _unset_value = object()
@@ -46,7 +47,7 @@ class Field(object):
 
 
     def __init__(self, label=u(''), validators=None, filters=tuple(),
-                 description=u(''), id=None, default=None, 
+                 description=u(''), id=None, default=None, widget=None, 
                  _form=None, _name=None, _translations=None):
         """
         Construct a new field.
@@ -85,6 +86,8 @@ class Field(object):
             validators = []
         self.validators = validators
         self.filters = filters
+        if widget is not None:
+            self.widget = widget
         self.description = description
         self.type = type(self).__name__
         self.default = default
@@ -93,6 +96,15 @@ class Field(object):
 
     def gettext(self, string):
         return self._translations.gettext(string)
+
+    def __call__(self, **kwargs):
+        """
+        Render this field as HTML, using keyword args as additional attributes.
+
+        Any HTML attribute passed to the method will be added to the tag
+        and entity-escaped properly.
+        """
+        return self.widget(self, **kwargs)
 
     def ngettext(self, singular, plural, n):
         return self._translations.ngettext(singular, plural, n)
@@ -147,6 +159,15 @@ class Field(object):
             self.errors.append(e.args[0])
 
         return len(self.errors) == 0
+
+    @property
+    def validate_html(self):
+        validate_str = '{'
+        for validator in self.validators:
+            validate_str += validator.get_validate_str() + ' ,'
+        return validate_str[:-1] + '}'
+
+
 
     def pre_validate(self, form):
         """
@@ -250,6 +271,8 @@ class TextField(Field):
     This field is the base for most of the more complicated fields, and
     represents an ``<input type="text">``.
     """
+    widget = widgets.TextInput()
+
     def process_formdata(self, valuelist):
         if valuelist:
             self.data = valuelist[0]
@@ -259,6 +282,18 @@ class TextField(Field):
     def _value(self):
         return self.data is not None and unicode(self.data) or u('')
     
+class EmailField(TextField):
+    """
+    Represents an ``<input type="email">``.
+    """
+    widget = widgets.EmailInput()
+
+class PasswordField(TextField):
+    """
+    Represents an ``<input type="email">``.
+    """
+    widget = widgets.PasswordInput()
+
 class ListField(Field):
     """
     this field is the ba
