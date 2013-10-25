@@ -25,6 +25,7 @@ class BaseForm(object):
 
     def __init__(self, fields):
         self._errors = None
+        self._field_errors = None
         self._fields = {}
 
         if hasattr(fields, 'iteritems'):
@@ -119,7 +120,7 @@ class BaseForm(object):
 
         Returns `True` if no errors occur.
         """
-        self._errors = None
+        self._field_errors = None
         success = True
         for name, field, in self._fields.items():
             if extra_validators is not None and name in extra_validators:
@@ -135,10 +136,10 @@ class BaseForm(object):
         return dict((name, f.data) for name, f in self._fields.items())
 
     @property
-    def errors(self):
-        if self._errors is None:
-            self._errors = dict((name, f.errors) for name, f in self._fields.items() if f.errors)
-        return self._errors
+    def field_errors(self):
+        if self._field_errors is None:
+            self._field_errors = dict((name, f.errors) for name, f in self._fields.items() if f.errors)
+        return self._field_errors
 
 class FormMeta(type):
     """

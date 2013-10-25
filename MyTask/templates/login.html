@@ -19,12 +19,17 @@
 	        <div class="bd">
                 <form accept-charset="UTF-8" action="/login" method="post">
 	                {% module xsrf_form_html() %}
+                    {% if form._errors %}
+                        <div class="flash flash-error">
+                            {{ _(form._errors ) }}
+                        </div>
+                    {% end %}
                     {% for field in form %}
-	                <div class="form-item">
-	                    <div class="form-field">
-                            {{field()}}
+	                    <div class="form-item">
+	                        <div class="form-field">
+                                {{field()}}
+	                        </div>
 	                    </div>
-	                </div>
                     {% end %}
 
 	                <div class="form-item sign-in-btn">
@@ -40,7 +45,6 @@
 	            	没有帐号？<span><a href="/register">免费注册 →</a></span>
 	            </div>
   	        </div>
-  	          
   	        <div class="ft">© mqShen</div>
         </div>
     </div>

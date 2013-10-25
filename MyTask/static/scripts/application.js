@@ -85,11 +85,9 @@
     $(document).on('click.form_submit.data-api', 'input[type=submit]', function (e) {
         var $btn = $(e.target)
         var form = $btn.closest('form')
-        e.preventDefault(); 
         form.validator()
-        console.log(form.data('validator').check())
-        if(!form.data('validator').check()) {
-
+        var checkResult = form.data('validator').check();
+        if(!checkResult.passed) {
             e.preventDefault(); 
         }
     })

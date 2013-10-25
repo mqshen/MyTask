@@ -636,12 +636,17 @@
 		},
 
 		hideError: function(element) {
-			element.parent().next(".op-error").remove();
+            element.attr("placeholder", element.attr("old-placeholder"));
+			element.removeClass("op-error shake");
 		},
 
 		showError: function(element, message) {
 			this.hideError(element)
-			element.parent().after('<span class="op-error">' + message + '</span>')
+
+            if(!element.attr("old-placeholder"))
+                element.attr("old-placeholder", element.attr("placeholder"))
+            element.addClass('op-error shake').attr('placeholder', message);
+			//element.after('<span class="error">' + message + '</span>')
 		},
 		addErrors: function(errors) {
 			var htmlStr = "<ul>";

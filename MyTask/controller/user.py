@@ -109,7 +109,8 @@ class LoginHandler(BaseHandler):
             print(password_md5)
             currentUser = User.query.filter_by(email=form.email.data, password=password_md5).first()
             if currentUser is None:
-                self.render("login.html", form = form, error_message = "用户名或密码错误！")
+                form._errors = "Incorrect username or password"
+                self.render("login.html", form = form )
             else:
                 self.set_secure_cookie("sid", self.session.sessionid)
     
