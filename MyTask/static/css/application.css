@@ -776,7 +776,7 @@ table.inbox td.what strong {
 table.inbox td.what > a {
   overflow: hidden;
   position: relative;
-  max-height: 35px;
+  max-height: 40px;
   padding: 5px 0;
   margin-bottom: 8px;
 }
