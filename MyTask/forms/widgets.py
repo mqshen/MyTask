@@ -41,7 +41,8 @@ class Input(object):
 
     def __call__(self, field, **kwargs):
         kwargs.setdefault('id', field.id)
-        kwargs.setdefault('placeholder', field.gettext(field.name))
+        kwargs.setdefault('placeholder', field.gettext(field.label))
+        print(kwargs.get('placeholder'))
         kwargs.setdefault('data-validate', field.validate_html)
         kwargs.setdefault('type', self.input_type)
 

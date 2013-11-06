@@ -92,6 +92,26 @@ input.op-error {
   -moz-box-shadow: 0px 0px 3px rgba(204, 34, 16, 0.5);
   box-shadow: 0px 0px 3px rgba(204, 34, 16, 0.5);
 }
+input.op-error::-webkit-input-placeholder {
+  /* WebKit browsers */
+
+  color: red;
+}
+input.op-error:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+
+  color: #999;
+}
+input.op-error::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+
+  color: #999;
+}
+input.op-error:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+
+  color: #999;
+}
 .flash {
   padding: 5px;
   border-radius: 3px;

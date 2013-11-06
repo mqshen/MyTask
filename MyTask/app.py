@@ -6,7 +6,6 @@ from core.session import RedisSessionStore
 from core import ui_methods
 from tornado.options import options
 from core.quemail import QueMail
-from core.StaticFileHandler import StaticFileHandler
 from core.UIModule import UIModule
 
 class Application(tornado.web.Application):
@@ -93,6 +92,7 @@ class Application(tornado.web.Application):
         qm.end()
 
 def main():
+    options.define('environment')
     options.define('templatesPath')
     options.define('staticPath')
     options.define('locale')
@@ -129,7 +129,6 @@ def main():
         autoescape = None,
         debug = True,
         login_url = options.login_url,
-        static_handler_class = StaticFileHandler,
         ui_modules = ui_modules,
     )
     app = Application(settings)

@@ -79,6 +79,7 @@ class Field(object):
         a name to construct the field.
         """
         self.name = _name
+        self.label = label
         if _translations is not None:
             self._translations = _translations
         self.id = id or self.name
@@ -162,11 +163,12 @@ class Field(object):
 
     @property
     def validate_html(self):
+        if len(self.validators) == 0:
+            return '' 
         validate_str = '{'
         for validator in self.validators:
             validate_str += validator.get_validate_str() + ' ,'
         return validate_str[:-1] + '}'
-
 
 
     def pre_validate(self, form):

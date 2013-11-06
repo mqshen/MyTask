@@ -34,7 +34,8 @@ $(function(){
     function doReponseTodoList(responseData) {
         var contentStr = '<li data-sortable-type="todolist" id="sortable_todolist" >'
             + '<article class="todolist">'
-            + '<header class="collapsed_content editable_container" data-behavior="has_hover_content" href="/' + responseData.teamId + '/project/' 
+            + '<header class="collapsed_content editable_container" data-behavior="has_hover_content" href="/' 
+            + responseData.teamId + '/project/' 
             + responseData.project_id + '/todolist/' + responseData.id + '">'
             + '<div class="nubbin" style="left: -62px; display: none;" data-behavior="hover_content">'
             + '<div class="spacer"></div>'

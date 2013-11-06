@@ -6,6 +6,7 @@
         this.$submitButton = $(button)
         this.$element = $(element)
         this.options = $.extend({}, $.fn.form.defaults, options)
+        this.$element.validator()
     }
 
     Form.prototype = {
@@ -15,6 +16,13 @@
 		    this.oldText = this.$submitButton.text()
 		    this.$submitButton.attr("disabled",true).text(this.$submitButton.attr("data-disable-with"))
             var $this = $(this) 
+            this.$element.data('validator')
+            var checkResult = this.$element.data('validator').check();
+            if(!checkResult.passed) {
+                this.resetForm()
+                return
+            }
+            
             var requestData = $.lily.collectRequestData(this.$element);
             if(this.$element.data("collectData")) {
                 var specialData = this.$element.data("collectData")()
@@ -48,28 +56,30 @@
     }
 
     $.fn.form = function ( option ) {
-       return this.each(function () {
-           var $this = $(this), 
-               data = $this.data('form'), 
-               options = typeof option == 'object' && option;
-           if (!data) {
-               var form = $this.closest("form")
-               $this.data('form', (data = new Form(this, form, options)));
+        return this.each(function () {
+            var $this = $(this), 
+                data = $this.data('form'), 
+                options = typeof option == 'object' && option;
+            if (!data) {
+                var form = $this.closest("form")
+                $this.data('form', (data = new Form(this, form, options)));
            }
            if (option == 'submit') 
                data.submit();
-       });
-   }
+        });
+    }
+    
+    $.fn.form.defaults = {
+        loadingText: 'loading...'
+    }
+    
+    $.fn.form.Constructor = Form 
 
-   $.fn.form.defaults = {
-       loadingText: 'loading...'
-   }
-
-   $.fn.form.Constructor = Form 
-
-   $(document).on('click.form.data-api', '[data-toggle^=submit]', function (e) {
+    $(document).on('click.form.data-api', '[data-toggle^=submit]', function (e) {
         var $btn = $(e.target)
         $btn.form("submit")
+        e.preventDefault(); 
+        e.stopPropagation();
 
-   })
+    })
 }(window.jQuery)

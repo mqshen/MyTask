@@ -407,5 +407,4 @@ $(function(){
         $('.event[data-bucket="' + bucket + '"]').toggle()
         $('.row[data-bucket="' + bucket + '"]').toggle()
     })
-
 })

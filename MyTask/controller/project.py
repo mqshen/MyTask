@@ -15,7 +15,7 @@ import tornado
 from tornado.options import options
 from core.BaseHandler import BaseHandler 
 import core.web 
-from forms import Form, TextField, ListField, IntField, BooleanField
+from forms import Form, TextField, ListField, IntField, BooleanField, validators
 from datetime import datetime
 from core.database import db
 import json
@@ -23,8 +23,8 @@ import pinyin
 
 
 class ProjectForm(Form):
-    name = TextField('name')
-    description = TextField('description')
+    name = TextField('Name the project', [validators.required()])
+    description = TextField('Add a description or extra details (optional)')
     member = ListField('member')
 
 class ProjectAccessForm(Form):
@@ -51,6 +51,10 @@ class ProjectHandler(BaseHandler):
     def post(self, teamId):
         currentUser = self.current_user
         form = ProjectForm(self.request.arguments, locale_code=self.locale.code)
+        if not form.validate():
+            self.writeFailedResult()
+            self.finish()
+            return
         
         project = Project.query.filter_by(title=form.name.data, team_id=teamId).first()
         if project :
@@ -96,9 +100,10 @@ class NewProjectHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self, teamId):
+        form = ProjectForm(self.request.arguments, locale_code=self.locale.code)
         currentUser = self.current_user
         team = Team.query.filter_by(id=teamId).first()
-        self.render("project/newProject.html", team= team, teamId = teamId)
+        self.render("project/newProject.html", team= team, teamId = teamId, form = form)
 
     @tornado.web.authenticated
     def post(self):

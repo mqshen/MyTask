@@ -14,12 +14,12 @@
                         <section class="details">
                             <div class="name">
                                 <h1>
-                                    <input type="text" data-toggle="remote" id="project_name" name="name" placeholder="项目名称" rows="1" />
+                                    {{ form.name(id="project_name") }}
                                 </h1>
                             </div>
                             <div class="description">
                                 <p>
-                                    <input type="text" data-toggle="remote" id="project_description" name="description" placeholder="简单描述项目，便于其他人理解（选填）" rows="1" />
+                                    {{ form.description() }}
                                 </p>
                             </div>
                         </section>

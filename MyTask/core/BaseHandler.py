@@ -49,7 +49,17 @@ class BaseHandler(tornado.web.RequestHandler):
         from_workspace = from_workspace_str == "1"
         html = self.render_string(template_name, currentUser=currentUser, from_workspace = from_workspace, **kwargs)
         if from_workspace :
+            scriptName = self.__class__.__name__
+
+            if scriptName.endswith('Handler') :
+                scriptName = scriptName[:-7] 
+
+            path = self.static_url('scripts/' + scriptName + '.js')
+
+            js = '<script src="' + escape.xhtml_escape(path) + '" type="text/javascript"></script>'
+            html = html + utf8(js)
             self.finish(html)
+            return
 
         # Insert the additional JS and CSS added by the modules on the page
         js_embed = []

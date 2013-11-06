@@ -434,5 +434,60 @@
     </div>
     <div class="popover-arrow"></div>
 </div>
+
+<script id="todoListTemplate" type="text/x-jsrender">
+<li data-sortable-type="todolist" id="sortable_todolist">
+    <article class="todolist">
+        <header class="collapsed_content editable_container " data-behavior="has_hover_content" 
+            href="/{{teamId}}/project/{{project.id}}/todolist/">
+            <div class="nubbin" style="left: -62px; display: none;" data-behavior="hover_content">
+                <div class="spacer"></div>
+                <a class="image delete" data-confirm="Are you sure you want to delete this to-do list?" 
+                    data-toggle="post" data-method="post" data-remote="true" href="/27/project/1/todolist/1/trash" 
+                    rel="nofollow">Delete</a>
+                <a class="edit" href="javascript:;" data-toggle="editorTrigger">Edit</a>
+            </div>
+            <h3>
+                <a class="linked_title editable" href="/27/project/1/todolist/1" name="title">test</a>
+            </h3>
+        </header>
+        <ul class="todos">
+        </ul>
+        <ul class="new expanded">
+            <li class="collapsed_content">
+                <a class="decorated btn" data-toggle="button-display" id="trigger_todoList_1" 
+                    data-content="#new_todoitem_1" data-hidden="#trigger_todoList_1" 
+                    href="javascript:;">添加任务</a>
+            </li>
+            <li class="expanded_content edit_mode">
+                <form action="/27/project/1/todolist/1/todoitem" class="new_todo" data-remote="true" 
+                    id="new_todoitem_1" style="display:none" method="post">
+                    <textarea id="todo_content" name="description" placeholder="添加一个新任务" 
+                        rows="1" data-toggle="remote" data-autoresize="true" style="resize: none; overflow: hidden; min-height: 18px;">
+                    </textarea>
+                    <span style="position:relative">
+                        <span class="pill has_balloon blank ignore_hover">
+                            <a class="popover-btn" href="javascript:;" data-toggle="popover" data-content="#tpl-todo-popover">
+                                <input type="hidden" data-toggle="remote" name="deadLine">
+                                <input type="hidden" data-toggle="remote" name="workerId">
+                                <span name="workerName">未分配</span>
+                                <span class="separator"> · </span>
+                                <time name="deadlineDate">无截止日期</time>
+                            </a>
+                        </span>
+                    </span>
+                    <p class="submit">
+                        <button name="commit" data-toggle="submit">添加任务</button>
+                        <a class="cancel btn" data-role="cancel" href="javascript:;" data-toggle="button-display" 
+                            data-content="#new_todoitem_1" data-hidden="#trigger_todoList_1">取消</a>
+                    </p>
+                </form>
+            </li>
+        </ul>
+        <ul class="completed truncated" style="display: block;">
+        </ul>
+    </article>
+</li>
+</script>
 {% end %}
 
