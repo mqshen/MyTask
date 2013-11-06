@@ -63,7 +63,7 @@ class TodoListHandler(BaseHandler):
             except:
                 db.session.rollback()
                 raise
-            self.writeSuccessResult(todoList)
+            self.writeSuccessResult(todoList, teamId = teamId)
 
 class TodoListDetailHandler(BaseHandler):
     _error_message = "email or password incorrect!"

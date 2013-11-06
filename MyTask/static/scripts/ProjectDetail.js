@@ -37,7 +37,7 @@ $(function(){
             + '<header class="collapsed_content editable_container" data-behavior="has_hover_content" href="/' 
             + responseData.teamId + '/project/' 
             + responseData.project_id + '/todolist/' + responseData.id + '">'
-            + '<div class="nubbin" style="left: -62px; display: none;" data-behavior="hover_content">'
+            + '<div class="nubbin" style="left: -54px; display: none;" data-behavior="hover_content">'
             + '<div class="spacer"></div>'
             + '<a class="image delete" data-confirm="您确定要删除这个任务列表吗" data-method="post" data-remote="true" href="/' + responseData.teamId + '/project/1/todolist//trash" rel="nofollow">Delete</a>'
             + '<a class="edit" href="javascript:;" data-toggle="editorTrigger">Edit</a>'
@@ -102,7 +102,7 @@ $(function(){
         var contentStr = '<li class="todo show editable_container" data-behavior="has_hover_content" href="/' + responseData.teamId + '/project/' 
             + responseData.project_id 
             + '/todolist/' + responseData.todolist_id + '/todoitem/' + responseData.id + '">'
-            + '<div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">'
+            + '<div class="nubbin" style="display: none; left: -54px;" data-behavior="hover_content">'
             + '<div class="spacer"></div>'
             + '<a class="image delete" data-confirm="Are you sure you want to delete this to-do?" data-toggle="post" data-toggle="post"' 
             + ' href="/' + responseData.teamId + '/project/' + responseData.project_id 
