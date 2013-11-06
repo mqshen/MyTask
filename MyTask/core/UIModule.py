@@ -51,7 +51,7 @@ class UIModule(tornado.web.UIModule):
             "scripts/myCalendar.js",
             "scripts/application.js",
             "scripts/Calendar.js",
-            "scripts/CalendarEditor.js",
+            "scripts/calendarEditor.js",
             "scripts/" + scriptName +".js"
         ]
 
