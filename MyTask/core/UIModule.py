@@ -1,15 +1,17 @@
 import tornado.web
+import os
 from tornado.options import options
+import subprocess
 
 class UIModule(tornado.web.UIModule):
     def css_files(self):
         environment = options.environment
-        if environment == 'development':
-            origin_path = options.assets_css_prefix + 'application.less'
+        if environment != 'product':
+            origin_path = 'less/application.less'
             
             origin_abs_path = os.path.abspath(os.path.join(options.assets_path, origin_path))
 
-            abs_path = os.path.abspath(os.path.join(options.static_path, 'css/application.css'))
+            abs_path = os.path.abspath(os.path.join(options.staticPath , 'css/application.css'))
 
             command_opt = ['lessc']
             command_opt.append(origin_abs_path)

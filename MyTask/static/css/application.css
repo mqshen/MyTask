@@ -1522,7 +1522,7 @@ section.stream div.project.left {
 section.stream div.project.right {
   padding-left: 10px;
   border-left: 7px solid #dcd9d3;
-  margin-left: 475px;
+  margin-left: 468px;
 }
 section.stream div.project > a {
   color: #1c5c76;
@@ -1552,7 +1552,7 @@ section.stream article.event.left div.time {
 }
 section.stream article.event.right {
   border-left: 7px solid #dcd9d3;
-  margin-left: 475px;
+  margin-left: 468px;
 }
 section.stream article.event.right div.time {
   float: left;
