@@ -178,7 +178,7 @@
                                                         <span class="pill has_balloon blank showing exclusively_expanded expanded{% if todoItem.deadline is not None %} {% if todoItem.deadline < date.today() %} delay {% end %}{% if todoItem.deadline == date.today() %} current {% end %}{% end %}"
                                                             data-toggle="popover" data-content="#tpl-todo-popover"
                                                             data-hovercontent-strategy="visibility">
-                                                            <a class="popover-btn data-toggle="popover" 
+                                                            <a class="popover-btn" data-toggle="popover" 
                                                                 data-remote="true" href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}" 
                                                                 data-content="#tpl-todo-popover">
                                                                 <span name="worker.name" class="echo"> 

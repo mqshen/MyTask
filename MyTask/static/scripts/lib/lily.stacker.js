@@ -99,9 +99,11 @@
     }
 
     Stacker.prototype.didClickLink = function (e) {
+        var t = $(e.target);
+        t = t.is('a') ? t : t.closest('a');
+        if(t.attr("data-toggle"))
+            return
         if (this.matchLinkClickEvent(e)) {
-            var t = $(e.target);
-            t = t.is('a') ? t : t.closest('a');
             if(this.path) {
                 this.pathArray.push(this.path);
                 this.elementArray.push(this.html);
