@@ -97,6 +97,9 @@ class UserObj(object):
         self.description = user.description
         self.avatar = user.avatar
         self.teams = []
+        self._teamId = -1
+        self._privilege = -1
+        self._projects = []
         for team in user.teams:
             self.teams.append(TeamObj(team))
         if teamId:
@@ -123,4 +126,3 @@ class UserObj(object):
         teamUserRel = TeamUserRel.query.filter_by(team_id= value, user_id=User.id).first()
         self._privilege = teamUserRel.privilege
         self._projects = [project.id for project in Project.query.join(Project.users).filter(User.id==self.id, Project.team_id==value).all()]
-        print(self._projects)
