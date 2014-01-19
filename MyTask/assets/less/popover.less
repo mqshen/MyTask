@@ -114,3 +114,38 @@
 	opacity: 0.1;
 	filter: ~"alpha(opacity = 10)";
 }
+.popover .arrow {
+position: absolute;
+z-index: 1041;
+}
+.arrow {
+font-size: 0;
+line-height: 0;
+width: 0;
+border-style: solid;
+border-width: 12px;
+}
+.popover.direction-right-top .arrow {
+border-color: transparent #ccc transparent transparent;
+left: -24px;
+top: 24px;
+}
+.popover.direction-right-bottom .arrow {
+border-color: transparent #ccc transparent transparent;
+left: -24px;
+bottom: 24px;
+}
+.popover.direction-right-top .arrow+.arrow {
+border-color: transparent #f7f7f7 transparent transparent;
+margin-left: 2px;
+}
+.popover.top_right_side .arrow {
+right: 14px;
+}
+.popover.top_right_side .arrow {
+border-color: transparent transparent #ccc transparent;
+top: -23px;
+}
+.popover.top_right_side .arrow+.arrow {
+border-color: transparent transparent #f7f7f7 transparent;
+}

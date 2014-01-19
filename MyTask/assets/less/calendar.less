@@ -39,6 +39,11 @@ div.calendar_display {
                         word-wrap: break-word;
                         color: #1c5c76;
                         text-decoration: underline;
+                        &.popover-btn {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                        }
                     }
                 }
             }
@@ -275,4 +280,169 @@ div.calendar_display {
             }
         }
     }
+    div.left>aside section.calendars>ul li>a.popover-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #7D7A75;
+        font-size: 11px;
+        -webkit-transition: opacity 120ms ease-in-out;
+        -moz-transition: opacity 120ms ease-in-out;
+    }
+}
+div.swatches .swatch {
+    display: inline-block;
+    margin: 0 3px -4px -27px;
+    border: 2px solid #fff;
+    vertical-align: baseline;
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0 0 2px rgba(0,0,0,0.4);
+    box-shadow: 0 0 2px rgba(0,0,0,0.4);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+div.calendar_editor div.balloon fieldset.calendar_settings div.swatches input[type=radio], 
+div.project_editor div.balloon fieldset.calendar_settings div.swatches input[type=radio] {
+    width: 0px;
+    height: 0px;
+    display: none;
+}
+div.calendar_editor div.balloon fieldset.calendar_settings div.swatches label.swatch, 
+div.project_editor div.balloon fieldset.calendar_settings div.swatches label.swatch {
+    display: -moz-inline-box;
+    -moz-box-orient: vertical;
+    display: inline-block;
+    margin: 2px 2px 0 1px;
+    height: 12px;
+    width: 14px;
+}
+div.calendar_editor div.balloon fieldset.calendar_settings div.swatches .swatch.selected,
+div.project_editor div.balloon fieldset.calendar_settings div.swatches .swatch.selected{
+    background-image: url(../images/swatch_x.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+div.calendar_editor div.balloon fieldset.calendar_settings input[type=text], 
+div.calendar_editor div.balloon fieldset.calendar_settings textarea, 
+div.project_editor div.balloon fieldset.calendar_settings input[type=text], 
+div.project_editor div.balloon fieldset.calendar_settings textarea {
+    margin: 0;
+    padding: 0;
+    -webkit-appearance: none;
+    font-size: 16px !important;
+    font-weight: inherit !important;
+    font-style: inherit !important;
+    background-color: transparent !important;
+    line-height: normal;
+    outline: none;
+    border: none;
+    width: 100%;
+    resize: none;
+    border-bottom: 1px dotted #ccc;
+    vertical-align: middle;
+}
+div.calendar_editor div.balloon fieldset.calendar_settings h3, 
+div.project_editor div.balloon fieldset.calendar_settings h3 {
+margin: 0 0 10px 0;
+border: none;
+}
+div.calendar_editor div.balloon fieldset.calendar_settings p, 
+div.project_editor div.balloon fieldset.calendar_settings p {
+margin-bottom: 5px;
+}
+.calendar_settings h3 input {
+margin: 0;
+padding: 0;
+font-size: 14px !important;
+font-weight: inherit !important;
+font-style: inherit !important;
+background-color: transparent !important;
+line-height: normal;
+outline: none;
+border: none;
+width: 100%;
+resize: none;
+border-bottom: 1px dotted #ccc;
+vertical-align: middle;
+}
+div.calendar_editor div.balloon, 
+div.project_editor div.balloon {
+width: 220px;
+left: -200px;
+top: 0px;
+}
+form.calendar_event_editor_form fieldset textarea {
+margin: 0;
+padding: 0;
+font-size: inherit !important;
+font-weight: inherit !important;
+font-style: inherit !important;
+background-color: transparent !important;
+line-height: normal;
+outline: none;
+border: none;
+width: 100%;
+resize: none;
+border-bottom: 1px dotted #ccc;
+vertical-align: middle;
+}
+form.calendar_event_editor_form fieldset.event_date input[type=text] {
+width: 160px;
+border: 1px solid #ddd;
+padding: 2px 5px;
+border-radius: 3px;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+}
+form.calendar_event_editor_form fieldset input[type=text], form.calendar_event_editor_form fieldset textarea {
+margin: 0;
+padding: 0;
+font-size: inherit !important;
+font-weight: inherit !important;
+font-style: inherit !important;
+background-color: transparent !important;
+line-height: normal;
+outline: none;
+border: none;
+width: 100%;
+resize: none;
+border-bottom: 1px dotted #ccc;
+vertical-align: middle;
+}
+form.calendar_event_editor_form fieldset table td.label {
+color: black;
+padding-right: 10px;
+text-align: right;
+}
+form.calendar_event_editor_form fieldset table {
+width: 100%;
+font-size: 13px;
+}
+div.ui-datepicker {
+display: none;
+text-align: center;
+cursor: default;
+background: #fff;
+padding: 6px 12px 12px;
+border: 1px solid #aaa;
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+-webkit-box-shadow: 0 1px 6px rgba(0,0,0,0.3);
+-moz-box-shadow: 0 1px 6px rgba(0,0,0,0.3);
+box-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+form.calendar_event_editor_form fieldset.event_date div.end_date {
+margin-top: 3px;
+}
+form.calendar_event_editor_form fieldset table td {
+line-height: 2em;
+padding: 0px;
+}
+form.calendar_event_editor_form fieldset.event_name {
+font-size: 20px !important;
+}
+form.calendar_event_editor_form fieldset.event_note, form.calendar_event_editor_form fieldset.event_time {
+font-size: 16px !important;
 }

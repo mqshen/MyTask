@@ -103,7 +103,11 @@ class MessageHandler(BaseHandler):
             except:
                 pass
 
-            self.writeSuccessResult(message, successUrl='/%d/project/%s/message/%d'%(teamId, projectId, message.id))
+            print(teamId)
+            print(projectId)
+
+            
+            self.writeSuccessResult(message, successUrl='/%s/project/%s/message/%d'%(teamId, projectId, message.id))
 
 
 class NewMessageHandler(BaseHandler):
