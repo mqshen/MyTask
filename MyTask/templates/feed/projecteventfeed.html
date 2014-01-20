@@ -15,10 +15,10 @@ SEQUENCE:{{event.id}}
 END:VEVENT
 {% end %}
 
-{% for item in project.todoItems %}
+{% for item in [item for item in todoItems if item.done != 1] %}
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:{% if item.deadline %} {{item.deadline.strftime("%Y%m%d")}} {% end %}
-DTEND;VALUE=DATE:{% if item.deadline %} {{item.deadline.strftime("%Y%m%d")}} {% end %}
+DTSTART;VALUE=DATE:{% if item.deadline %}{{item.deadline.strftime("%Y%m%d")}}{% end %}
+DTEND;VALUE=DATE:{% if item.deadline %}{{item.deadline.strftime("%Y%m%d")}}{% end %}
 SUMMARY:❏ {{item.description}}
 UID:todo-{{item.id}}@mytask.com
 LAST-MODIFIED:{{item.createTime}}

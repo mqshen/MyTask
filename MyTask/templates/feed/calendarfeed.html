@@ -1,9 +1,11 @@
 BEGIN:VCALENDAR
+
 CALSCALE:GREGORIAN
 PRODID:-//mqshen//Next//EN
 X-WR-CALNAME:{{team.title}} : MyTask的所有日历
 X-WR-TIMEZONE:Asia/Shanghai
 VERSION:2.0
+
 {% for event in project_events %}
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:{{event.startDate.strftime("%Y%m%d")}}
@@ -26,10 +28,10 @@ SEQUENCE:{{event.id}}
 END:VEVENT
 {% end %}
 
-{% for item in todoItems %}
+{% for item in [item for item in todoItems if item.done != 1] %}
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:{% if item.deadline %} {{item.deadline.strftime("%Y%m%d")}} {% end %}
-DTEND;VALUE=DATE:{% if item.deadline %} {{item.deadline.strftime("%Y%m%d")}} {% end %}
+DTSTART;VALUE=DATE:{% if item.deadline %}{{item.deadline.strftime("%Y%m%d")}}{% end %}
+DTEND;VALUE=DATE:{% if item.deadline %}{{item.deadline.strftime("%Y%m%d")}}{% end %}
 SUMMARY:❏ {{item.description}}
 UID:todo-{{item.id}}@mytask.com
 LAST-MODIFIED:{{item.createTime}}
