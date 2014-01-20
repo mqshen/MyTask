@@ -67,6 +67,17 @@ article.todolist {
                     box-shadow: none;
                 }
             }
+            &.completed {
+                text-decoration: line-through;
+            }
+        }
+        &.completed>li {
+            margin-bottom: 7px;
+            cursor: auto;
+            font-size: 11px;
+            line-height: 14px;
+            color: #999;
+            text-decoration: line-through;
         }
     }
 }

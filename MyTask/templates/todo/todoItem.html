@@ -22,7 +22,7 @@
                     <section class="perma has_tools">
                         <article class="todolist">
                             <ul>
-                                <li class="todo show editable_container" data-behavior="has_hover_content" 
+                                <li class="todo show editable_container {% if todoItem.done == 1 %} completed {% end %} " data-behavior="has_hover_content" 
                                     href="{{url}}" data-target-class="new_comment">
                                     <div class="nubbin" style="display: none; left: -62px;" data-behavior="hover_content">
                                         <div class="spacer"></div>
@@ -33,7 +33,7 @@
                                     </div>
                                     <div>
                                         <span class="wrapper">
-                                            <input href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/done"
+                                            <input href="/{{teamId}}/project/{{project.id}}/todolist/{{todolist.id}}/todoitem/{{todoItem.id}}/{% if todoItem.done == 1 %}undone{% else %}done{% end %}"
                                             name="todo_complete" data-toggle="post" type="checkbox" {% if todoItem.done == 1 %} checked="true" {% end %} value="1">
                                             <span class="content" >
                                                 {{ todoItem.description }}

@@ -869,6 +869,17 @@ article.todolist > ul > li form > textarea {
   border-bottom: 1px dotted #b3b3b3;
   box-shadow: none;
 }
+article.todolist > ul > li.completed {
+  text-decoration: line-through;
+}
+article.todolist > ul.completed > li {
+  margin-bottom: 7px;
+  cursor: auto;
+  font-size: 11px;
+  line-height: 14px;
+  color: #999;
+  text-decoration: line-through;
+}
 ul.todolists {
   margin-top: 8px;
   position: relative;
