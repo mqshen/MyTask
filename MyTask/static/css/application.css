@@ -1415,6 +1415,9 @@ div.calendar_display div.week div.dates div.date {
   padding: 0 0 10px 0;
   line-height: normal;
 }
+div.calendar_display div.week div.dates div.date:last-of-type {
+  border-right: none;
+}
 div.calendar_display div.week div.dates div.date.current_month div.day {
   color: #666;
 }
