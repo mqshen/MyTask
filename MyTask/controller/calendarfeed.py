@@ -11,7 +11,7 @@ from model.user import Team, User
 import logging
 import tornado
 from tornado.options import options
-from core.BaseHandler import BaseHandler 
+from core.BaseHandler import FeedHandler, BaseHandler
 from sqlalchemy import or_, and_
 from sqlalchemy.orm import aliased
 from forms import Form, TextField, ListField, IntField, DateField, TimeField, validators
@@ -35,7 +35,7 @@ class CalendarFeedPortalHandler(BaseHandler):
 
         self.render("feed/calendarfeedportal.html", projects= projects, calendars= calendars , team = team, teamId = teamId, user = user)
 
-class CalendarFeedHandler(BaseHandler):
+class CalendarFeedHandler(FeedHandler):
 
     def get(self, teamId):
         form = TokenForm(self.request.arguments, locale_code=self.locale.code)
@@ -59,7 +59,7 @@ class CalendarFeedHandler(BaseHandler):
                     project_events = project_events , calendar_events = calendar_events )
                 
                 
-class CalendarItemFeedHandler(BaseHandler):
+class CalendarItemFeedHandler(FeedHandler):
 
     def get(self, teamId, targetId):
         form = TokenForm(self.request.arguments, locale_code=self.locale.code)

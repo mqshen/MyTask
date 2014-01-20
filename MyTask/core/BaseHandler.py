@@ -14,6 +14,31 @@ from core.database import db
 
 successJson = {"returnCode": "000000"}
 
+class FeedHandler(tornado.web.RequestHandler):
+    
+    def __init__(self, application, request, **kwargs):
+        super(FeedHandler, self).__init__(application, request, **kwargs)
+
+    def write_error(self, status_code, **kwargs):
+        super().render("error/error_default.html")
+
+    @property
+    def session(self):
+        if hasattr(self, "_session"):
+            return self._session
+        
+        sessionid = self.get_secure_cookie('sid')
+        if sessionid:
+            sessionid = sessionid.decode("utf-8")
+        self._session = Session(self.application.session_store, sessionid)
+        return self._session
+
+    def get_current_user(self):
+        return self.session['user'] if self.session and 'user' in self.session else None
+    
+    def rawRender(self, templateName, **kwargs):
+        super().render(templateName, **kwargs)
+
 class BaseHandler(tornado.web.RequestHandler):
     
     def __init__(self, application, request, **kwargs):
