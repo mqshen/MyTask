@@ -1,500 +1,583 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
-CREATE SCHEMA IF NOT EXISTS `myTaskDB` DEFAULT CHARACTER SET utf8 ;
-USE `myTaskDB` ;
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`user_cookie`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`user_cookie` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`user_cookie` (
-  `user_id` INT(10) NOT NULL,
-  `sid` VARCHAR(40) NOT NULL,
-  PRIMARY KEY (`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `sid` ON `myTaskDB`.`user_cookie` (`sid` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`user` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`user` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(60) NOT NULL,
-  `password` VARCHAR(100) NOT NULL,
-  `nickName` VARCHAR(255) NOT NULL,
-  `description` VARCHAR(255) NULL DEFAULT NULL,
-  `avatar` VARCHAR(60) NULL DEFAULT NULL,
-  `salt` VARCHAR(60) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 31
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `email` ON `myTaskDB`.`user` (`email` ASC);
-
-CREATE INDEX `fk_user_user_cookie1_idx` ON `myTaskDB`.`user` (`user_cookie_user_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`team`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`team` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`team` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(90) NOT NULL,
-  `createTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 26
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`project`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`project` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`project` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(90) NOT NULL,
-  `description` VARCHAR(300) NULL DEFAULT NULL,
-  `own_id` INT(10) NOT NULL,
-  `team_id` INT(10) NOT NULL,
-  `createTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `discussionNum` INT(3) NULL DEFAULT '0',
-  `todoNum` INT(3) NULL DEFAULT '0',
-  `fileNum` INT(3) NULL DEFAULT '0',
-  `documentNum` INT(3) NULL DEFAULT '0',
-  `repository` INT(1) NULL DEFAULT '0',
-  `repositoryName` VARCHAR(180) NULL DEFAULT NULL,
-  `color` VARCHAR(10) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 89
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `author` ON `myTaskDB`.`project` (`own_id` ASC);
-
-CREATE INDEX `fk_project_team1_idx` ON `myTaskDB`.`project` (`team_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`attachment`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`attachment` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`attachment` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `url` VARCHAR(60) NULL DEFAULT NULL,
-  `name` VARCHAR(60) NULL DEFAULT NULL,
-  `own_id` INT(10) NULL DEFAULT NULL,
-  `project_id` INT(10) NULL DEFAULT NULL,
-  `fileType` VARCHAR(1) NULL DEFAULT NULL,
-  `createTime` DATETIME NULL DEFAULT NULL,
-  `contentType` VARCHAR(100) NULL DEFAULT NULL,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  `width` INT(5) NULL DEFAULT '0',
-  `height` INT(5) NULL DEFAULT '0',
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 78
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `fk_attachment_project1_idx` ON `myTaskDB`.`attachment` (`project_id` ASC);
-
-CREATE INDEX `index3` ON `myTaskDB`.`attachment` (`url` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`message`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`message` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`message` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(90) NOT NULL,
-  `content` TEXT NULL DEFAULT NULL,
-  `own_id` INT(10) NOT NULL,
-  `project_id` INT(10) NOT NULL,
-  `createTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  `comment_num` INT(5) NULL DEFAULT '0',
-  `comment_digest` VARCHAR(300) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 16
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `author` ON `myTaskDB`.`message` (`own_id` ASC);
-
-CREATE INDEX `fk_message_project1_idx` ON `myTaskDB`.`message` (`project_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`comment`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`comment` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`comment` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `content` TEXT NULL DEFAULT NULL,
-  `own_id` INT(10) NOT NULL,
-  `message_id` INT(10) NOT NULL,
-  `createTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  `project_id` INT(10) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `author` ON `myTaskDB`.`comment` (`own_id` ASC);
-
-CREATE INDEX `fk_comment_message1_idx` ON `myTaskDB`.`comment` (`message_id` ASC);
-
-CREATE INDEX `index4` ON `myTaskDB`.`comment` (`createTime` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`attachment_comment_rel`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`attachment_comment_rel` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`attachment_comment_rel` (
-  `attachment_id` INT(10) NOT NULL DEFAULT '0',
-  `comment_id` INT(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`attachment_id`, `comment_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-CREATE INDEX `fk_attachment_comment_rel_comment1_idx` ON `myTaskDB`.`attachment_comment_rel` (`comment_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`attachment_message_rel`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`attachment_message_rel` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`attachment_message_rel` (
-  `attachment_id` INT(10) NOT NULL DEFAULT '0',
-  `message_id` INT(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`attachment_id`, `message_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-CREATE INDEX `fk_attachment_message_rel_message1_idx` ON `myTaskDB`.`attachment_message_rel` (`message_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`todolist`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`todolist` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`todolist` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(300) NULL DEFAULT NULL,
-  `own_id` INT(10) NOT NULL,
-  `project_id` INT(10) NOT NULL,
-  `createTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  `description` VARCHAR(300) NULL DEFAULT NULL,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 80
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `author` ON `myTaskDB`.`todolist` (`own_id` ASC);
-
-CREATE INDEX `fk_todolist_project1_idx` ON `myTaskDB`.`todolist` (`project_id` ASC);
-
-CREATE INDEX `index4` ON `myTaskDB`.`todolist` (`createTime` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`todoitem`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`todoitem` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`todoitem` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `description` VARCHAR(300) NULL DEFAULT NULL,
-  `own_id` INT(10) NOT NULL,
-  `todolist_id` INT(10) NOT NULL,
-  `worker_id` INT(10) NULL DEFAULT NULL,
-  `deadline` TIMESTAMP NULL DEFAULT NULL,
-  `createTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `project_id` INT(10) NULL DEFAULT NULL,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  `done` INT(1) NULL DEFAULT '0',
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 152
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `author` ON `myTaskDB`.`todoitem` (`own_id` ASC);
-
-CREATE INDEX `fk_todoitem_todolist1_idx` ON `myTaskDB`.`todoitem` (`todolist_id` ASC);
-
-CREATE INDEX `fk_todoitem_user2_idx` ON `myTaskDB`.`todoitem` (`worker_id` ASC);
-
-CREATE INDEX `index5` ON `myTaskDB`.`todoitem` (`deadline` ASC);
-
-CREATE INDEX `index6` ON `myTaskDB`.`todoitem` (`createTime` ASC);
-
-CREATE INDEX `fk_todoitem_project1_idx` ON `myTaskDB`.`todoitem` (`project_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`todocomment`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`todocomment` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`todocomment` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `content` VARCHAR(300) NULL DEFAULT NULL,
-  `own_id` INT(10) NOT NULL,
-  `todoitem_id` INT(10) NOT NULL,
-  `createTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  `project_id` INT(10) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 81
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `author` ON `myTaskDB`.`todocomment` (`own_id` ASC);
-
-CREATE INDEX `fk_todocomment_todoitem1_idx` ON `myTaskDB`.`todocomment` (`todoitem_id` ASC);
-
-CREATE INDEX `index4` ON `myTaskDB`.`todocomment` (`createTime` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`attachment_todocomment_rel`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`attachment_todocomment_rel` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`attachment_todocomment_rel` (
-  `attachment_id` INT(10) NOT NULL DEFAULT '0',
-  `todoComment_id` INT(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`attachment_id`, `todoComment_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-CREATE INDEX `fk_attachment_todocomment_rel_todocomment1_idx` ON `myTaskDB`.`attachment_todocomment_rel` (`todoComment_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`todolistcomment`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`todolistcomment` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`todolistcomment` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `content` VARCHAR(300) NULL DEFAULT NULL,
-  `own_id` INT(10) NOT NULL,
-  `todolist_id` INT(10) NOT NULL,
-  `createTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  `project_id` INT(10) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `author` ON `myTaskDB`.`todolistcomment` (`own_id` ASC);
-
-CREATE INDEX `fk_todolistcomment_todolist1_idx` ON `myTaskDB`.`todolistcomment` (`todolist_id` ASC);
-
-CREATE INDEX `index4` ON `myTaskDB`.`todolistcomment` (`createTime` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`attachment_todolistcomment_rel`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`attachment_todolistcomment_rel` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`attachment_todolistcomment_rel` (
-  `attachment_id` INT(10) NOT NULL DEFAULT '0',
-  `todolistcomment_id` INT(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`attachment_id`, `todolistcomment_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-CREATE INDEX `fk_attachment_todolistcomment_rel_todolistcomment1_idx` ON `myTaskDB`.`attachment_todolistcomment_rel` (`todolistcomment_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`calendar`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`calendar` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`calendar` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(60) NULL DEFAULT NULL,
-  `description` VARCHAR(60) NULL DEFAULT NULL,
-  `color` VARCHAR(10) NULL DEFAULT NULL,
-  `own_id` INT(10) NULL DEFAULT NULL,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  `createTime` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 23
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `fk_calendar_user1_idx` ON `myTaskDB`.`calendar` (`own_id` ASC);
-
-CREATE INDEX `fk_calendar_team1_idx` ON `myTaskDB`.`calendar` (`team_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`calendar_user_rel`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`calendar_user_rel` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`calendar_user_rel` (
-  `calendar_id` INT(10) NOT NULL DEFAULT '0',
-  `user_id` INT(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`calendar_id`, `user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `fk_calendar_user_rel_user1_idx` ON `myTaskDB`.`calendar_user_rel` (`user_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`inviteuser`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`inviteuser` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`inviteuser` (
-  `id` VARCHAR(60) NOT NULL,
-  `email` VARCHAR(60) NULL DEFAULT NULL,
-  `invite_id` INT(10) NULL DEFAULT NULL,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  `privilege` VARCHAR(45) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-CREATE INDEX `fk_inviteuser_team1_idx` ON `myTaskDB`.`inviteuser` (`team_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`inviteproject`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`inviteproject` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`inviteproject` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `project_id` INT(10) NOT NULL,
-  `invite_id` INT(10) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 7
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `fk_inviteproject_inviteuser1_idx` ON `myTaskDB`.`inviteproject` (`invite_id` ASC);
-
-CREATE INDEX `fk_inviteproject_project1_idx` ON `myTaskDB`.`inviteproject` (`project_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`operation`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`operation` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`operation` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT,
-  `own_id` INT(10) NULL DEFAULT NULL,
-  `createTime` TIMESTAMP NULL DEFAULT NULL,
-  `operation_type` INT(2) NULL DEFAULT NULL,
-  `target_type` INT(2) NULL DEFAULT NULL,
-  `target_id` INT(10) NULL DEFAULT NULL,
-  `title` VARCHAR(100) NULL DEFAULT NULL,
-  `digest` TEXT NULL DEFAULT NULL,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  `project_id` INT(10) NULL DEFAULT NULL,
-  `url` VARCHAR(60) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 427
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`project_user_rel`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`project_user_rel` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`project_user_rel` (
-  `project_id` INT(10) NOT NULL,
-  `user_id` INT(10) NOT NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `fk_project_user_rel_project1_idx` ON `myTaskDB`.`project_user_rel` (`project_id` ASC);
-
-CREATE INDEX `fk_project_user_rel_user1_idx` ON `myTaskDB`.`project_user_rel` (`user_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`team_user_rel`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`team_user_rel` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`team_user_rel` (
-  `team_id` INT(10) NOT NULL,
-  `user_id` INT(10) NOT NULL,
-  `privilege` INT(2) NULL DEFAULT NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-CREATE INDEX `fk_team_user_rel_user_idx` ON `myTaskDB`.`team_user_rel` (`user_id` ASC);
-
-CREATE INDEX `fk_team_user_rel_team1_idx` ON `myTaskDB`.`team_user_rel` (`team_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `myTaskDB`.`event`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myTaskDB`.`event` ;
-
-CREATE TABLE IF NOT EXISTS `myTaskDB`.`event` (
-  `id` INT(10) NOT NULL AUTO_INCREMENT primary key,
-  `title` VARCHAR(60) NULL DEFAULT NULL,
-  `description` VARCHAR(60) NULL DEFAULT NULL,
-  `team_id` INT(10) NULL DEFAULT NULL,
-  `own_id` INT(10) NULL DEFAULT NULL,
-  `project_id` INT(10) NULL DEFAULT NULL,
-  `calendar_id` INT(10) NULL DEFAULT NULL,
-  `createTime` DATETIME NULL DEFAULT NULL,
-  `startTime` TIME NULL DEFAULT NULL,
-  `startDate` DATE NULL DEFAULT NULL,
-  `endDate` DATE NULL DEFAULT NULL)
-ENGINE = InnoDB;
-
-CREATE INDEX `fk_event_calendar1_idx` ON `myTaskDB`.`event` (`calendar_id` ASC);
-
-CREATE INDEX `fk_event_project1_idx` ON `myTaskDB`.`event` (`project_id` ASC);
-
-CREATE INDEX `index3` ON `myTaskDB`.`event` (`startDate` ASC);
-
-CREATE INDEX `index4` ON `myTaskDB`.`event` (`endDate` ASC);
-
-CREATE INDEX `fk_event_user1_idx` ON `myTaskDB`.`event` (`own_id` ASC);
-
-
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+CREATE DATABASE  IF NOT EXISTS `myTaskDB` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `myTaskDB`;
+-- MySQL dump 10.13  Distrib 5.6.11, for osx10.6 (i386)
+--
+-- Host: 127.0.0.1    Database: myTaskDB
+-- ------------------------------------------------------
+-- Server version   5.6.13
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `Product`
+--
+
+DROP TABLE IF EXISTS `Product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Product` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `maxAmt` decimal(19,2) DEFAULT NULL,
+  `maxInterest` decimal(19,2) DEFAULT NULL,
+  `maxPeriod` int(11) NOT NULL,
+  `minAmt` decimal(19,2) DEFAULT NULL,
+  `minInterest` decimal(19,2) DEFAULT NULL,
+  `minPeriod` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `platformId` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=313 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `attachment`
+--
+
+DROP TABLE IF EXISTS `attachment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attachment` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `url` varchar(60) DEFAULT NULL,
+  `name` varchar(60) DEFAULT NULL,
+  `own_id` int(10) DEFAULT NULL,
+  `project_id` int(10) DEFAULT NULL,
+  `fileType` varchar(1) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
+  `contentType` varchar(100) DEFAULT NULL,
+  `team_id` int(10) DEFAULT NULL,
+  `width` int(5) DEFAULT '0',
+  `height` int(5) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fk_attachment_project1_idx` (`project_id`),
+  KEY `index3` (`url`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `attachment_comment_rel`
+--
+
+DROP TABLE IF EXISTS `attachment_comment_rel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attachment_comment_rel` (
+  `attachment_id` int(10) NOT NULL DEFAULT '0',
+  `comment_id` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`attachment_id`,`comment_id`),
+  KEY `fk_attachment_comment_rel_comment1_idx` (`comment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `attachment_message_rel`
+--
+
+DROP TABLE IF EXISTS `attachment_message_rel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attachment_message_rel` (
+  `attachment_id` int(10) NOT NULL DEFAULT '0',
+  `message_id` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`attachment_id`,`message_id`),
+  KEY `fk_attachment_message_rel_message1_idx` (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `attachment_todocomment_rel`
+--
+
+DROP TABLE IF EXISTS `attachment_todocomment_rel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attachment_todocomment_rel` (
+  `attachment_id` int(10) NOT NULL DEFAULT '0',
+  `todoComment_id` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`attachment_id`,`todoComment_id`),
+  KEY `fk_attachment_todocomment_rel_todocomment1_idx` (`todoComment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `attachment_todolistcomment_rel`
+--
+
+DROP TABLE IF EXISTS `attachment_todolistcomment_rel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attachment_todolistcomment_rel` (
+  `attachment_id` int(10) NOT NULL DEFAULT '0',
+  `todolistcomment_id` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`attachment_id`,`todolistcomment_id`),
+  KEY `fk_attachment_todolistcomment_rel_todolistcomment1_idx` (`todolistcomment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `calendar`
+--
+
+DROP TABLE IF EXISTS `calendar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `calendar` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(60) DEFAULT NULL,
+  `description` varchar(60) DEFAULT NULL,
+  `color` varchar(10) DEFAULT NULL,
+  `own_id` int(10) DEFAULT NULL,
+  `team_id` int(10) DEFAULT NULL,
+  `createTime` datetime ,
+  PRIMARY KEY (`id`),
+  KEY `fk_calendar_user1_idx` (`own_id`),
+  KEY `fk_calendar_team1_idx` (`team_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `calendar_user_rel`
+--
+
+DROP TABLE IF EXISTS `calendar_user_rel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `calendar_user_rel` (
+  `calendar_id` int(10) NOT NULL DEFAULT '0',
+  `user_id` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`calendar_id`,`user_id`),
+  KEY `fk_calendar_user_rel_user1_idx` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `comment`
+--
+
+DROP TABLE IF EXISTS `comment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comment` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `content` text,
+  `own_id` int(10) NOT NULL,
+  `message_id` int(10) NOT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `team_id` int(10) DEFAULT NULL,
+  `project_id` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `author` (`own_id`),
+  KEY `fk_comment_message1_idx` (`message_id`),
+  KEY `index4` (`createTime`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `event`
+--
+
+DROP TABLE IF EXISTS `event`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `event` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(60) DEFAULT NULL,
+  `description` varchar(60) DEFAULT NULL,
+  `team_id` int(10) DEFAULT NULL,
+  `own_id` int(10) DEFAULT NULL,
+  `project_id` int(10) DEFAULT NULL,
+  `calendar_id` int(10) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
+  `startTime` time DEFAULT NULL,
+  `startDate` date DEFAULT NULL,
+  `endDate` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_event_calendar1_idx` (`calendar_id`),
+  KEY `fk_event_project1_idx` (`project_id`),
+  KEY `index3` (`startDate`),
+  KEY `index4` (`endDate`),
+  KEY `fk_event_user1_idx` (`own_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `inviteproject`
+--
+
+DROP TABLE IF EXISTS `inviteproject`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inviteproject` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `project_id` int(10) NOT NULL,
+  `invite_id` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_inviteproject_inviteuser1_idx` (`invite_id`),
+  KEY `fk_inviteproject_project1_idx` (`project_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `inviteuser`
+--
+
+DROP TABLE IF EXISTS `inviteuser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inviteuser` (
+  `id` varchar(60) NOT NULL,
+  `email` varchar(60) DEFAULT NULL,
+  `invite_id` int(10) DEFAULT NULL,
+  `team_id` int(10) DEFAULT NULL,
+  `privilege` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_inviteuser_team1_idx` (`team_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `message`
+--
+
+DROP TABLE IF EXISTS `message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `message` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(90) NOT NULL,
+  `content` text,
+  `own_id` int(10) NOT NULL,
+  `project_id` int(10) NOT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `team_id` int(10) DEFAULT NULL,
+  `comment_num` int(5) DEFAULT '0',
+  `comment_digest` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `author` (`own_id`),
+  KEY `fk_message_project1_idx` (`project_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `message_data`
+--
+
+DROP TABLE IF EXISTS `message_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `message_data` (
+  `project_id` int(10) NOT NULL DEFAULT '0',
+  `add_date` date NOT NULL DEFAULT '0000-00-00',
+  `total_number` int(5) DEFAULT NULL,
+  PRIMARY KEY (`project_id`,`add_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `message_user_data`
+--
+
+DROP TABLE IF EXISTS `message_user_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `message_user_data` (
+  `project_id` int(10) NOT NULL DEFAULT '0',
+  `user_id` int(10) NOT NULL DEFAULT '0',
+  `add_date` date NOT NULL DEFAULT '0000-00-00',
+  `total_number` int(5) DEFAULT NULL,
+  PRIMARY KEY (`project_id`,`user_id`,`add_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `message_week_data`
+--
+
+DROP TABLE IF EXISTS `message_week_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `message_week_data` (
+  `project_id` int(10) NOT NULL DEFAULT '0',
+  `add_weekday` int(1) NOT NULL DEFAULT '0',
+  `total_number` int(5) DEFAULT NULL,
+  PRIMARY KEY (`project_id`,`add_weekday`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `operation`
+--
+
+DROP TABLE IF EXISTS `operation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `operation` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `own_id` int(10) DEFAULT NULL,
+  `createTime` timestamp NULL DEFAULT NULL,
+  `operation_type` int(2) DEFAULT NULL,
+  `target_type` int(2) DEFAULT NULL,
+  `target_id` int(10) DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `digest` text,
+  `team_id` int(10) DEFAULT NULL,
+  `project_id` int(10) DEFAULT NULL,
+  `url` varchar(60) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project`
+--
+
+DROP TABLE IF EXISTS `project`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(90) NOT NULL,
+  `description` varchar(300) DEFAULT NULL,
+  `own_id` int(10) NOT NULL,
+  `team_id` int(10) NOT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `discussionNum` int(3) DEFAULT '0',
+  `todoNum` int(3) DEFAULT '0',
+  `fileNum` int(3) DEFAULT '0',
+  `documentNum` int(3) DEFAULT '0',
+  `repository` int(1) DEFAULT '0',
+  `repositoryName` varchar(180) DEFAULT NULL,
+  `color` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `author` (`own_id`),
+  KEY `fk_project_team1_idx` (`team_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project_user_rel`
+--
+
+DROP TABLE IF EXISTS `project_user_rel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_user_rel` (
+  `project_id` int(10) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  KEY `fk_project_user_rel_project1_idx` (`project_id`),
+  KEY `fk_project_user_rel_user1_idx` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `team`
+--
+
+DROP TABLE IF EXISTS `team`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `team` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(90) NOT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `team_user_rel`
+--
+
+DROP TABLE IF EXISTS `team_user_rel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `team_user_rel` (
+  `team_id` int(10) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `privilege` int(2) DEFAULT NULL,
+  KEY `fk_team_user_rel_user_idx` (`user_id`),
+  KEY `fk_team_user_rel_team1_idx` (`team_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `todo_data`
+--
+
+DROP TABLE IF EXISTS `todo_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `todo_data` (
+  `project_id` int(10) NOT NULL DEFAULT '0',
+  `add_date` date NOT NULL DEFAULT '0000-00-00',
+  `total_number` int(5) DEFAULT NULL,
+  PRIMARY KEY (`project_id`,`add_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `todo_user_data`
+--
+
+DROP TABLE IF EXISTS `todo_user_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `todo_user_data` (
+  `project_id` int(10) NOT NULL DEFAULT '0',
+  `user_id` int(10) NOT NULL DEFAULT '0',
+  `add_date` date NOT NULL DEFAULT '0000-00-00',
+  `total_number` int(5) DEFAULT NULL,
+  PRIMARY KEY (`project_id`,`user_id`,`add_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `todocomment`
+--
+
+DROP TABLE IF EXISTS `todocomment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `todocomment` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `content` varchar(300) DEFAULT NULL,
+  `own_id` int(10) NOT NULL,
+  `todoitem_id` int(10) NOT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `team_id` int(10) DEFAULT NULL,
+  `project_id` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `author` (`own_id`),
+  KEY `fk_todocomment_todoitem1_idx` (`todoitem_id`),
+  KEY `index4` (`createTime`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `todoitem`
+--
+
+DROP TABLE IF EXISTS `todoitem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `todoitem` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `description` varchar(300) DEFAULT NULL,
+  `own_id` int(10) NOT NULL,
+  `todolist_id` int(10) NOT NULL,
+  `worker_id` int(10) DEFAULT NULL,
+  `deadline` date DEFAULT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `project_id` int(10) DEFAULT NULL,
+  `team_id` int(10) DEFAULT NULL,
+  `done` int(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `author` (`own_id`),
+  KEY `fk_todoitem_todolist1_idx` (`todolist_id`),
+  KEY `fk_todoitem_user2_idx` (`worker_id`),
+  KEY `index5` (`deadline`),
+  KEY `index6` (`createTime`),
+  KEY `fk_todoitem_project1_idx` (`project_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `todolist`
+--
+
+DROP TABLE IF EXISTS `todolist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `todolist` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(300) DEFAULT NULL,
+  `own_id` int(10) NOT NULL,
+  `project_id` int(10) NOT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `description` varchar(300) DEFAULT NULL,
+  `team_id` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `author` (`own_id`),
+  KEY `fk_todolist_project1_idx` (`project_id`),
+  KEY `index4` (`createTime`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `todolistcomment`
+--
+
+DROP TABLE IF EXISTS `todolistcomment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `todolistcomment` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `content` varchar(300) DEFAULT NULL,
+  `own_id` int(10) NOT NULL,
+  `todolist_id` int(10) NOT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `team_id` int(10) DEFAULT NULL,
+  `project_id` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `author` (`own_id`),
+  KEY `fk_todolistcomment_todolist1_idx` (`todolist_id`),
+  KEY `index4` (`createTime`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `nickName` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `avatar` varchar(60) DEFAULT NULL,
+  `salt` varchar(60) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_cookie`
+--
+
+DROP TABLE IF EXISTS `user_cookie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_cookie` (
+  `user_id` int(10) NOT NULL,
+  `sid` varchar(40) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  KEY `sid` (`sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2014-01-19 20:55:37
+
