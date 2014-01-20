@@ -4,3 +4,4 @@ fileupload
 MyTask.egg-info
 build
 dist
+config.conf
