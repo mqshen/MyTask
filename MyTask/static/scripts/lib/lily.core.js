@@ -166,7 +166,7 @@ $.extend( $.lily, {
     collectRequestData: function(sourceElement) {
         var orginRequestData = {}
 
-        $('[data-toggle=remote],[data-toggle=datepick]' , sourceElement).each(function () {
+        $('[data-toggle=remote],[data-toggle=datepick],input' , sourceElement).each(function () {
     		var $this = $(this)
             if($this.attr("type") == "checkbox" && !$this.attr("checked"))
                 return

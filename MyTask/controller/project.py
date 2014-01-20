@@ -76,7 +76,6 @@ class ProjectHandler(BaseHandler):
         try:
             db.session.add(project)
             db.session.flush()
-            needRepository = 0
 
 
             url = "/project/%d"%project.id
@@ -101,7 +100,6 @@ class NewProjectHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, teamId):
         form = ProjectForm(self.request.arguments, locale_code=self.locale.code)
-        currentUser = self.current_user
         team = Team.query.filter_by(id=teamId).first()
         self.render("project/newProject.html", team= team, teamId = teamId, form = form)
 
