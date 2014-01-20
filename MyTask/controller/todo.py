@@ -17,6 +17,7 @@ from forms import Form, TextField, ListField, IntField, DateTimeField, DateField
 from datetime import datetime
 from core.database import db
 from websocket.urls import send_message
+from sqlalchemy.orm import eagerload
 
 
 class CommentForm(Form):
@@ -173,7 +174,11 @@ class TodoItemDetailHandler(BaseHandler):
     def get(self, teamId, projectId, todoListId, todoItemId):
         project = Project.query.filter_by(id=projectId).first()
         todoItem = TodoItem.query.filter_by(id=todoItemId).first()
-        self.render("todo/todoItem.html", project= project, todoItem= todoItem, todolist= todoItem.todolist, teamId= teamId)
+        
+        operations = Operation.query.options(eagerload('own')).filter_by(team_id= teamId, target_type = 4, 
+            target_id = todoItemId).order_by(Operation.createTime.desc()).limit(10).offset(0).all()
+        
+        self.render("todo/todoItem.html", project= project, todoItem= todoItem, todolist= todoItem.todolist, teamId= teamId, operations = operations)
 
 
 

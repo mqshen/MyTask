@@ -17,7 +17,7 @@ $(function(){
                     + '<img class="avatar" src="/avatar/' + data.own.avatar + '">'
                     + '</a>'
                     + '<div class="formatted_content">'
-                    + '<strong>' + data.own.name + '</strong>-'
+                    + '<strong>' + data.own.name + '</strong>&nbsp;:'
                     + '<div class="editable" name="content" data-type="textarea">'
                     + data.content
                     + '</div>'

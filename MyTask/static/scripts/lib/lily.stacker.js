@@ -109,9 +109,15 @@
                 this.elementArray.push(this.html);
             }
             this.path = t.attr("href");
-            this.load(); 
-            e.preventDefault(); 
-            e.stopPropagation();
+
+            if(this.path.match(/^#.*$/))
+                return;
+
+            if(this.path) {
+                this.load(); 
+                e.preventDefault(); 
+                e.stopPropagation();
+            }
         }
         else if(this.needGoBack(e)){
             this.popstate();
@@ -131,7 +137,7 @@
     Stacker.prototype.needGoBack = function (e) {
         var t = $(e.target);
         t = t.is('a') ? t : t.closest('a');
-        if(t.attr("data-behavior") == "cancel" )
+        if(t.attr("data-behavior") == "cancel" && $('.backdrop.in').length > 0)
             return true;
     } 
 

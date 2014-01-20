@@ -225,7 +225,23 @@
                     </section>
                 </div>
                 <section class="event_stream" >
-                    <a href="{{url}}/log">操作日志</a>
+                	<h4><a href="{{url}}/log">操作日志</a></h4>
+                    {% for operation in operations %}
+                        <article class="event chiral " data-side="left">
+                            <div class="time">
+                                <span class="time_only">
+                                    <time data-local-time="" datetime="" style="">  {{ operation.createTime.strftime("%m-%d %H:%M")}} </time>
+                                </span>
+                            </div>
+                            <div class="action">
+                                <span class="creator" data-creator-id="">
+                                    {{operation.own.name}}
+                                </span>
+                                {{operation.digest}}
+                            </div>
+                        </article>
+                    {% end %}
+                    
                 </section>
             </div>
         </div>

@@ -459,8 +459,8 @@ div.panel.home_tab > section {
   margin-left: 150px;
 }
 div.panel.home_tab section.projects.cards article.card {
-  width: 210px;
-  height: 235px;
+  width: 240px;
+  height: 265px;
   float: left;
   margin: 0 20px 20px 0;
   position: relative;
@@ -931,6 +931,13 @@ div.sheet > header > p {
 div.sheet > header > p a {
   color: #1c5c76;
   text-decoration: underline;
+}
+.event_stream h4 a {
+  font-size: 14px;
+}
+.event_stream time {
+  float: left;
+  margin-right: 10px;
 }
 div.sheet.message.new > div.sheet_body {
   padding: 0;
@@ -2238,6 +2245,17 @@ article.today_todo div.nubbin > div.spacer {
 }
 .on-month:hover {
   background: #cbe0ff;
+}
+section.comments article.comment footer.time {
+  color: #aa9c84;
+  position: relative;
+  top: -20px;
+  font-size: 13px;
+  line-height: 25px;
+  font-weight: normal;
+}
+section.comments article.comment footer.time a {
+  color: #aa9c84;
 }
 a {
   text-decoration: none;
